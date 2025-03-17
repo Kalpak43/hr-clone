@@ -103,7 +103,7 @@ function Sidebar() {
           return (
             <div key={i} className="space-y-4">
               <h3>{n.title}</h3>
-              <div className="space-y-4 text-sm">
+              <div className="space-y-4">
                 {n.links.map((link, j) => {
                   return (
                     <a
