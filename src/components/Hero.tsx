@@ -4,8 +4,13 @@ import {
   EllipsisVertical,
   FileText,
   Info,
+  List,
+  ListFilter,
   MoveRight,
+  Plus,
   SquareArrowOutUpRight,
+  StretchVertical,
+  Table,
   X,
   Zap,
 } from "lucide-react";
@@ -14,7 +19,7 @@ import DateDropdown from "./DateDropdown";
 
 export default function Hero() {
   return (
-    <div className="p-4 space-y-4 text-sm">
+    <div className="p-4 space-y-4 text-sm overflow-y-auto">
       {/* alert */}
       <div className="flex gap-2 items-center relative p-2 border border-gray-300 rounded-md text-sm">
         <div className="border-2 border-white shadow-md p-1 aspect-square rounded-full bg-blue-400">
@@ -203,39 +208,315 @@ export default function Hero() {
 
       {/* tasks */}
       <div className="border border-gray-300 rounded-md p-4 space-y-8">
-        <div className="flex items-center justify-between">
-          <p className="">
-            Task{" "}
-            <span className="ml-4">
-              <Info className="inline text-gray-700" size={16} />
-            </span>
-          </p>
-          <div className="flex items-center gap-2">
-            <DateDropdown />
-            <Button size={"icon"} variant={"outline"}>
-              <SquareArrowOutUpRight size={12} className="text-gray-700" />
-            </Button>
-            <Button size={"icon"} variant={"outline"}>
-              <EllipsisVertical size={12} className="text-gray-700" />
-            </Button>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="">
+              Task{" "}
+              <span className="ml-4">
+                <Info className="inline text-gray-700" size={16} />
+              </span>
+            </p>
+            <div className="flex items-center gap-2">
+              <DateDropdown />
+              <Button size={"icon"} variant={"outline"}>
+                <SquareArrowOutUpRight size={12} className="text-gray-700" />
+              </Button>
+              <Button size={"icon"} variant={"outline"}>
+                <EllipsisVertical size={12} className="text-gray-700" />
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6 text-gray-700">
+              <button className="flex items-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+                <StretchVertical size={12} />
+                <span>Kanban</span>
+              </button>
+              <button className="flex items-center gap-2 ">
+                <Table size={12} />
+                <span>Table</span>
+              </button>
+              <button className="flex items-center gap-2 ">
+                <List size={12} />
+                <span>List View</span>
+              </button>
+            </div>
+            <button className="flex items-center gap-2  w-fit p-2 border border-gray-300 rounded-md">
+              <ListFilter size={12} />
+              <span>Filter</span>
+            </button>
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-end gap-2">
-            <p className="text-4xl font-[600] text-black">173</p>
-            <p className="text-xs">Total Employee</p>
+        <div className="grid grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 aspect-square rounded-full bg-blue-400"></div>
+                <p>
+                  New Request <span className="text-gray-500 ml-2">3</span>
+                </p>
+              </div>
+              <button>
+                <EllipsisVertical size={16} className="text-gray-700" />
+              </button>
+            </div>
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+              <Plus size={16} />
+            </button>
+            <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="flex items-end gap-2">
-            <p className="text-4xl font-[600] text-black">128</p>
-            <p className="text-xs">On Time</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 aspect-square rounded-full bg-yellow-400"></div>
+                <p>
+                  In Progress <span className="text-gray-500 ml-2">6</span>
+                </p>
+              </div>
+              <button>
+                <EllipsisVertical size={16} className="text-gray-700" />
+              </button>
+            </div>
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+              <Plus size={16} />
+            </button>
+            <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="flex items-end gap-2">
-            <p className="text-4xl font-[600] text-black">21</p>
-            <p className="text-xs">Absent</p>
-          </div>
-          <div className="flex items-end gap-2">
-            <p className="text-4xl font-[600] text-black">24</p>
-            <p className="text-xs">Late</p>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2 aspect-square rounded-full bg-green-400"></div>
+                <p>
+                  Companies <span className="text-gray-500 ml-2">12</span>
+                </p>
+              </div>
+              <button>
+                <EllipsisVertical size={16} className="text-gray-700" />
+              </button>
+            </div>
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+              <Plus size={16} />
+            </button>
+            <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+              <div className="space-y-4 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                      Recruitment
+                    </span>
+                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                      Complaince
+                    </span>
+                  </div>
+                  <button>
+                    <EllipsisVertical size={16} className="text-gray-700" />
+                  </button>
+                </div>
+                <h3 className="text-black font-[500] text-lg">
+                  Employee Onboarding Approval
+                </h3>
+                <p className="text-gray-500">
+                  A new onboarding request has been submitted for Jane Smith
+                  (Marketing Department). HR needs to verify the required
+                  documents, approve the onboarding process, and schedule an
+                  introduction meeting with the team.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

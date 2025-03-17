@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 import {
   Popover,
@@ -17,10 +17,11 @@ export default function DateDropdown() {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="flex items-center gap-2 aspect-square w-fit p-2 border border-gray-300 rounded-md"
+          className="flex items-center gap-2  w-fit p-2 border border-gray-300 rounded-md"
         >
           <Calendar className="w-5 h-5" />
           <span>{format(date, "d MMMM yyyy")}</span>
+          <ChevronDown className="w-5 h-5" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
