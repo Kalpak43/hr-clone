@@ -16,30 +16,33 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import { useLocation } from "react-router";
 
 function Sidebar() {
+  const location = useLocation();
+
   const nav = [
     {
       title: "Main Menu",
       links: [
         {
           icon: <House className="" size={20} />,
-          name: "dashboard",
+          name: "/",
         },
         {
-          icon: <ClipboardList className="text-gray-500" size={20} />,
+          icon: <ClipboardList size={20} />,
           name: "tasks",
         },
         {
-          icon: <MessageSquareMore className="text-gray-500" size={20} />,
+          icon: <MessageSquareMore size={20} />,
           name: "inbox",
         },
         {
-          icon: <Calendar className="text-gray-500" size={20} />,
+          icon: <Calendar size={20} />,
           name: "calendar",
         },
         {
-          icon: <Folder className="text-gray-500" size={20} />,
+          icon: <Folder size={20} />,
           name: "projects",
         },
       ],
@@ -48,19 +51,19 @@ function Sidebar() {
       title: "HR Management",
       links: [
         {
-          icon: <Users className="text-gray-500" size={20} />,
+          icon: <Users size={20} />,
           name: "employees",
         },
         {
-          icon: <BookText className="text-gray-500" size={20} />,
+          icon: <BookText size={20} />,
           name: "attendance",
         },
         {
-          icon: <CreditCard className="text-gray-500" size={20} />,
+          icon: <CreditCard size={20} />,
           name: "payroll",
         },
         {
-          icon: <UserRoundPlus className="text-gray-500" size={20} />,
+          icon: <UserRoundPlus size={20} />,
           name: "hiring",
         },
       ],
@@ -69,11 +72,11 @@ function Sidebar() {
       title: "Analytics and Reports",
       links: [
         {
-          icon: <Settings className="text-gray-500" size={20} />,
+          icon: <Settings size={20} />,
           name: "settings",
         },
         {
-          icon: <CircleHelp className="text-gray-500" size={20} />,
+          icon: <CircleHelp size={20} />,
           name: "help & support",
         },
       ],
@@ -138,11 +141,27 @@ function Sidebar() {
                       key={j + 100}
                       href={link.name}
                       className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md ${
-                        link.name == "dashboard" && "text-black font-[600]"
+                        link.name ==
+                          (location.pathname != "/"
+                            ? location.pathname.slice(1)
+                            : location.pathname) && "text-black font-[600]"
                       }`}
                     >
-                      {link.icon}
-                      <span className="capitalize">{link.name}</span>
+                      <span
+                        className={
+                          link.name ==
+                          (location.pathname != "/"
+                            ? location.pathname.slice(1)
+                            : location.pathname)
+                            ? "text-black"
+                            : "text-gray-500"
+                        }
+                      >
+                        {link.icon}
+                      </span>
+                      <span className="capitalize">
+                        {link.name == "/" ? "Dashboard" : link.name}
+                      </span>
                     </a>
                   );
                 })}
