@@ -229,24 +229,24 @@ export default function Hero() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6 text-gray-700">
-              <button className="flex items-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+            <div className="flex items-center gap-2 text-gray-700">
+              <Button variant={"outline"} className=" bg-gray-100">
                 <StretchVertical size={12} />
                 <span>Kanban</span>
-              </button>
-              <button className="flex items-center gap-2 ">
+              </Button>
+              <Button variant={"ghost"}>
                 <Table size={12} />
                 <span>Table</span>
-              </button>
-              <button className="flex items-center gap-2 ">
+              </Button>
+              <Button variant={"ghost"}>
                 <List size={12} />
                 <span>List View</span>
-              </button>
+              </Button>
             </div>
-            <button className="flex items-center gap-2  w-fit p-2 border border-gray-300 rounded-md">
+            <Button variant={"outline"}>
               <ListFilter size={12} />
               <span>Filter</span>
-            </button>
+            </Button>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
@@ -262,7 +262,7 @@ export default function Hero() {
                 <EllipsisVertical size={16} className="text-gray-700" />
               </button>
             </div>
-            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md hover:bg-gray-200">
               <Plus size={16} />
             </button>
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
@@ -352,7 +352,7 @@ export default function Hero() {
                 <EllipsisVertical size={16} className="text-gray-700" />
               </button>
             </div>
-            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md hover:bg-gray-200">
               <Plus size={16} />
             </button>
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
@@ -442,7 +442,7 @@ export default function Hero() {
                 <EllipsisVertical size={16} className="text-gray-700" />
               </button>
             </div>
-            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md">
+            <button className="flex w-full items-center justify-center gap-2  w-fit p-2 border border-gray-300 bg-gray-100 rounded-md hover:bg-gray-200">
               <Plus size={16} />
             </button>
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">

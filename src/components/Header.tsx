@@ -1,4 +1,5 @@
 import { Bell, Book, Command, OctagonAlert, Search } from "lucide-react";
+import { Button } from "./ui/button";
 
 function Header() {
   return (
@@ -24,15 +25,15 @@ function Header() {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <button className="aspect-square w-fit p-2 border border-gray-300 rounded-md">
+        <Button size={"icon"} variant={"outline"}>
           <OctagonAlert size={16} />
-        </button>
-        <button className="aspect-square w-fit p-2 border border-gray-300 rounded-md">
+        </Button>
+        <Button size={"icon"} variant={"outline"}>
           <Book size={16} />
-        </button>
-        <button className="aspect-square w-fit p-2 border border-gray-300 rounded-md">
+        </Button>
+        <Button size={"icon"} variant={"outline"}>
           <Bell size={16} />
-        </button>
+        </Button>
       </div>
     </header>
   );
