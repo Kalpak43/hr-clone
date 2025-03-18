@@ -124,6 +124,7 @@ export default function Hero() {
                 <EllipsisVertical size={12} className="text-gray-700" />
               </Button>
             </div>
+            
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-end gap-2">
@@ -143,6 +144,7 @@ export default function Hero() {
               <p className="text-xs">Late</p>
             </div>
           </div>
+          <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300"></div>
         </div>
         <div className="border border-gray-300 bg-gray-100 rounded-md">
           <div className="border-b border-gray-300 rounded-md p-4 bg-white space-y-8">
@@ -369,7 +371,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Payroll Processing
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith
@@ -393,7 +395,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Payroll Processing
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith
@@ -417,7 +419,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Payroll Processing
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith
@@ -459,7 +461,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Employee Satisfaction Survey
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith
@@ -483,7 +485,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Employee Satisfaction Survey
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith
@@ -507,7 +509,7 @@ export default function Hero() {
                   </button>
                 </div>
                 <h3 className="text-black font-[500] text-lg">
-                  Employee Onboarding Approval
+                  Employee Satisfaction Survey
                 </h3>
                 <p className="text-gray-500">
                   A new onboarding request has been submitted for Jane Smith

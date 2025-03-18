@@ -79,7 +79,7 @@ function Sidebar() {
   ];
 
   return (
-    <div className="w-1/5 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col">
+    <div className="w-1/6 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col">
       <div className="flex items-center justify-between pb-4">
         <h1 className="font-[600] text-lg text-black">Efficio</h1>
         <PanelsTopLeft className="text-gray-500" size={20} />
