@@ -62,6 +62,7 @@ function Header() {
           size={"icon"}
           variant={"outline"}
           onClick={() => setHide(false)}
+          className="md:hidden"
         >
           <Search size={16} />
         </Button>

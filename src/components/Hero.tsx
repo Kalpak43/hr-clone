@@ -23,7 +23,7 @@ export default function Hero() {
   const [hide, setHide] = useState(false);
 
   return (
-    <div className="p-4 space-y-4 text-sm overflow-y-auto">
+    <div className="hero">
       {/* alert */}
       {!hide && (
         <div className="flex gap-2 items-center relative p-2 border border-gray-300 rounded-md text-sm max-xl:text-xs pr-8">
