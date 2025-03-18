@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import DateDropdown from "./DateDropdown";
+import Graph from "./Graph";
 
 export default function Hero() {
   return (
@@ -124,7 +125,6 @@ export default function Hero() {
                 <EllipsisVertical size={12} className="text-gray-700" />
               </Button>
             </div>
-            
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-end gap-2">
@@ -144,7 +144,7 @@ export default function Hero() {
               <p className="text-xs">Late</p>
             </div>
           </div>
-          <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300"></div>
+          <Graph />
         </div>
         <div className="border border-gray-300 bg-gray-100 rounded-md">
           <div className="border-b border-gray-300 rounded-md p-4 bg-white space-y-8">
