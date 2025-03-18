@@ -14,6 +14,7 @@ import {
   UserRoundPlus,
   Users,
 } from "lucide-react";
+import { Button } from "./ui/button";
 
 function Sidebar() {
   const nav = [
@@ -96,20 +97,22 @@ function Sidebar() {
             <p className="text-xs">arnoldsmith@gmail.com</p>
           </div>
         </div>
-        <ChevronDown className="text-gray-500" />
+        <Button size={"icon"} variant={"ghost"} className="w-5 h-5 aspect-square">
+          <ChevronDown className="text-gray-500" />
+        </Button>
       </div>
-      <div className="px-2 pb-4 space-y-6 flex-1">
+      <div className="px-2 pb-4 space-y-6 flex-1 overflow-y-auto">
         {nav.map((n, i) => {
           return (
             <div key={i} className="space-y-4">
               <h3>{n.title}</h3>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {n.links.map((link, j) => {
                   return (
                     <a
                       key={j + 100}
                       href={link.name}
-                      className={`flex w-full gap-4 ${
+                      className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md ${
                         link.name == "dashboard" && "text-black font-[600]"
                       }`}
                     >

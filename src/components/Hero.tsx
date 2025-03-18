@@ -31,9 +31,13 @@ export default function Hero() {
           streamline HR operations effortlessly!
         </p>
 
-        <button className="absolute inset-y-0 my-auto right-0 m-4">
+        <Button
+          size={"icon"}
+          className="absolute inset-y-0 my-auto right-0"
+          variant={"ghost"}
+        >
           <X size={16} className="text-gray-700" />
-        </button>
+        </Button>
       </div>
 
       {/* welcome message */}
