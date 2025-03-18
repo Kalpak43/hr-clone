@@ -17,28 +17,34 @@ import {
 import { Button } from "./ui/button";
 import DateDropdown from "./DateDropdown";
 import Graph from "./Graph";
+import { useState } from "react";
 
 export default function Hero() {
+  const [hide, setHide] = useState(false);
+
   return (
     <div className="p-4 space-y-4 text-sm overflow-y-auto">
       {/* alert */}
-      <div className="flex gap-2 items-center relative p-2 border border-gray-300 rounded-md text-sm">
-        <div className="border-2 border-white shadow-md p-1 aspect-square rounded-full bg-blue-400">
-          <Zap size={12} className="text-white" />
-        </div>
-        <p>
-          Optimize your Efficio experience—track attendance, manage teams, and
-          streamline HR operations effortlessly!
-        </p>
+      {!hide && (
+        <div className="flex gap-2 items-center relative p-2 border border-gray-300 rounded-md text-sm max-xl:text-xs pr-8">
+          <div className="border-2 border-white shadow-md p-1 aspect-square rounded-full bg-blue-400">
+            <Zap size={12} className="text-white" />
+          </div>
+          <p>
+            Optimize your Efficio experience—track attendance, manage teams, and
+            streamline HR operations effortlessly!
+          </p>
 
-        <Button
-          size={"icon"}
-          className="absolute inset-y-0 my-auto right-0"
-          variant={"ghost"}
-        >
-          <X size={16} className="text-gray-700" />
-        </Button>
-      </div>
+          <Button
+            size={"icon"}
+            className="absolute inset-y-0 my-auto right-0"
+            variant={"ghost"}
+            onClick={() => setHide(true)}
+          >
+            <X size={16} className="text-gray-700" />
+          </Button>
+        </div>
+      )}
 
       {/* welcome message */}
       <div className="flex items-center gap-2 justify-between py-4">
@@ -53,7 +59,7 @@ export default function Hero() {
       </div>
 
       {/* stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div className="border border-gray-300 bg-gray-100 rounded-md">
           <div className="border-b border-gray-300 rounded-md p-4 bg-white space-y-8">
             <div className="flex items-center justify-between">
@@ -112,8 +118,8 @@ export default function Hero() {
             </button>
           </div>
         </div>
-        <div className="col-span-2 row-span-2 border border-gray-300 rounded-md p-4 space-y-8">
-          <div className="flex items-center justify-between">
+        <div className="col-span-1 md:col-span-2 xl:row-span-2 max-xl:order-2 border border-gray-300 rounded-md p-4 space-y-8">
+          <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
             <p className="">
               Attendance Report{" "}
               <span className="ml-4">
@@ -130,27 +136,27 @@ export default function Hero() {
               </Button>
             </div>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap max-md:justify-between items-center gap-6">
             <div className="flex items-end gap-2">
-              <p className="text-4xl font-[600] text-black">173</p>
+              <p className="text-2xl md:text-4xl font-[600] text-black">173</p>
               <p className="text-xs">Total Employee</p>
             </div>
             <div className="flex items-end gap-2">
-              <p className="text-4xl font-[600] text-black">128</p>
+              <p className="text-2xl md:text-4xl font-[600] text-black">128</p>
               <p className="text-xs">On Time</p>
             </div>
             <div className="flex items-end gap-2">
-              <p className="text-4xl font-[600] text-black">21</p>
+              <p className="text-2xl md:text-4xl font-[600] text-black">21</p>
               <p className="text-xs">Absent</p>
             </div>
             <div className="flex items-end gap-2">
-              <p className="text-4xl font-[600] text-black">24</p>
+              <p className="text-2xl md:text-4xl font-[600] text-black">24</p>
               <p className="text-xs">Late</p>
             </div>
           </div>
           <Graph />
         </div>
-        <div className="border border-gray-300 bg-gray-100 rounded-md">
+        <div className="border border-gray-300 bg-gray-100 rounded-md max-xl:order-1">
           <div className="border-b border-gray-300 rounded-md p-4 bg-white space-y-8">
             <div className="flex items-center justify-between">
               <p className="text-xs">
@@ -181,7 +187,7 @@ export default function Hero() {
             </button>
           </div>
         </div>
-        <div className="border border-gray-300 bg-gray-100 rounded-md">
+        <div className="border border-gray-300 bg-gray-100 rounded-md max-xl:order-1">
           <div className="border-b border-gray-300 rounded-md p-4 bg-white space-y-8">
             <div className="flex items-center justify-between">
               <p className="text-xs">
@@ -232,8 +238,8 @@ export default function Hero() {
               </Button>
             </div>
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-gray-700">
+          <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
+            <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
               <Button variant={"outline"} className=" bg-gray-100">
                 <StretchVertical size={12} />
                 <span>Kanban</span>
@@ -247,13 +253,13 @@ export default function Hero() {
                 <span>List View</span>
               </Button>
             </div>
-            <Button variant={"outline"}>
+            <Button variant={"outline"} className="ml-auto">
               <ListFilter size={12} />
               <span>Filter</span>
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
+        <div className="grid md:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -272,11 +278,11 @@ export default function Hero() {
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-blue-500 text-white text-xs">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-green-500 text-white text-xs">
                       Complaince
                     </span>
                   </div>
@@ -296,11 +302,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-blue-500 text-white text-xs">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-green-500 text-white text-xs">
                       Complaince
                     </span>
                   </div>
@@ -320,11 +326,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-blue-500 text-white text-xs">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-green-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 rounded-full bg-green-500 text-white text-xs">
                       Complaince
                     </span>
                   </div>
@@ -362,11 +368,11 @@ export default function Hero() {
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-pink-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-yellow-500 text-white">
                       Complaince
                     </span>
                   </div>
@@ -386,11 +392,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-pink-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-yellow-500 text-white">
                       Complaince
                     </span>
                   </div>
@@ -410,11 +416,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-pink-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-pink-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-yellow-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-yellow-500 text-white">
                       Complaince
                     </span>
                   </div>
@@ -452,11 +458,11 @@ export default function Hero() {
             <div className="border border-gray-300 rounded-md p-4 space-y-8 divide-y divide-gray-300">
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-purple-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-blue-500 text-white">
                       Complaince
                     </span>
                   </div>
@@ -476,11 +482,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-purple-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-blue-500 text-white">
                       Complaince
                     </span>
                   </div>
@@ -500,11 +506,11 @@ export default function Hero() {
               </div>
               <div className="space-y-4 pb-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="py-2 px-4 rounded-full bg-purple-500 text-white">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-purple-500 text-white">
                       Recruitment
                     </span>
-                    <span className="py-2 px-4 rounded-full bg-blue-500 text-white">
+                    <span className="py-1 px-2 xl:py-2 xl:px-4 text-xs rounded-full bg-blue-500 text-white">
                       Complaince
                     </span>
                   </div>

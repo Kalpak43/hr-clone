@@ -13,6 +13,7 @@ import {
   Settings,
   UserRoundPlus,
   Users,
+  X,
 } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -80,10 +81,30 @@ function Sidebar() {
   ];
 
   return (
-    <div className="w-1/6 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col">
+    <div
+      id="menu"
+      className="max-md:hidden max-md:fixed max-md:inset-y-0 max-md:w-2/3 bg-white z-50 md:w-1/4 lg:w-1/5 xl:w-1/6 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col justify-between"
+    >
       <div className="flex items-center justify-between pb-4">
         <h1 className="font-[600] text-lg text-black">Efficio</h1>
-        <PanelsTopLeft className="text-gray-500" size={20} />
+        <div className="flex gap-2 items-center">
+          <Button size={"icon"} variant={"ghost"} onClick={() => {}}>
+            <PanelsTopLeft className="text-gray-500" size={20} />
+          </Button>
+          <Button
+            size={"icon"}
+            variant={"outline"}
+            onClick={() => {
+              const menu = document.getElementById("menu");
+              if (menu) {
+                menu.classList.toggle("show");
+              }
+            }}
+            className="md:hidden"
+          >
+            <X size={16} />
+          </Button>
+        </div>
       </div>
       <div className="pb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -92,12 +113,16 @@ function Sidebar() {
             alt=""
             className="w-10 border border-gray-300 rounded-xl"
           />
-          <div className="text-sm">
+          <div className="text-sm overflow-hidden">
             <strong className="font-[500] text-black">Arnold Smith</strong>
             <p className="text-xs">arnoldsmith@gmail.com</p>
           </div>
         </div>
-        <Button size={"icon"} variant={"ghost"} className="w-5 h-5 aspect-square">
+        <Button
+          size={"icon"}
+          variant={"ghost"}
+          className="w-5 h-5 aspect-square"
+        >
           <ChevronDown className="text-gray-500" />
         </Button>
       </div>

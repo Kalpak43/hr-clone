@@ -7,7 +7,7 @@ function App() {
   return (
     <main className="flex divide-x divide-gray-300 h-screen">
       <Sidebar />
-      <div className="w-5/6 h-full flex flex-col">
+      <div className="w-full md:w-3/4 lg:w-4/5 xl:w-5/6 h-full flex flex-col">
         <Header />
         <Hero />
       </div>
