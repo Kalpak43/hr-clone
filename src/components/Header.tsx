@@ -8,10 +8,24 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Header() {
   const [hide, setHide] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault(); // Prevents default browser search
+        inputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <header className="px-4 py-3 border-b border-gray-300 flex items-center justify-between text-sm relative">
       <Button
@@ -38,8 +52,9 @@ function Header() {
         />
 
         <input
+          ref={inputRef}
           type="text"
-          className="py-2 text-sm pl-10 min-w-xs rounded-md"
+          className="py-2 text-sm pl-10 min-w-xs w-full rounded-md"
           placeholder="Search..."
         />
         <div className="absolute inset-y-0 h-fit my-auto right-0 text-gray-600 flex gap-2 mr-2">

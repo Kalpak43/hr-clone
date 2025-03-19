@@ -101,18 +101,27 @@ export function AttendanceStats() {
 export function WeeklyCard() {
   const days = ["M", "T", "W", "T", "F", "S", "S"];
   const [currSelected, setCurrSelected] = useState(new Date().getDay() - 1);
-  // Generate hours for the timeline
-  // const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  // Define the highlighted time range (10am - 7pm)
-  const highlightStart = 10;
-  const highlightEnd = 19; // 7pm in 24-hour format
+  // Dummy start and end times for each day
+  const schedule = {
+    0: { start: 9, end: 18 }, // Monday
+    1: { start: 10, end: 19 }, // Tuesday
+    2: { start: 8, end: 17 }, // Wednesday
+    3: { start: 9, end: 18 }, // Thursday
+    4: { start: 10, end: 19 }, // Friday
+    5: "Day Off", // Saturday
+    6: "Day Off", // Sunday
+  };
+
+  // @ts-ignore
+  const currentSchedule = schedule[currSelected] || { start: 9, end: 18 };
+  const isDayOff = typeof currentSchedule === "string";
 
   return (
     <div className="border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
       <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
         <p className="py-2">
-          Timings{" "}
+          Timings
           <span className="ml-4">
             <Info className="inline text-gray-700" size={16} />
           </span>
@@ -134,44 +143,48 @@ export function WeeklyCard() {
           ))}
         </div>
         <div className="py-2">
-          {/* timeline */}
+          {/* Timeline */}
           <div className="relative w-full h-10">
-            {/* Timeline container */}
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gray-200 rounded-full">
-              {/* Highlighted section */}
-              <div
-                className="absolute h-full bg-blue-400 rounded-full"
-                style={{
-                  left: `${(highlightStart / 24) * 100}%`,
-                  width: `${((highlightEnd - highlightStart) / 24) * 100}%`,
-                }}
-              />
-            </div>
-
-            {/* Hour markers */}
-            <div className="absolute top-2 left-0 right-0 flex justify-between text-xs text-gray-500">
-              {[0, 6, 12, 18, 24].map((hour) => (
-                <div key={hour} className="flex flex-col items-center">
-                  <span>{hour === 24 ? "24" : `${hour}`}</span>
+            {isDayOff ? (
+              <div className="text-center text-gray-500 text-lg">Day Off</div>
+            ) : (
+              <>
+                <div className="absolute top-0 left-0 right-0 h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="absolute h-full bg-blue-400 rounded-full"
+                    style={{
+                      left: `${(currentSchedule.start / 24) * 100}%`,
+                      width: `${
+                        ((currentSchedule.end - currentSchedule.start) / 24) *
+                        100
+                      }%`,
+                    }}
+                  />
                 </div>
-              ))}
-            </div>
 
-            {/* Time range label */}
-            <div
-              className="absolute top-[-20px] text-xs text-blue-500 font-medium"
-              // style={{ left: `${(highlightStart / 24) * 100}%` }}
-            >
-              10am - 7pm
-            </div>
+                <div className="absolute top-2 left-0 right-0 flex justify-between text-xs text-gray-500">
+                  {[0, 6, 12, 18, 24].map((hour) => (
+                    <div key={hour} className="flex flex-col items-center">
+                      <span>{hour === 24 ? "24" : `${hour}`}</span>
+                    </div>
+                  ))}
+                </div>
 
-            <div className="absolute top-8 left-0 right-0 flex justify-between text-xs text-gray-500">
-              <div className="">Duration: 9h 0m</div>
-              <div className="">
-                <Coffee className="inline mr-2 -mt-1" size={16} />
-                <span>60 min</span>
-              </div>
-            </div>
+                <div className="absolute top-[-20px] text-xs text-blue-500 font-medium">
+                  {`${currentSchedule.start}am - ${currentSchedule.end}pm`}
+                </div>
+
+                <div className="absolute top-8 left-0 right-0 flex justify-between text-xs text-gray-500">
+                  <div className="">
+                    Duration: {currentSchedule.end - currentSchedule.start}h 0m
+                  </div>
+                  <div className="">
+                    <Coffee className="inline mr-2 -mt-1" size={16} />
+                    <span>60 min</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -217,10 +230,6 @@ export function ActionsCard() {
 
     return () => clearInterval(timerInterval);
   }, [clockedIn, clockInTime]);
-
-  useEffect(() => {
-    console.log(elapsedTime);
-  }, [elapsedTime]);
 
   const handleClockInOut = () => {
     if (!clockedIn) {
@@ -346,32 +355,34 @@ export function LogsCard() {
             <span>Calendar</span>
           </Button>
         </div>
-        <div className="flex divide-x divide-gray-300 border border-gray-300 rounded">
-          <button
-            className={`px-4 py-1 cursor-pointer ${
-              month === 2 && "bg-gray-300"
-            }`}
-            onClick={() => setMonth(2)}
-          >
-            MAR
-          </button>
-          <button
-            className={`px-4 py-1 cursor-pointer ${
-              month === 1 && "bg-gray-300"
-            }`}
-            onClick={() => setMonth(1)}
-          >
-            FEB
-          </button>
-          <button
-            className={`px-4 py-1 cursor-pointer ${
-              month === 0 && "bg-gray-300"
-            }`}
-            onClick={() => setMonth(0)}
-          >
-            JAN
-          </button>
-        </div>
+        {activeTab == 0 && (
+          <div className="flex divide-x divide-gray-300 border border-gray-300 rounded">
+            <button
+              className={`px-4 py-1 cursor-pointer ${
+                month === 2 && "bg-gray-300"
+              }`}
+              onClick={() => setMonth(2)}
+            >
+              MAR
+            </button>
+            <button
+              className={`px-4 py-1 cursor-pointer ${
+                month === 1 && "bg-gray-300"
+              }`}
+              onClick={() => setMonth(1)}
+            >
+              FEB
+            </button>
+            <button
+              className={`px-4 py-1 cursor-pointer ${
+                month === 0 && "bg-gray-300"
+              }`}
+              onClick={() => setMonth(0)}
+            >
+              JAN
+            </button>
+          </div>
+        )}
       </div>
 
       <div>

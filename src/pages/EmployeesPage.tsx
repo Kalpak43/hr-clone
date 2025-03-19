@@ -104,7 +104,7 @@ function EmployeesPage() {
         <Search size={16} className="text-gray-600 mr-2" />
         <input
           type="text"
-          className="text-sm pl-2 min-w-xs rounded-md focus:outline-none max-w-[200px]"
+          className="text-sm pl-2 min-w-xs rounded-md focus:outline-none w-full"
           placeholder="Search Employee..."
           value={searchTerm}
           onChange={handleSearch}

@@ -140,6 +140,14 @@ function Sidebar() {
                     <Link
                       key={j + 100}
                       to={link.name}
+                      onClick={() => {
+                        const menu = document.getElementById("menu");
+                        if (menu) {
+                          setTimeout(() => {
+                            menu.classList.toggle("show");
+                          }, 100);
+                        }
+                      }}
                       className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md ${
                         link.name ==
                           (location.pathname != "/"
