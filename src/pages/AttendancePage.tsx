@@ -1,5 +1,14 @@
 import DateRangeDropdown from "@/components/DateRangeDropdown";
-import { Coffee, Info, User, Users } from "lucide-react";
+import {
+  Building2,
+  ClockFading,
+  Coffee,
+  FileText,
+  Home,
+  Info,
+  User,
+  Users,
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -8,7 +17,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 function AttendancePage() {
   return (
@@ -16,6 +27,8 @@ function AttendancePage() {
       <div className="grid grid-cols-3 gap-4">
         <AttendanceStats />
         <WeeklyCard />
+        <ActionsCard />
+        <div className="col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col"></div>
       </div>
     </div>
   );
@@ -25,7 +38,7 @@ export default AttendancePage;
 
 export function AttendanceStats() {
   return (
-    <div className="border border-gray-300 rounded-md p-4 space-y-4">
+    <div className="border border-gray-300 rounded-md p-4 space-y-8">
       <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
         <p className="py-2">
           Attendance Stats{" "}
@@ -85,14 +98,14 @@ export function WeeklyCard() {
   const days = ["M", "T", "W", "T", "F", "S", "S"];
   const [currSelected, setCurrSelected] = useState(new Date().getDay() - 1);
   // Generate hours for the timeline
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  // const hours = Array.from({ length: 24 }, (_, i) => i);
 
   // Define the highlighted time range (10am - 7pm)
   const highlightStart = 10;
   const highlightEnd = 19; // 7pm in 24-hour format
 
   return (
-    <div className="border border-gray-300 rounded-md p-4 space-y-6 flex flex-col">
+    <div className="border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
       <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
         <p className="py-2">
           Timings{" "}
@@ -156,6 +169,96 @@ export function WeeklyCard() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ActionsCard() {
+  const [clockedIn, setClockedIn] = useState(false);
+
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (date: Date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const period = hours >= 12 ? "PM" : "AM";
+
+    const formattedHours = hours % 12 || 12;
+
+    return {
+      time: `${String(formattedHours).padStart(2, "0")} : ${String(
+        minutes
+      ).padStart(2, "0")} : ${String(seconds).padStart(2, "0")}`,
+      period,
+    };
+  };
+
+  const { time: formattedTime, period } = formatTime(time);
+
+  return (
+    <div className="border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
+      <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
+        <p className="py-2">
+          Actions{" "}
+          <span className="ml-4">
+            <Info className="inline text-gray-700" size={16} />
+          </span>
+        </p>
+      </div>
+      <div className="space-y-2 flex-1 h-full flex flex-col justify-between">
+        <div className="grid grid-cols-2 gap-2 pb-2">
+          <div className="">
+            <h4 className="text-2xl font-[500]">
+              {formattedTime}{" "}
+              <span className="text-sm uppercase">{period}</span>
+            </h4>
+            <p className="text-xs text-gray-500">{new Date().toDateString()}</p>
+          </div>
+          <div className="w-full">
+            <Button
+              onClick={() => setClockedIn((x) => !x)}
+              className={`cursor-pointer w-full ${
+                clockedIn
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-green-500 hover:bg-green-600"
+              }`}
+            >
+              {clockedIn ? "Remote Clock-out" : "Remote Clock-in"}
+            </Button>
+            <p className="text-xs text-gray-500 leading-loose">
+              0h 00m since last login
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 text-xs text-blue-400">
+          <Link to={"/"}>
+            <Home size={14} className="inline mr-1 -mt-1" />
+            Work From Home
+          </Link>
+          <Link to={"/"}>
+            <Building2 size={14} className="inline mr-1 -mt-1" />
+            On Duty
+          </Link>
+          <Link to={"/"}>
+            <ClockFading size={14} className="inline mr-1 -mt-1" />
+            Partial Day Request
+          </Link>
+          <Link to={"/"}>
+            <FileText size={14} className="inline mr-1 -mt-1" />
+            Attendance policy
+          </Link>
         </div>
       </div>
     </div>
