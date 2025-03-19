@@ -1,4 +1,4 @@
-import { Mail, Phone } from "lucide-react";
+import { Mail, Minus, Phone, Plus } from "lucide-react";
 
 function EmployeeCard({
   name,
@@ -6,15 +6,17 @@ function EmployeeCard({
   contact,
   email,
   profile,
+  isExpanded,
 }: {
   name: string;
   title: string;
   contact: string;
   email: string;
   profile: string;
+  isExpanded: boolean;
 }) {
   return (
-    <div className="border border-gray-300 bg-gray-100 rounded-md p-4 flex items-start gap-4 max-w-[300px]">
+    <div className="border border-gray-300 bg-gray-100 rounded-md p-4 flex items-start gap-4 max-w-[300px] relative">
       <div className="w-10 aspect-square rounded-full border overflow-clip">
         <img src={profile} alt={name} className="h-full w-full object-cover" />
       </div>
@@ -35,6 +37,9 @@ function EmployeeCard({
           {email}
         </p>
       </div>
+      <p className="absolute top-0 right-0 m-2">
+        {isExpanded ? <Minus size={16} /> : <Plus size={16} />}
+      </p>
     </div>
   );
 }

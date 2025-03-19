@@ -62,6 +62,10 @@ function EmployeesPage() {
 
   // Render nodes with dynamic expansion
   const renderCustomNode = ({ nodeDatum, toggleNode }: any) => {
+    const isExpanded =
+      !nodeDatum.__rd3t?.collapsed ||
+      !nodeDatum.children ||
+      (nodeDatum.children && nodeDatum.children.length == 0);
     return (
       <g onClick={toggleNode} style={{ cursor: "pointer" }}>
         {/* Circle for the node */}
@@ -85,6 +89,7 @@ function EmployeesPage() {
               contact={nodeDatum.contact}
               email={nodeDatum.email}
               profile={nodeDatum.image}
+              isExpanded={isExpanded}
             />
           )}
         </foreignObject>

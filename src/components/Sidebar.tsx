@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 function Sidebar() {
   const location = useLocation();
@@ -137,9 +137,9 @@ function Sidebar() {
               <div className="space-y-2">
                 {n.links.map((link, j) => {
                   return (
-                    <a
+                    <Link
                       key={j + 100}
-                      href={link.name}
+                      to={link.name}
                       className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md ${
                         link.name ==
                           (location.pathname != "/"
@@ -162,7 +162,7 @@ function Sidebar() {
                       <span className="capitalize">
                         {link.name == "/" ? "Dashboard" : link.name}
                       </span>
-                    </a>
+                    </Link>
                   );
                 })}
               </div>
