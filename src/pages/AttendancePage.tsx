@@ -1,11 +1,13 @@
 import DateRangeDropdown from "@/components/DateRangeDropdown";
 import {
   Building2,
+  Calendar,
   ClockFading,
   Coffee,
   FileText,
   Home,
   Info,
+  Logs,
   User,
   Users,
 } from "lucide-react";
@@ -20,6 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { Calendar as SCalendar } from "@/components/ui/calendar";
 
 function AttendancePage() {
   return (
@@ -28,7 +31,7 @@ function AttendancePage() {
         <AttendanceStats />
         <WeeklyCard />
         <ActionsCard />
-        <div className="col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col"></div>
+        <LogsCard />
       </div>
     </div>
   );
@@ -260,6 +263,84 @@ export function ActionsCard() {
             Attendance policy
           </Link>
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function LogsCard() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [date, setDate] = useState<Date | undefined>(new Date());
+
+  return (
+    <div className="col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
+      <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
+        <p className="py-2">
+          Logs & Requests{" "}
+          <span className="ml-4">
+            <Info className="inline text-gray-700" size={16} />
+          </span>
+        </p>
+      </div>
+      <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
+        <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
+          <Button
+            variant={activeTab === 0 ? "outline" : "ghost"}
+            className={activeTab === 0 ? " bg-gray-100" : ""}
+            onClick={() => setActiveTab(0)}
+          >
+            <Logs size={12} />
+            <span>Attendance Logs</span>
+          </Button>
+          <Button
+            variant={activeTab === 1 ? "outline" : "ghost"}
+            onClick={() => setActiveTab(1)}
+            className={activeTab === 1 ? " bg-gray-100" : ""}
+          >
+            <Calendar size={12} />
+            <span>Calendar</span>
+          </Button>
+        </div>
+        <Button variant={"outline"} className="ml-auto">
+          <span>Filter</span>
+        </Button>
+      </div>
+
+      <div>
+        {activeTab === 0 && (
+          <div className="p-4 border rounded-lg bg-white shadow-sm">
+            <h2 className="text-lg font-semibold">Attendance Logs</h2>
+            <p>Here you can view all attendance records.</p>
+          </div>
+        )}
+        {activeTab === 1 && (
+          <SCalendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="rounded-md border w-full"
+            formatters={{
+              formatWeekdayName: (date) => {
+                return new Intl.DateTimeFormat("en-US", {
+                  weekday: "long",
+                }).format(date);
+              },
+            }}
+            modifiers={{
+              weekend: (date) => {
+                const day = date.getDay();
+                return day === 0 || day === 6; // 0 is Sunday, 6 is Saturday
+              },
+            }}
+            modifiersStyles={{
+              weekend: {
+                // backgroundColor: "rgba(239, 68, 68, 0.1)", // Light red background for weekends
+                fontWeight: "bold",
+                color: "rgb(239, 68, 68)", // Red text for weekends
+              },
+            }}
+          />
+        )}
       </div>
     </div>
   );
