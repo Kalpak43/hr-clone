@@ -182,6 +182,9 @@ export function WeeklyCard() {
 export function ActionsCard() {
   const [clockedIn, setClockedIn] = useState(false);
 
+  const [clockInTime, setClockInTime] = useState<Date | null>(null);
+  const [elapsedTime, setElapsedTime] = useState("0h 00m 00s");
+
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -191,6 +194,40 @@ export function ActionsCard() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    let timerInterval: NodeJS.Timeout;
+    if (clockedIn && clockInTime) {
+      timerInterval = setInterval(() => {
+        const now = new Date();
+        const diff = Math.floor((now.getTime() - clockInTime.getTime()) / 1000);
+        const hours = Math.floor(diff / 3600);
+        const minutes = Math.floor((diff % 3600) / 60);
+        const seconds = diff % 60;
+        setElapsedTime(
+          `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(
+            2,
+            "0"
+          )}m ${String(seconds).padStart(2, "0")}s`
+        );
+      }, 1000);
+    } else {
+      setElapsedTime("0h 00m 00s");
+    }
+
+    return () => clearInterval(timerInterval);
+  }, [clockedIn, clockInTime]);
+
+  useEffect(() => {
+    console.log(elapsedTime);
+  }, [elapsedTime]);
+
+  const handleClockInOut = () => {
+    if (!clockedIn) {
+      setClockInTime(new Date());
+    }
+    setClockedIn((prev) => !prev);
+  };
 
   const formatTime = (date: Date) => {
     const hours = date.getHours();
@@ -222,16 +259,22 @@ export function ActionsCard() {
       </div>
       <div className="space-y-2 flex-1 h-full flex flex-col justify-between">
         <div className="grid grid-cols-2 gap-2 pb-2">
-          <div className="">
-            <h4 className="text-2xl font-[500]">
-              {formattedTime}{" "}
-              <span className="text-sm uppercase">{period}</span>
-            </h4>
+          <div>
+            {clockedIn ? (
+              <h4 className="text-2xl font-[500]">{elapsedTime}</h4>
+            ) : (
+              <>
+                <h4 className="text-2xl font-[500]">
+                  {formattedTime}{" "}
+                  <span className="text-sm uppercase">{period}</span>
+                </h4>
+              </>
+            )}
             <p className="text-xs text-gray-500">{new Date().toDateString()}</p>
           </div>
           <div className="w-full">
             <Button
-              onClick={() => setClockedIn((x) => !x)}
+              onClick={handleClockInOut}
               className={`cursor-pointer w-full ${
                 clockedIn
                   ? "bg-red-500 hover:bg-red-600"
@@ -241,7 +284,7 @@ export function ActionsCard() {
               {clockedIn ? "Remote Clock-out" : "Remote Clock-in"}
             </Button>
             <p className="text-xs text-gray-500 leading-loose">
-              0h 00m since last login
+              0h 00m since last log in
             </p>
           </div>
         </div>

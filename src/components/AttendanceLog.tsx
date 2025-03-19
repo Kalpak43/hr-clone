@@ -77,7 +77,9 @@ function AttendanceLog({ month }: { month: number }) {
                     <span className="">Day Off</span>
                   ) : (
                     <div>
-                      <p className="text-xs text-left">1</p>
+                      <p className="text-xs text-left">
+                        {10}am - {7}pm
+                      </p>
                       <div className="flex items-center gap-4 text-gray-500">
                         {/* timeline */}
                         <div className="relative w-full h-fit">
