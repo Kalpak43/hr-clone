@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleCheck, MapPin } from "lucide-react";
+import { AlertCircle, CircleCheck, MapPin } from "lucide-react";
 
 function AttendanceLog({ month }: { month: number }) {
   // Define the highlighted time range (10am - 7pm)
@@ -76,24 +76,27 @@ function AttendanceLog({ month }: { month: number }) {
                   {isDayOff ? (
                     <span className="">Day Off</span>
                   ) : (
-                    <div className="flex items-center gap-4 text-gray-500">
-                      {/* timeline */}
-                      <div className="relative w-full h-fit">
-                        {/* Timeline container */}
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-full">
-                          {/* Highlighted section */}
-                          <div
-                            className="absolute h-full bg-blue-400 rounded-full"
-                            style={{
-                              left: `${(highlightStart / 24) * 100}%`,
-                              width: `${
-                                ((highlightEnd - highlightStart) / 24) * 100
-                              }%`,
-                            }}
-                          />
+                    <div>
+                      <p className="text-xs text-left">1</p>
+                      <div className="flex items-center gap-4 text-gray-500">
+                        {/* timeline */}
+                        <div className="relative w-full h-fit">
+                          {/* Timeline container */}
+                          <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-full">
+                            {/* Highlighted section */}
+                            <div
+                              className="absolute h-full bg-blue-400 rounded-full"
+                              style={{
+                                left: `${(highlightStart / 24) * 100}%`,
+                                width: `${
+                                  ((highlightEnd - highlightStart) / 24) * 100
+                                }%`,
+                              }}
+                            />
+                          </div>
                         </div>
+                        <MapPin size={20} />
                       </div>
-                      <MapPin size={20} />
                     </div>
                   )}
                 </TableCell>
@@ -103,10 +106,17 @@ function AttendanceLog({ month }: { month: number }) {
                     <TableCell>{grossHours}</TableCell>
                     <TableCell>{arrivalStatus}</TableCell>
                     <TableCell>
-                      <CircleCheck
-                        className="text-green-400 inline"
-                        size={20}
-                      />
+                      {arrivalStatus === "On Time" ? (
+                        <CircleCheck
+                          className="text-green-400 inline"
+                          size={20}
+                        />
+                      ) : (
+                        <AlertCircle
+                          className="text-yellow-400 inline"
+                          size={20}
+                        />
+                      )}
                     </TableCell>
                   </>
                 )}

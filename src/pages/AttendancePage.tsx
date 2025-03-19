@@ -272,6 +272,7 @@ export function ActionsCard() {
 export function LogsCard() {
   const [activeTab, setActiveTab] = useState(0);
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [month, setMonth] = useState(2);
 
   return (
     <div className="md:col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
@@ -302,13 +303,36 @@ export function LogsCard() {
             <span>Calendar</span>
           </Button>
         </div>
-        <Button variant={"outline"} className="ml-auto">
-          <span>Filter</span>
-        </Button>
+        <div className="flex divide-x divide-gray-300 border border-gray-300 rounded">
+          <button
+            className={`px-4 py-1 cursor-pointer ${
+              month === 2 && "bg-gray-300"
+            }`}
+            onClick={() => setMonth(2)}
+          >
+            MAR
+          </button>
+          <button
+            className={`px-4 py-1 cursor-pointer ${
+              month === 1 && "bg-gray-300"
+            }`}
+            onClick={() => setMonth(1)}
+          >
+            FEB
+          </button>
+          <button
+            className={`px-4 py-1 cursor-pointer ${
+              month === 0 && "bg-gray-300"
+            }`}
+            onClick={() => setMonth(0)}
+          >
+            JAN
+          </button>
+        </div>
       </div>
 
       <div>
-        {activeTab === 0 && <AttendanceLog month={2} />}
+        {activeTab === 0 && <AttendanceLog month={month} />}
         {activeTab === 1 && (
           <SCalendar
             mode="single"

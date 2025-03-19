@@ -100,11 +100,11 @@ function EmployeesPage() {
   return (
     <div className="hero h-full relative">
       {/* Search Input */}
-      <div className="absolute top-8 left-8 border border-gray-300 bg-gray-50 rounded-md p-2 flex items-center">
+      <div className="absolute top-8 left-8  border border-gray-300 bg-gray-50 rounded-md p-2 flex items-center">
         <Search size={16} className="text-gray-600 mr-2" />
         <input
           type="text"
-          className="text-sm pl-2 min-w-xs rounded-md focus:outline-none"
+          className="text-sm pl-2 min-w-xs rounded-md focus:outline-none max-w-[200px]"
           placeholder="Search Employee..."
           value={searchTerm}
           onChange={handleSearch}
