@@ -23,11 +23,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Calendar as SCalendar } from "@/components/ui/calendar";
+import AttendanceLog from "@/components/AttendanceLog";
 
 function AttendancePage() {
   return (
     <div className="hero h-full relative">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <AttendanceStats />
         <WeeklyCard />
         <ActionsCard />
@@ -273,7 +274,7 @@ export function LogsCard() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
-    <div className="col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
+    <div className="md:col-span-3 border border-gray-300 rounded-md p-4 space-y-8 flex flex-col">
       <div className="flex max-md:flex-col max-md:items-start gap-2 items-start justify-between">
         <p className="py-2">
           Logs & Requests{" "}
@@ -307,25 +308,13 @@ export function LogsCard() {
       </div>
 
       <div>
-        {activeTab === 0 && (
-          <div className="p-4 border rounded-lg bg-white shadow-sm">
-            <h2 className="text-lg font-semibold">Attendance Logs</h2>
-            <p>Here you can view all attendance records.</p>
-          </div>
-        )}
+        {activeTab === 0 && <AttendanceLog month={2} />}
         {activeTab === 1 && (
           <SCalendar
             mode="single"
             selected={date}
             onSelect={setDate}
             className="rounded-md border w-full"
-            formatters={{
-              formatWeekdayName: (date) => {
-                return new Intl.DateTimeFormat("en-US", {
-                  weekday: "long",
-                }).format(date);
-              },
-            }}
             modifiers={{
               weekend: (date) => {
                 const day = date.getDay();
