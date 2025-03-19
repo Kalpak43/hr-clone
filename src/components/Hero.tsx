@@ -118,7 +118,7 @@ export default function Hero() {
             </button>
           </div>
         </div>
-        <div className="col-span-1 md:col-span-2 xl:row-span-2 max-xl:order-2 border border-gray-300 rounded-md p-4 space-y-8">
+        <div className="overflow-x-auto md:col-span-2 xl:row-span-2 max-xl:order-2 border border-gray-300 rounded-md p-4 space-y-8">
           <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
             <p className="">
               Attendance Report{" "}

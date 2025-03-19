@@ -98,9 +98,9 @@ function EmployeesPage() {
   };
 
   return (
-    <div className="hero h-full relative">
+    <div className="py-4 space-y-4 text-sm overflow-y-auto h-full relative">
       {/* Search Input */}
-      <div className="absolute top-8 left-8  border border-gray-300 bg-gray-50 rounded-md p-2 flex items-center">
+      <div className="absolute top-8 left-8 max-md:inset-x-0 max-md:m-2  border border-gray-300 bg-gray-50 rounded-md p-2 flex items-center">
         <Search size={16} className="text-gray-600 mr-2" />
         <input
           type="text"

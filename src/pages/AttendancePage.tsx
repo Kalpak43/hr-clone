@@ -119,7 +119,7 @@ export function WeeklyCard() {
         </p>
       </div>
 
-      <div className="flex flex-col flex-1 h-full justify-between">
+      <div className="flex flex-col flex-1 h-full justify-between max-md:gap-8">
         <div className="flex gap-2">
           {days.map((day, i) => (
             <button
@@ -258,8 +258,8 @@ export function ActionsCard() {
         </p>
       </div>
       <div className="space-y-2 flex-1 h-full flex flex-col justify-between">
-        <div className="grid grid-cols-2 gap-2 pb-2">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 pb-2">
+          <div className="max-md:text-center">
             {clockedIn ? (
               <h4 className="text-2xl font-[500]">{elapsedTime}</h4>
             ) : (
