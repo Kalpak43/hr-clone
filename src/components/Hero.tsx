@@ -18,6 +18,7 @@ import { Button } from "./ui/button";
 import DateDropdown from "./DateDropdown";
 import Graph from "./Graph";
 import { useState } from "react";
+import KanbanBoard from "./KanbanBoard";
 
 export default function Hero() {
   const [hide, setHide] = useState(false);
@@ -300,7 +301,7 @@ function TasksPanel() {
           </Button>
         </div>
       </div>
-      <div className="grid md:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
+      {/* <div className="grid md:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -571,7 +572,8 @@ function TasksPanel() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <KanbanBoard />
     </div>
   );
 }
