@@ -113,6 +113,12 @@ export function WeeklyCard() {
     6: "Day Off", // Sunday
   };
 
+  const formatTime = (hour: number) => {
+    const period = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour} ${period}`;
+  };
+
   // @ts-ignore
   const currentSchedule = schedule[currSelected] || { start: 9, end: 18 };
   const isDayOff = typeof currentSchedule === "string";
@@ -154,10 +160,7 @@ export function WeeklyCard() {
                     className="absolute h-full bg-blue-400 rounded-full"
                     style={{
                       left: `${(currentSchedule.start / 24) * 100}%`,
-                      width: `${
-                        ((currentSchedule.end - currentSchedule.start) / 24) *
-                        100
-                      }%`,
+                      width: `${((currentSchedule.end - currentSchedule.start) / 24) * 100}%`,
                     }}
                   />
                 </div>
@@ -165,13 +168,15 @@ export function WeeklyCard() {
                 <div className="absolute top-2 left-0 right-0 flex justify-between text-xs text-gray-500">
                   {[0, 6, 12, 18, 24].map((hour) => (
                     <div key={hour} className="flex flex-col items-center">
-                      <span>{hour === 24 ? "24" : `${hour}`}</span>
+                      <span>{hour === 24 ? "12 AM" : formatTime(hour)}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="absolute top-[-20px] text-xs text-blue-500 font-medium">
-                  {`${currentSchedule.start}am - ${currentSchedule.end}pm`}
+                  {`${formatTime(currentSchedule.start)} - ${formatTime(
+                    currentSchedule.end
+                  )}`}
                 </div>
 
                 <div className="absolute top-8 left-0 right-0 flex justify-between text-xs text-gray-500">
