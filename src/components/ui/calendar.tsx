@@ -28,7 +28,7 @@ function Calendar({
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
         table: "w-full border-collapse space-x-1  rounded-md overflow-hidden",
-        head_row: "flex divide-x border  rounded-t-md overflow-hidden",
+        head_row: "flex divide-x border  rounded-t-md overflow-hidden  bg-gray-100",
         head_cell:
           " w-full text-[0.8rem] py-2 text-black font-[600]",
         row: "flex w-full",

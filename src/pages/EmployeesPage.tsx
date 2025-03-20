@@ -1,4 +1,5 @@
 import EmployeeCard from "@/components/EmployeeCard";
+import { Switch } from "@/components/ui/switch";
 import { orgTree } from "@/data";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -18,8 +19,8 @@ function EmployeesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTree, setFilteredTree] = useState(orgTree);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+  const [groupByDepartment, setGroupByDepartment] = useState(false);
 
-  // Recursive search function to filter employees and track expansion
   const filterTree = (
     node: any,
     query: string,
@@ -44,19 +45,51 @@ function EmployeesPage() {
     return null;
   };
 
+  const groupEmployeesByDepartment = (tree: any) => {
+    const departmentMap = new Map();
+
+    const traverse = (node: any) => {
+      if (!node) return;
+
+      if (!departmentMap.has(node.department)) {
+        departmentMap.set(node.department, {
+          name: node.department,
+          children: [],
+        });
+      }
+
+      departmentMap
+        .get(node.department)
+        .children.push({ ...node, children: [] });
+
+      node.children?.forEach(traverse);
+    };
+
+    traverse(tree);
+
+    return {
+      name: "Departments",
+      children: Array.from(departmentMap.values()),
+    };
+  };
+
   // Handle search input
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
-    setSearchTerm(query);
+    setSearchTerm(!query.trim() ? "" : query);
     expandedNodes.clear(); // Reset expanded nodes on new search
 
+    let newTree;
     if (!query) {
-      setFilteredTree(orgTree);
+      newTree = groupByDepartment
+        ? groupEmployeesByDepartment(orgTree)
+        : orgTree;
     } else {
-      const newTree = filterTree(orgTree, query);
-      setFilteredTree(newTree || { name: "No results found", children: [] });
+      newTree = filterTree(orgTree, query);
+      if (!newTree) newTree = { name: "No results found", children: [] };
     }
 
+    setFilteredTree(newTree);
     setExpandedNodes(new Set(expandedNodes)); // Trigger re-render
   };
 
@@ -66,6 +99,9 @@ function EmployeesPage() {
       !nodeDatum.__rd3t?.collapsed ||
       !nodeDatum.children ||
       (nodeDatum.children && nodeDatum.children.length == 0);
+
+    const isDepartment =
+      !nodeDatum.position && !nodeDatum.email && !nodeDatum.contact;
     return (
       <g onClick={toggleNode} style={{ cursor: "pointer" }}>
         {/* Circle for the node */}
@@ -80,7 +116,13 @@ function EmployeesPage() {
 
         {/* Employee Details */}
         <foreignObject x={30} y={-15} width={300} height={300}>
-          {nodeDatum.name === "No results found" ? (
+          {isDepartment ? (
+            <div className="p-3 bg-purple-100 border border-purple-400 rounded-lg shadow-md text-center">
+              <h3 className="text-md font-bold text-purple-700">
+                {nodeDatum.name}
+              </h3>
+            </div>
+          ) : nodeDatum.name === "No results found" ? (
             <NotFoundCard />
           ) : (
             <EmployeeCard
@@ -97,6 +139,10 @@ function EmployeesPage() {
     );
   };
 
+  const transformedTree = groupByDepartment
+    ? groupEmployeesByDepartment(filteredTree)
+    : filteredTree;
+
   return (
     <div className="py-4 space-y-4 text-sm overflow-y-auto h-full relative">
       {/* Search Input */}
@@ -111,10 +157,20 @@ function EmployeesPage() {
         />
       </div>
 
+      <div className="absolute top-8 right-8 max-md:inset-x-0 max-md:m-2 flex items-center">
+        <label className="mr-2 text-sm font-medium text-gray-700">
+          Group by Department
+        </label>
+        <Switch
+          checked={groupByDepartment}
+          onCheckedChange={setGroupByDepartment}
+          className="data-[state=checked]:bg-blue-400"
+        />
+      </div>
       {/* Org Tree */}
       <div className="w-full h-full">
         <Tree
-          data={filteredTree}
+          data={transformedTree}
           orientation="vertical"
           renderCustomNodeElement={renderCustomNode}
           separation={{ siblings: 4, nonSiblings: 5 }}
