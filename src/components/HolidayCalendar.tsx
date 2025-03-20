@@ -1,11 +1,5 @@
 import { Calendar as SCalendar } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 export default function HolidayCalendar() {
   const [date, setDate] = useState<Date | undefined>(new Date());

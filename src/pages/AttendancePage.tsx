@@ -22,7 +22,6 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Calendar as SCalendar } from "@/components/ui/calendar";
 import AttendanceLog from "@/components/AttendanceLog";
 import HolidayCalendar from "@/components/HolidayCalendar";
 
@@ -332,7 +331,6 @@ export function ActionsCard() {
 
 export function LogsCard() {
   const [activeTab, setActiveTab] = useState(0);
-  const [date, setDate] = useState<Date | undefined>(new Date());
   const [month, setMonth] = useState(2);
 
   return (
