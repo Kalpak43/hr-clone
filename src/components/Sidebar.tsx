@@ -86,7 +86,7 @@ function Sidebar() {
   return (
     <div
       id="menu"
-      className="max-lg:hidden max-xl:fixed max-xl:inset-y-0 max-xl:w-2/3 bg-white z-50 md:w-1/4 lg:w-1/5 xl:w-1/6 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col justify-between"
+      className="max-lg:hidden max-lg:fixed max-xl:inset-y-0 max-xl:w-2/3 bg-white z-50 md:w-1/4 lg:w-1/5 xl:w-1/6 p-4 space-y-4 divide-y  divide-gray-300 text-sm text-gray-700 h-full overflow-y-auto flex flex-col justify-between"
     >
       <div className="flex items-center justify-between pb-4">
         <h1 className="font-[600] text-lg text-black">Efficio</h1>
