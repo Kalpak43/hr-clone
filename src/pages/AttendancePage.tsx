@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Calendar as SCalendar } from "@/components/ui/calendar";
 import AttendanceLog from "@/components/AttendanceLog";
+import HolidayCalendar from "@/components/HolidayCalendar";
 
 function AttendancePage() {
   return (
@@ -160,7 +161,10 @@ export function WeeklyCard() {
                     className="absolute h-full bg-blue-400 rounded-full"
                     style={{
                       left: `${(currentSchedule.start / 24) * 100}%`,
-                      width: `${((currentSchedule.end - currentSchedule.start) / 24) * 100}%`,
+                      width: `${
+                        ((currentSchedule.end - currentSchedule.start) / 24) *
+                        100
+                      }%`,
                     }}
                   />
                 </div>
@@ -393,27 +397,7 @@ export function LogsCard() {
 
       <div>
         {activeTab === 0 && <AttendanceLog month={month} />}
-        {activeTab === 1 && (
-          <SCalendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border w-full"
-            modifiers={{
-              weekend: (date) => {
-                const day = date.getDay();
-                return day === 0 || day === 6; // 0 is Sunday, 6 is Saturday
-              },
-            }}
-            modifiersStyles={{
-              weekend: {
-                // backgroundColor: "rgba(239, 68, 68, 0.1)", // Light red background for weekends
-                fontWeight: "bold",
-                color: "rgb(239, 68, 68)", // Red text for weekends
-              },
-            }}
-          />
-        )}
+        {activeTab === 1 && <HolidayCalendar />}
       </div>
     </div>
   );
