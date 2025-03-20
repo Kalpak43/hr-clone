@@ -358,12 +358,21 @@ export function LogsCard() {
         {activeTab == 0 && (
           <div className="flex divide-x divide-gray-300 border border-gray-300 rounded">
             <button
-              className={`px-4 py-1 cursor-pointer ${
+              className={`px-4 py-1 cursor-pointer uppercase ${
                 month === 2 && "bg-gray-300"
               }`}
               onClick={() => setMonth(2)}
             >
-              MAR
+              Current
+            </button>
+
+            <button
+              className={`px-4 py-1 cursor-pointer ${
+                month === 0 && "bg-gray-300"
+              }`}
+              onClick={() => setMonth(0)}
+            >
+              JAN
             </button>
             <button
               className={`px-4 py-1 cursor-pointer ${
@@ -372,14 +381,6 @@ export function LogsCard() {
               onClick={() => setMonth(1)}
             >
               FEB
-            </button>
-            <button
-              className={`px-4 py-1 cursor-pointer ${
-                month === 0 && "bg-gray-300"
-              }`}
-              onClick={() => setMonth(0)}
-            >
-              JAN
             </button>
           </div>
         )}
