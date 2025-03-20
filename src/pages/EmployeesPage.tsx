@@ -77,6 +77,7 @@ function EmployeesPage() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchTerm(!query.trim() ? "" : query);
+    if (!query.trim()) return;
     expandedNodes.clear(); // Reset expanded nodes on new search
 
     let newTree;
@@ -108,6 +109,7 @@ function EmployeesPage() {
         <circle
           r={15}
           fill={
+            nodeDatum.name &&
             nodeDatum.name.toLowerCase().includes(searchTerm.toLowerCase())
               ? "orange"
               : "lightblue"
@@ -157,7 +159,7 @@ function EmployeesPage() {
         />
       </div>
 
-      <div className="absolute top-8 right-8 max-md:inset-x-0 max-md:m-2 flex items-center">
+      <div className="absolute top-2 md:top-8 right-2 md:right-8 flex items-center">
         <label className="mr-2 text-sm font-medium text-gray-700">
           Group by Department
         </label>
