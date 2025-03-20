@@ -135,11 +135,11 @@ export function WeeklyCard() {
       </div>
 
       <div className="flex flex-col flex-1 h-full justify-between max-md:gap-8">
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {days.map((day, i) => (
             <button
               key={i}
-              className={`h-8 w-8 rounded-full border cursor-pointer hover:bg-gray-100 ${
+              className={`h-6 xl:h-8 w-6 xl:w-8 aspect-square rounded-full border cursor-pointer hover:bg-gray-100 max-xl:text-xs ${
                 i === currSelected && "bg-blue-400 text-white"
               }`}
               onClick={() => setCurrSelected(i)}
@@ -272,8 +272,8 @@ export function ActionsCard() {
         </p>
       </div>
       <div className="space-y-2 flex-1 h-full flex flex-col justify-between">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2 pb-2">
-          <div className="max-md:text-center">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-2 pb-2">
+          <div className="max-xl:text-center">
             {clockedIn ? (
               <h4 className="text-2xl font-[500]">{elapsedTime}</h4>
             ) : (
