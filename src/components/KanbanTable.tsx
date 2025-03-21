@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { initialColumns } from "./KanbanBoard";
 
 export default function KanbanTable() {
