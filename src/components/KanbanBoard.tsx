@@ -24,7 +24,7 @@ export type Column = {
 };
 
 // Sample data
-const initialColumns: Column[] = [
+export const initialColumns: Column[] = [
   {
     id: "new",
     title: "New Request",

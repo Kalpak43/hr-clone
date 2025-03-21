@@ -7,7 +7,6 @@ import {
   List,
   ListFilter,
   MoveRight,
-  Plus,
   SquareArrowOutUpRight,
   StretchVertical,
   Table,
@@ -574,6 +573,7 @@ function TasksPanel() {
         </div>
       </div> */}
       <KanbanBoard />
+      {/* <KanbanTable /> */}
     </div>
   );
 }
