@@ -163,7 +163,7 @@ export const email: EmailType[] = [
     content: "Requesting leave for personal reasons.",
     comment: "Approved for 3 days.",
     requestFor: "Leave",
-    read: false,
+    read: true,
   },
   {
     id: 5,
