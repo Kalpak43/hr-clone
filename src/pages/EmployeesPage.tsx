@@ -8,13 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -22,7 +15,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import { orgTree } from "@/data";
 import {
   AtSign,
@@ -34,7 +26,7 @@ import {
   SmilePlus,
   Vote,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Tree from "react-d3-tree";
 
 // Custom "Not Found" Card
@@ -283,12 +275,195 @@ export function PostCard() {
   const handleSelect = (item: "Origanization" | "Department" | "Team") => {
     setSelectedItem(item);
   };
+  const [content, setContent] = useState("");
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  // Update the highlightMentions function to preserve spaces better
+  const highlightMentions = (text: string) => {
+    return text.replace(
+      /@(\w+)/g,
+      '<span class="text-blue-400 font-[700] font-medium">@$1</span>'
+    );
+  };
+
+  // Modify the handleInput function to be more responsive
+  const handleInput = () => {
+    if (editorRef.current) {
+      const newText = editorRef.current.innerText;
+      if (newText !== content) {
+        setContent(newText);
+      }
+    }
+  };
+
+  // Insert mention when the @ button is clicked
+  const insertMention = () => {
+    if (editorRef.current) {
+      // Focus the editor first
+      editorRef.current.focus();
+
+      // Get current selection
+      const selection = window.getSelection();
+
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+
+        // Insert @ symbol at cursor position
+        range.deleteContents();
+        range.insertNode(document.createTextNode("@"));
+
+        // Move cursor after the @ symbol
+        range.setStartAfter(range.endContainer);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      } else {
+        // If no selection, just append @ at the end
+        editorRef.current.textContent += "@";
+
+        // Move cursor to the end
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(editorRef.current);
+        range.collapse(false);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+      }
+
+      setContent("@");
+    }
+  };
+
+  // Replace the useEffect with this improved version
+  useEffect(() => {
+    if (editorRef.current) {
+      // Store current selection info
+      const selection = window.getSelection();
+      let selectionState = null;
+
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        // Store information about the current selection
+        selectionState = {
+          startContainer: range.startContainer,
+          startOffset: range.startOffset,
+          endContainer: range.endContainer,
+          endOffset: range.endOffset,
+        };
+      }
+
+      // Get current content and cursor position
+      const currentHtml = editorRef.current.innerHTML;
+      const currentText = editorRef.current.innerText;
+
+      // Only update if content has changed
+
+      // Apply highlighting
+      const newHtml = highlightMentions(currentText);
+
+      // Only update DOM if the highlighted HTML would be different
+      if (newHtml !== currentHtml) {
+        // Remember scroll position
+        const scrollTop = editorRef.current.scrollTop;
+
+        // Update the HTML
+        editorRef.current.innerHTML = newHtml;
+
+        // Restore scroll position
+        editorRef.current.scrollTop = scrollTop;
+
+        // Try to restore selection if we had one
+        if (selection && selectionState) {
+          try {
+            // Create a new range
+            const newRange = document.createRange();
+
+            // Find appropriate text nodes to place cursor
+            // This is simplified and might need adjustment
+            const allTextNodes: Node[] = [];
+            const walker = document.createTreeWalker(
+              editorRef.current,
+              NodeFilter.SHOW_TEXT,
+              null
+            );
+
+            let node: Node | null = walker.nextNode();
+            while (node) {
+              allTextNodes.push(node);
+              node = walker.nextNode();
+            }
+
+            if (allTextNodes.length > 0) {
+              // Place cursor at the end of the last text node
+              const lastTextNode = allTextNodes[allTextNodes.length - 1];
+              newRange.setStart(
+                lastTextNode,
+                lastTextNode.textContent?.length || 0
+              );
+              newRange.collapse(true);
+
+              // Apply the selection
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+            }
+          } catch (e) {
+            console.error("Failed to restore selection:", e);
+          }
+        }
+      }
+
+      // Update our state to match current text
+      if (content !== currentText) {
+        setContent(currentText);
+      }
+    }
+  }, [content]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent the default behavior
+
+      if (editorRef.current) {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+
+          // Insert a line break at the current cursor position
+          const br = document.createElement("br");
+          range.deleteContents();
+          range.insertNode(br);
+
+          // Create a second <br> for spacing (optional)
+          const secondBr = document.createElement("br");
+          range.insertNode(secondBr);
+
+          // Move the cursor after the newly inserted <br>
+          range.setStartAfter(secondBr);
+          range.collapse(true);
+
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+    }
+  };
+
   return (
     <div className="border border-gray-300 rounded-md divide-y">
       <div className="p-4 space-y-4">
-        <Textarea placeholder="Type your post here..." />
+        <div
+          ref={editorRef}
+          contentEditable
+          onInput={handleInput}
+          onKeyDown={handleKeyDown}
+          className={`textbox min-h-[100px] max-h-[200px] relative overflow-y-auto w-full rounded-md bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground before:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50 ${
+            !!content.trim() && "before:hidden"
+          }`}
+          role="textbox"
+          aria-multiline="true"
+        />
         <div className="flex items-center gap-2">
-          <Button variant="outline" size={"icon"}>
+          <Button variant="outline" size={"icon"} onClick={insertMention}>
             <AtSign />
           </Button>
           <Button variant="outline" size={"icon"}>
@@ -303,7 +478,7 @@ export function PostCard() {
         <div className="flex items-center gap-2">
           <p className="text-gray-500">Posting to</p>
           <Select onValueChange={handleSelect}>
-            <SelectTrigger className="w-[150px] text-black">
+            <SelectTrigger className="w-[150px]" size="sm">
               <SelectValue placeholder="Origanization" />
             </SelectTrigger>
             <SelectContent className="text-black">

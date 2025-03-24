@@ -22,3 +22,12 @@
 .overlay {
   backdrop-filter: blur(10px);
 }
+
+.textbox {
+  position: relative;
+}
+
+.textbox::before {
+  content: "Write Your Post Here....";
+  position: absolute;
+}
