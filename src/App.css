@@ -18,3 +18,7 @@
   stroke: #ccc;
   stroke-width: 2px;
 }
+
+.overlay {
+  backdrop-filter: blur(10px);
+}

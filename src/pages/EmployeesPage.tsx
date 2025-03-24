@@ -1,7 +1,39 @@
 import EmployeeCard from "@/components/EmployeeCard";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { orgTree } from "@/data";
-import { Search } from "lucide-react";
+import {
+  AtSign,
+  FilePenLine,
+  Image,
+  Medal,
+  Plus,
+  Search,
+  SmilePlus,
+  Vote,
+} from "lucide-react";
 import { useState } from "react";
 import Tree from "react-d3-tree";
 
@@ -169,6 +201,7 @@ function EmployeesPage() {
           className="data-[state=checked]:bg-blue-400"
         />
       </div>
+      <EngageModal />
       {/* Org Tree */}
       <div className="w-full h-full">
         <Tree
@@ -187,3 +220,106 @@ function EmployeesPage() {
 }
 
 export default EmployeesPage;
+
+export function EngageModal() {
+  const [filter, setFilter] = useState<"all" | "read" | "unread">("all");
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          className="absolute bottom-0 right-4 bg-blue-400 hover:bg-blue-500"
+          variant="default"
+        >
+          <Plus className="" />
+          Engage
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] md:max-w-[600px]">
+        <DialogHeader>
+          <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
+            <Button
+              variant={filter === "all" ? "outline" : "ghost"}
+              className={filter === "all" ? " bg-gray-100" : ""}
+              onClick={() => setFilter("all")}
+              size={"sm"}
+            >
+              <FilePenLine size={12} />
+              <span>Post</span>
+            </Button>
+            <Button
+              variant={filter === "read" ? "outline" : "ghost"}
+              className={filter === "read" ? " bg-gray-100" : ""}
+              onClick={() => setFilter("read")}
+              size={"sm"}
+            >
+              <Vote size={12} />
+              <span>Poll</span>
+            </Button>
+            <Button
+              variant={filter === "unread" ? "outline" : "ghost"}
+              className={filter === "unread" ? " bg-gray-100" : ""}
+              onClick={() => setFilter("unread")}
+              size={"sm"}
+            >
+              <Medal size={12} />
+              <span>Praise</span>
+            </Button>
+          </div>
+        </DialogHeader>
+        <DialogDescription>
+          <PostCard />
+        </DialogDescription>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function PostCard() {
+  const [selectedItem, setSelectedItem] = useState<
+    "Origanization" | "Department" | "Team"
+  >("Origanization");
+
+  const handleSelect = (item: "Origanization" | "Department" | "Team") => {
+    setSelectedItem(item);
+  };
+  return (
+    <div className="border border-gray-300 rounded-md divide-y">
+      <div className="p-4 space-y-4">
+        <Textarea placeholder="Type your post here..." />
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size={"icon"}>
+            <AtSign />
+          </Button>
+          <Button variant="outline" size={"icon"}>
+            <Image />
+          </Button>
+          <Button variant="outline" size={"icon"}>
+            <SmilePlus />
+          </Button>
+        </div>
+      </div>
+      <div className="p-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <p className="text-gray-500">Posting to</p>
+          <Select onValueChange={handleSelect}>
+            <SelectTrigger className="w-[150px] text-black">
+              <SelectValue placeholder="Origanization" />
+            </SelectTrigger>
+            <SelectContent className="text-black">
+              <SelectItem value="Origanization">Origanization</SelectItem>
+              <SelectItem value="Department">Department</SelectItem>
+              <SelectItem value="Team">Team</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant={"outline"}>Cancel</Button>
+          <Button variant={"default"} className="bg-blue-400 hover:bg-blue-500">
+            Post
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

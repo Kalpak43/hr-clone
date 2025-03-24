@@ -189,14 +189,16 @@ export function MailCardExtended({
   return (
     <>
       <div
-        className={`${!mailID && "hidden"} bg-[#00000080] absolute inset-0 z-30 xl:hidden`}
-      ></div>
-      <div
-        className={`max-xl:absolute inset-0 md:max-xl:top-1/2 z-40 bg-white border border-gray-300 rounded-md xl:col-span-2 ${
+        className={`${
           !mailID && "hidden"
+        } bg-[#00000080] overlay rounded-md absolute inset-0 z-30 xl:hidden`}
+      />
+      <div
+        className={`max-xl:absolute inset-0 md:top-1/2 lg:max-xl:top-auto lg:max-xl:bottom-0 z-40 bg-white border border-gray-300 rounded-md xl:col-span-2 ${
+          !mailID && "max-xl:hidden"
         }`}
       >
-        <Link to={"/inbox"} className="absolute top-0 right-0 m-2">
+        <Link to={"/inbox"} className="absolute top-0 right-0 m-2 xl:hidden">
           <X size={20} />
         </Link>
         <div className="flex flex-col justify-center items-center w-full h-full rounded-md overflow-hidden">
