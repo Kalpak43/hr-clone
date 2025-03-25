@@ -15,13 +15,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { orgTree } from "@/data";
+import { employeeList, orgTree } from "@/data";
 import {
   AtSign,
-  CalendarIcon,
+  Check,
   FilePenLine,
   Image,
   Medal,
+  Paperclip,
   Plus,
   Search,
   SmilePlus,
@@ -41,6 +42,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 // Custom "Not Found" Card
 const NotFoundCard = () => (
@@ -228,7 +230,7 @@ export default EmployeesPage;
 
 export function EngageModal() {
   const [filter, setFilter] = useState<number>(0);
-  const [selectedItem, setSelectedItem] = useState<
+  const [_, setSelectedItem] = useState<
     "Origanization" | "Department" | "Team"
   >("Origanization");
 
@@ -320,13 +322,6 @@ export function EngageModal() {
 }
 
 export function PostCard() {
-  const [selectedItem, setSelectedItem] = useState<
-    "Origanization" | "Department" | "Team"
-  >("Origanization");
-
-  const handleSelect = (item: "Origanization" | "Department" | "Team") => {
-    setSelectedItem(item);
-  };
   const [content, setContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -706,7 +701,10 @@ export function PollCard() {
           </Popover>
         </div>
         <div className="flex items-center space-x-2">
-          <Checkbox id="notify" className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white" />
+          <Checkbox
+            id="notify"
+            className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white"
+          />
           <label
             htmlFor="notify"
             className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -715,7 +713,10 @@ export function PollCard() {
           </label>
         </div>
         <div className="flex items-center space-x-2">
-          <Checkbox id="notify" className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white" />
+          <Checkbox
+            id="notify"
+            className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white"
+          />
           <label
             htmlFor="notify"
             className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -729,5 +730,229 @@ export function PollCard() {
 }
 
 export function PraiseCard() {
-  return <div className="p-4 space-y-4"></div>;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [selectEmployees, setSelectedEmployees] = useState<
+    {
+      name: string;
+      image: string;
+    }[]
+  >([]);
+  const [selectedBadge, setSelectedBadge] = useState<string | null>(null);
+
+  const [attachments, setAttachments] = useState<File[]>([]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filter employeeList based on searchTerm
+  const filteredEmployees = employeeList.filter((employee) =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="p-4 space-y-4">
+      <section className="space-y-4">
+        <div className="space-y-2">
+          <div className="border border-gray-300 bg-gray-50 rounded-md p-2 flex items-center relative">
+            <input
+              type="text"
+              className="text-sm pl-2 min-w-xs rounded-md focus:outline-none w-full"
+              placeholder="Search Employee..."
+              value={searchTerm}
+              onChange={handleSearch}
+              onFocus={() =>
+                setTimeout(() => {
+                  setIsFocused(true);
+                }, 100)
+              }
+              onBlur={() =>
+                setTimeout(() => {
+                  setIsFocused(false);
+                }, 100)
+              }
+            />
+            {isFocused && (
+              <div className="search-panel absolute top-full inset-x-0 z-40 mt-2 max-h-[200px] overflow-y-auto border border-gray-300 rounded-md bg-white shadow-sm p-4">
+                {filteredEmployees.length > 0 ? (
+                  <ul>
+                    {filteredEmployees.map((employee, i) => (
+                      <li key={i}>
+                        <Button
+                          className="w-full justify-start"
+                          variant={"ghost"}
+                          onClick={() => {
+                            setSelectedEmployees((prev) =>
+                              prev.some((emp) => emp.name === employee.name)
+                                ? prev
+                                : [...prev, employee]
+                            );
+                            setSearchTerm("");
+                          }}
+                        >
+                          <span className="w-6 border rounded-full aspect-square">
+                            <img
+                              src={employee.image}
+                              alt={employee.name}
+                              className="rounded-full"
+                            />
+                          </span>
+                          {employee.name}
+                          {selectEmployees.some(
+                            (emp) => emp.name === employee.name
+                          ) && (
+                            <span>
+                              <Check className="text-blue-400" />
+                            </span>
+                          )}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No employees found.</p>
+                )}
+              </div>
+            )}
+          </div>
+          <div>
+            {selectEmployees.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                {selectEmployees.map((employee, i) => (
+                  <button
+                    key={i}
+                    className="flex items-center gap-2 border p-1 rounded-full bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      setSelectedEmployees((prev) =>
+                        prev.filter((emp) => emp.name !== employee.name)
+                      );
+                    }}
+                  >
+                    <div className="w-6 aspect-square rounded-full border overflow-clip">
+                      <img
+                        src={employee.image}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-700 font-[600]">
+                      {employee.name}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <Textarea placeholder="What did the emolovee do to deserve the praise" />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-16 aspect-square rounded-full border overflow-clip">
+            <img src={selectedBadge ?? "/default-badge.svg"} alt="" />
+          </div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Select Badge</Button>
+            </PopoverTrigger>
+            <PopoverContent className="grid grid-cols-3 gap-2 p-4 w-[300px]">
+              <button
+                className={`w-16 aspect-square rounded-full border overflow-clip p-1 hover:bg-gray-100 ${
+                  selectedBadge === "/gold.svg" ? "ring-2 ring-blue-500" : ""
+                }`}
+                onClick={() => setSelectedBadge("/gold.svg")}
+              >
+                <img src={"/gold.svg"} alt={`Badge Gold`} />
+              </button>
+              <button
+                className={`w-16 aspect-square rounded-full border overflow-clip p-1 hover:bg-gray-100 ${
+                  selectedBadge === "/silver.svg" ? "ring-2 ring-blue-500" : ""
+                }`}
+                onClick={() => setSelectedBadge("/silver.svg")}
+              >
+                <img src={"/silver.svg"} alt={`Badge silver`} />
+              </button>
+              <button
+                className={`w-16 aspect-square rounded-full border overflow-clip p-1 hover:bg-gray-100 ${
+                  selectedBadge === "/bronze.svg" ? "ring-2 ring-blue-500" : ""
+                }`}
+                onClick={() => setSelectedBadge("/bronze.svg")}
+              >
+                <img src={"/bronze.svg"} alt={`Badge bronze`} />
+              </button>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-black">Project (Optional)</p>
+          <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select project" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Project A">Project A</SelectItem>
+              <SelectItem value="Project B">Project B</SelectItem>
+              <SelectItem value="Project C">Project C</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Button
+            variant={"ghost"}
+            size={"sm"}
+            className="text-blue-400 hover:text-blue-500 relative"
+            disabled={attachments.length >= 5}
+          >
+            <Paperclip />
+            Add Attachment
+            <input
+              type="file"
+              multiple
+              accept="image/*, application/pdf"
+              onChange={(e) => {
+                if (e.target.files)
+                  setAttachments([
+                    ...attachments,
+                    ...Array.from(e.target.files),
+                  ]);
+
+                e.target.value = "";
+              }}
+              className="opacity-0 absolute inset-0"
+              disabled={attachments.length >= 5}
+            />
+          </Button>
+          <p className="text-xs">Max number of files allowed: 5.</p>
+          <div>
+            {attachments.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {attachments.map((file, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-2 border rounded-md p-2 text-xs"
+                  >
+                    <span className="">{file.name}</span>
+                    <button
+                      onClick={() => {
+                        const newAttachments = [...attachments];
+                        newAttachments.splice(index, 1);
+                        setAttachments(newAttachments);
+                      }}
+                      className="text-gray-500 hover:text-red-500"
+                    >
+                      <Trash size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

@@ -262,3 +262,19 @@ export const email: EmailType[] = [
     read: false,
   },
 ];
+
+function flattenOrgTree(orgTree: any): { name: string; image: string }[] {
+  let result: { name: string; image: string }[] = [];
+
+  function traverse(node: any) {
+    result.push({ name: node.name, image: node.image });
+    if (node.children) {
+      node.children.forEach(traverse);
+    }
+  }
+
+  traverse(orgTree);
+  return result;
+}
+
+export const employeeList = flattenOrgTree(orgTree);
