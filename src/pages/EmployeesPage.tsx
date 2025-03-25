@@ -18,16 +18,29 @@ import { Switch } from "@/components/ui/switch";
 import { orgTree } from "@/data";
 import {
   AtSign,
+  CalendarIcon,
   FilePenLine,
   Image,
   Medal,
   Plus,
   Search,
   SmilePlus,
+  Trash,
   Vote,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Tree from "react-d3-tree";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Custom "Not Found" Card
 const NotFoundCard = () => (
@@ -214,7 +227,14 @@ function EmployeesPage() {
 export default EmployeesPage;
 
 export function EngageModal() {
-  const [filter, setFilter] = useState<"all" | "read" | "unread">("all");
+  const [filter, setFilter] = useState<number>(0);
+  const [selectedItem, setSelectedItem] = useState<
+    "Origanization" | "Department" | "Team"
+  >("Origanization");
+
+  const handleSelect = (item: "Origanization" | "Department" | "Team") => {
+    setSelectedItem(item);
+  };
 
   return (
     <Dialog>
@@ -231,27 +251,27 @@ export function EngageModal() {
         <DialogHeader>
           <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
             <Button
-              variant={filter === "all" ? "outline" : "ghost"}
-              className={filter === "all" ? " bg-gray-100" : ""}
-              onClick={() => setFilter("all")}
+              variant={filter === 0 ? "outline" : "ghost"}
+              className={filter === 0 ? " bg-gray-100" : ""}
+              onClick={() => setFilter(0)}
               size={"sm"}
             >
               <FilePenLine size={12} />
               <span>Post</span>
             </Button>
             <Button
-              variant={filter === "read" ? "outline" : "ghost"}
-              className={filter === "read" ? " bg-gray-100" : ""}
-              onClick={() => setFilter("read")}
+              variant={filter === 1 ? "outline" : "ghost"}
+              className={filter === 1 ? " bg-gray-100" : ""}
+              onClick={() => setFilter(1)}
               size={"sm"}
             >
               <Vote size={12} />
               <span>Poll</span>
             </Button>
             <Button
-              variant={filter === "unread" ? "outline" : "ghost"}
-              className={filter === "unread" ? " bg-gray-100" : ""}
-              onClick={() => setFilter("unread")}
+              variant={filter === 2 ? "outline" : "ghost"}
+              className={filter === 2 ? " bg-gray-100" : ""}
+              onClick={() => setFilter(2)}
               size={"sm"}
             >
               <Medal size={12} />
@@ -260,7 +280,39 @@ export function EngageModal() {
           </div>
         </DialogHeader>
         <DialogDescription>
-          <PostCard />
+          <div className="border border-gray-300 rounded-md divide-y">
+            {
+              {
+                0: <PostCard />,
+                1: <PollCard />,
+                2: <PraiseCard />,
+              }[filter]
+            }
+            <div className="p-4 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <p className="text-gray-500">Posting to</p>
+                <Select onValueChange={handleSelect}>
+                  <SelectTrigger className="w-[150px]" size="sm">
+                    <SelectValue placeholder="Origanization" />
+                  </SelectTrigger>
+                  <SelectContent className="text-black">
+                    <SelectItem value="Origanization">Origanization</SelectItem>
+                    <SelectItem value="Department">Department</SelectItem>
+                    <SelectItem value="Team">Team</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant={"outline"}>Cancel</Button>
+                <Button
+                  variant={"default"}
+                  className="bg-blue-400 hover:bg-blue-500"
+                >
+                  Post
+                </Button>
+              </div>
+            </div>
+          </div>
         </DialogDescription>
       </DialogContent>
     </Dialog>
@@ -278,6 +330,8 @@ export function PostCard() {
   const [content, setContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
 
+  const [image, setImage] = useState<string>("");
+
   // Update the highlightMentions function to preserve spaces better
   const highlightMentions = (text: string) => {
     return text.replace(
@@ -289,10 +343,26 @@ export function PostCard() {
   // Modify the handleInput function to be more responsive
   const handleInput = () => {
     if (editorRef.current) {
-      const newText = editorRef.current.innerText;
-      if (newText !== content) {
-        setContent(newText);
+      let newText = editorRef.current.innerText;
+      // Check if the new text exceeds the character limit
+      if (newText.length > 500) {
+        // Truncate the content to the maximum allowed characters
+        newText = newText.slice(0, 500);
+
+        // Update the content inside the contentEditable
+        editorRef.current.innerText = newText;
+
+        // Move the cursor to the end
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(editorRef.current);
+        range.collapse(false);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
       }
+
+      // Update the state if necessary
+      setContent(newText);
     }
   };
 
@@ -331,8 +401,16 @@ export function PostCard() {
       }
 
       setContent("@");
+
+      editorRef.current.focus();
     }
   };
+
+  useEffect(() => {
+    if (editorRef) {
+      editorRef.current?.focus();
+    }
+  }, []);
 
   // Replace the useEffect with this improved version
   useEffect(() => {
@@ -448,53 +526,208 @@ export function PostCard() {
     }
   };
 
+  const handleEmojiSelect = (emoji: any) => {
+    const emojiChar = emoji.native; // Get the emoji character
+
+    if (editorRef.current) {
+      // Insert the emoji at the current caret position
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+
+      if (range) {
+        range.deleteContents();
+        range.insertNode(document.createTextNode(emojiChar));
+        range.collapse(false);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+
+        // Update content state
+        setContent(editorRef.current.textContent || "");
+      }
+    }
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className="border border-gray-300 rounded-md divide-y">
-      <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4">
+      <section className="max-h-[500px] overflow-y-auto max-w-full">
         <div
           ref={editorRef}
           contentEditable
           onInput={handleInput}
           onKeyDown={handleKeyDown}
-          className={`textbox min-h-[100px] max-h-[200px] relative overflow-y-auto w-full rounded-md bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground before:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50 ${
+          className={`textbox min-h-[200px] relative overflow-y-auto w-full rounded-md bg-background px-3 py-2 text-sm text-black ring-offset-background placeholder:text-muted-foreground before:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${
             !!content.trim() && "before:hidden"
           }`}
           role="textbox"
           aria-multiline="true"
+          style={{
+            display: "block", // Ensures block behavior for content
+            whiteSpace: "pre-wrap", // Wrap text and preserve spaces
+            wordWrap: "break-word", // Break long words to prevent overflow
+            overflowWrap: "break-word", // Ensures compatibility for wrapping
+            width: "100%", // Ensure the width does not expand
+            maxWidth: "100%", // Prevent horizontal growth
+            boxSizing: "border-box", // Respect padding and border within width
+          }}
         />
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size={"icon"} onClick={insertMention}>
-            <AtSign />
-          </Button>
-          <Button variant="outline" size={"icon"}>
-            <Image />
-          </Button>
-          <Button variant="outline" size={"icon"}>
-            <SmilePlus />
-          </Button>
-        </div>
-      </div>
-      <div className="p-4 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <p className="text-gray-500">Posting to</p>
-          <Select onValueChange={handleSelect}>
-            <SelectTrigger className="w-[150px]" size="sm">
-              <SelectValue placeholder="Origanization" />
-            </SelectTrigger>
-            <SelectContent className="text-black">
-              <SelectItem value="Origanization">Origanization</SelectItem>
-              <SelectItem value="Department">Department</SelectItem>
-              <SelectItem value="Team">Team</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant={"outline"}>Cancel</Button>
-          <Button variant={"default"} className="bg-blue-400 hover:bg-blue-500">
-            Post
-          </Button>
-        </div>
+        {!!image.trim() && (
+          <div className="relative w-full h-52 rounded-xl border overflow-hidden">
+            <img
+              src={image}
+              alt="Uploaded"
+              className="max-w-full h-auto rounded-xl"
+            />
+          </div>
+        )}
+      </section>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size={"icon"} onClick={insertMention}>
+          <AtSign />
+        </Button>
+        <Button variant="outline" size={"icon"} className="relative">
+          <Image />
+
+          <input
+            type="file"
+            accept="image/*"
+            id="imageInput"
+            className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+            onChange={handleImageChange}
+          />
+        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="icon">
+              <SmilePlus />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full overflow-y-auto p-2">
+            <Picker
+              data={data}
+              onEmojiSelect={handleEmojiSelect}
+              theme={"light"}
+              searchPosition="none" // Hide search bar
+              previewPosition="none" // Hide preview section
+              className=""
+            />
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
+}
+
+export function PollCard() {
+  const [options, setOptions] = useState<string[]>(["", ""]);
+  const [date, setDate] = useState<Date>();
+
+  return (
+    <div className="p-4 space-y-4">
+      <section className="space-y-8">
+        <input
+          type="text"
+          className="w-full px-4 py-2 ring-0 focus-visible:outline-0 border-b focus-visible:border-black text-black"
+          placeholder="What is this poll about?"
+        />
+        <div className="px-2 space-y-2 max-h-[200px] overflow-y-auto">
+          {options.map((option, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                type="text"
+                className="w-full px-4 py-2 ring-0 focus-visible:outline-0 border-b focus-visible:border-black text-black"
+                placeholder={`Option ${index + 1}`}
+                value={option}
+                onChange={(e) => {
+                  const newOptions = [...options];
+                  newOptions[index] = e.target.value;
+                  setOptions(newOptions);
+                }}
+              />
+              <Button
+                variant="ghost"
+                size={"icon"}
+                onClick={() => {
+                  const newOptions = [...options];
+                  newOptions.splice(index, 1);
+                  setOptions(newOptions);
+                }}
+              >
+                <Trash />
+              </Button>
+            </div>
+          ))}
+        </div>
+        <Button
+          variant={"outline"}
+          size={"sm"}
+          onClick={() => setOptions([...options, ""])}
+        >
+          <Plus />
+          Add Option
+        </Button>
+      </section>
+      <section className="flex items-center gap-4 justify-between text-gray-600 text-xs">
+        <div className="flex items-center gap-2">
+          <p>Poll Expires on </p>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-fit justify-start text-left font-normal text-xs",
+                  !date && "text-muted-foreground"
+                )}
+                size={"sm"}
+              >
+                {date ? format(date, "PPP") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="notify" className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white" />
+          <label
+            htmlFor="notify"
+            className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Notify Employees
+          </label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="notify" className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white" />
+          <label
+            htmlFor="notify"
+            className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Anonymus Poll
+          </label>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export function PraiseCard() {
+  return <div className="p-4 space-y-4"></div>;
 }
