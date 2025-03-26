@@ -1,22 +1,39 @@
-import { CartesianGrid, Cell, Label, Pie, PieChart, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Cell,
+  Label,
+  Legend,
+  Pie,
+  PieChart,
+  YAxis,
+} from "recharts";
 
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
 import { Bar, BarChart, XAxis } from "recharts";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const data = [
-  { name: "Software Development", value: 450000 },
-  { name: "Business Development", value: 320000 },
-  { name: "Human Resources", value: 180000 },
-  { name: "Account Department", value: 250000 },
-];
-
-const locationData = [{ name: "Hyderabad", value: 2000000 }];
+import {
+  data,
+  locationData,
+  compensationData,
+  softwareDevelopmentCompensationData,
+  businessDevelopmentCompensationData,
+  humanResourcesCompensationData,
+  accountsDepartmentCompensationData,
+  salaryData,
+} from "@/data";
 
 // Configuration for the chart
 const chartConfig = {
@@ -32,7 +49,7 @@ const chartConfig = {
     label: "Human Resources",
     color: "var(--chart-3)",
   },
-  "Account Department": {
+  "Accounts Department": {
     label: "Account Department",
     color: "var(--chart-4)",
   },
@@ -102,6 +119,7 @@ function PayrollPage() {
         </div>
       </div>
       <PlannedCompensationCard />
+      <EmloyeeSalaryChart />
     </main>
   );
 }
@@ -357,127 +375,103 @@ function LocationChart() {
         </div>
         <div>
           <p className="uppercase">HIGHEST COMPENSATION</p>
-          <p className="font-[600] text-xs">Software Development</p>
+          <p className="font-[600] text-xs">Hyderabad</p>
           <p className="font-[600]">(INR 1,11,82,548)</p>
         </div>
         <div>
           <p className="uppercase">LOWEST COMPENSATION</p>
-          <p className="font-[600] text-xs">Account Department</p>
-          <p className="font-[600]">(INR 1,73,548)</p>
+          <p className="font-[600] text-xs">Hyderabad</p>
+          <p className="font-[600]">(INR 1,11,82,548)</p>
         </div>
       </div>
     </div>
   );
 }
 
-const compensationData = [
-  {
-    month: "January",
-    planned_compensation: 5200,
-    actual_compensation: 4800,
-    variance: -200,
-  },
-  {
-    month: "February",
-    planned_compensation: 5000,
-    actual_compensation: 4000,
-    variance: 100,
-  },
-  {
-    month: "March",
-    planned_compensation: 5500,
-    actual_compensation: 5400,
-    variance: -100,
-  },
-  {
-    month: "April",
-    planned_compensation: 5800,
-    actual_compensation: 5900,
-    variance: 100,
-  },
-  {
-    month: "May",
-    planned_compensation: 6000,
-    actual_compensation: 6100,
-    variance: 100,
-  },
-  {
-    month: "June",
-    planned_compensation: 6200,
-    actual_compensation: 6100,
-    variance: -100,
-  },
-  {
-    month: "July",
-    planned_compensation: 6500,
-    actual_compensation: 6400,
-    variance: -100,
-  },
-  {
-    month: "August",
-    planned_compensation: 6700,
-    actual_compensation: 6800,
-    variance: 100,
-  },
-  {
-    month: "September",
-    planned_compensation: 7000,
-    actual_compensation: 6900,
-    variance: -100,
-  },
-  {
-    month: "October",
-    planned_compensation: 7200,
-    actual_compensation: 7300,
-    variance: 100,
-  },
-  {
-    month: "November",
-    planned_compensation: 7500,
-    actual_compensation: 7600,
-    variance: 100,
-  },
-  {
-    month: "December",
-    planned_compensation: 8000,
-    actual_compensation: 7900,
-    variance: -100,
-  },
-];
-
 const compChartConfig = {
   planned_compensation: {
     label: "Planned Compensation",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   actual_compensation: {
     label: "Actual Compensation",
-    color: "hsl(var(--chart-2))",
+    color: "var(--chart-2)",
   },
-} satisfies ChartConfig;
+};
 
 function PlannedCompensationCard() {
+  const chartDict = {
+    all: compensationData,
+    "software development": softwareDevelopmentCompensationData,
+    "business development": businessDevelopmentCompensationData,
+    "human resources": humanResourcesCompensationData,
+    "accounts department": accountsDepartmentCompensationData,
+  };
+  const [selectedItem, setSelectedItem] = useState<
+    | "all"
+    | "software development"
+    | "business development"
+    | "human resources"
+    | "accounts department"
+  >("all");
+
+  const handleSelect = (
+    item:
+      | "all"
+      | "software development"
+      | "business development"
+      | "human resources"
+      | "accounts department"
+  ) => {
+    setSelectedItem(item);
+  };
+
   return (
     <div className="border border-gray-300 rounded-md p-4 bg-white space-y-8">
       <div className="flex items-center justify-between">
         <p className="">
           Planned Vs Actual Compensation (Variance) - Past Months
         </p>
+        <Select onValueChange={handleSelect}>
+          <SelectTrigger className="w-[220px]" size="sm">
+            <SelectValue placeholder="All" defaultValue={"all"} />
+          </SelectTrigger>
+          <SelectContent className="text-black">
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="software development">
+              Software Development
+            </SelectItem>
+            <SelectItem value="business development">
+              Business Development
+            </SelectItem>
+            <SelectItem value="human resources">Human Resource</SelectItem>
+            <SelectItem value="accounts department">
+              Accounts Department
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div>
         <ChartContainer config={compChartConfig} className="">
-          <BarChart accessibilityLayer data={compensationData}>
+          <BarChart
+            accessibilityLayer
+            data={chartDict[selectedItem]}
+            margin={{ top: 20, right: 30, left: 40, bottom: 30 }}
+            height={600}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="month"
               tickLine={false}
               tickMargin={10}
               axisLine={true}
-            >
+            />
+            <YAxis axisLine={true} tickLine={true} tickMargin={10}>
               <Label
-                value="Months"
+                value="Amount"
                 // offset={10} // Distance from the axis
-                position="bottom" // Position of the label (top, bottom, left, right)
+                position="left" // Position of the label (top, bottom, left, right)
+                angle={-90}
                 style={{
                   fontSize: "14px",
                   fontWeight: "bold",
@@ -485,8 +479,7 @@ function PlannedCompensationCard() {
                   textTransform: "uppercase", // Customize text
                 }}
               />
-            </XAxis>
-            <YAxis axisLine={true} tickLine={true} tickMargin={10} />
+            </YAxis>
 
             <Bar
               dataKey="planned_compensation"
@@ -505,6 +498,177 @@ function PlannedCompensationCard() {
               cursor={false}
               defaultIndex={1}
             />
+          </BarChart>
+        </ChartContainer>
+
+        <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-2">
+            <div
+              className="w-3 h-3 rounded-xs"
+              style={{
+                backgroundColor: compChartConfig["actual_compensation"].color,
+              }}
+            />
+            <span className="">Planned Compensation</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-3 h-3 rounded-xs"
+              style={{
+                backgroundColor: compChartConfig["planned_compensation"].color,
+              }}
+            />
+            <span className="">Actual Compensation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Transform data for the selected year
+const transformDataForYear = (year: string) => {
+  const yearData = salaryData.find((data) => data.year === year);
+  return yearData?.salaryRanges || [];
+};
+
+// Compare all years for a specific range
+const transformDataForAllYears = () => {
+  const ranges = ["0-5 LPA", "5-10 LPA", "10-15 LPA", "15-20 LPA", "20+ LPA"];
+
+  return ranges.map((range) => {
+    const data = { range };
+    salaryData.forEach((yearData) => {
+      const rangeData = yearData.salaryRanges.find((r) => r.range === range);
+      // @ts-ignore
+      data[yearData.year] = rangeData?.employees || 0;
+    });
+    return data;
+  });
+};
+function EmloyeeSalaryChart() {
+  const [viewMode, setViewMode] = useState<"byYear" | "compareYears">("byYear");
+  const [selectedYear, setSelectedYear] = useState(salaryData[3].year);
+
+  const chartConfig =
+    viewMode === "byYear"
+      ? {
+          employees: {
+            label: "Employees",
+            color: "var(--chart-1)",
+          },
+        }
+      : {
+          [salaryData[0].year.replace("-", "")]: {
+            label: salaryData[0].year,
+            color: "var(--chart-1)",
+          },
+          [salaryData[1].year.replace("-", "")]: {
+            label: salaryData[1].year,
+            color: "var(--chart-2)",
+          },
+          [salaryData[2].year.replace("-", "")]: {
+            label: salaryData[2].year,
+            color: "var(--chart-3)",
+          },
+          [salaryData[3].year.replace("-", "")]: {
+            label: salaryData[3].year,
+            color: "var(--chart-4)",
+          },
+        };
+
+  // Data to display based on view mode
+  const chartData =
+    viewMode === "byYear"
+      ? transformDataForYear(selectedYear)
+      : transformDataForAllYears();
+
+  // Data keys for the bars
+  const dataKeys =
+    viewMode === "byYear" ? ["employees"] : salaryData.map((d) => d.year);
+
+  // console.log(chartData);
+  return (
+    <div className="border border-gray-300 rounded-md p-4 bg-white space-y-8">
+      <div className="flex items-center justify-between">
+        <p className="">Employees by salary range (Last 4 years)</p>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Select
+            value={viewMode}
+            onValueChange={(value) =>
+              setViewMode(value as "byYear" | "compareYears")
+            }
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="View Mode" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="byYear">By Year</SelectItem>
+              <SelectItem value="compareYears">Compare Years</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {viewMode === "byYear" && (
+            <Select value={selectedYear} onValueChange={setSelectedYear}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {salaryData.map((data) => (
+                  <SelectItem key={data.year} value={data.year}>
+                    {data.year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <ChartContainer config={chartConfig} className="h-[500px] w-full">
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            layout="vertical"
+            className="w-full"
+            margin={{
+              left: 50,
+              right: 20,
+              top: 20,
+              bottom: 20,
+            }}
+          >
+            <CartesianGrid
+              horizontal={true}
+              vertical={false}
+              strokeDasharray="3 3"
+            />
+            <XAxis
+              type="number"
+              tickLine={false}
+              axisLine={true}
+              tickFormatter={(value) => `${value}`}
+            />
+            <YAxis
+              dataKey="range"
+              type="category"
+              tickLine={false}
+              axisLine={true}
+            />
+            <Legend />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+
+            {dataKeys.map((key) => {
+              return (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  fill={`var(--color-${key.replace("-", "")}`}
+                  radius={[0, 4, 4, 0]}
+                />
+              );
+            })}
           </BarChart>
         </ChartContainer>
       </div>

@@ -278,3 +278,430 @@ function flattenOrgTree(orgTree: any): { name: string; image: string }[] {
 }
 
 export const employeeList = flattenOrgTree(orgTree);
+
+export const data = [
+  { name: "Software Development", value: 450000 },
+  { name: "Business Development", value: 320000 },
+  { name: "Human Resources", value: 180000 },
+  { name: "Accounts Department", value: 250000 },
+];
+
+export const locationData = [{ name: "Hyderabad", value: 2000000 }];
+
+export const compensationData = [
+  {
+    month: "January",
+    planned_compensation: 5200,
+    actual_compensation: 4800,
+    variance: -200,
+  },
+  {
+    month: "February",
+    planned_compensation: 5000,
+    actual_compensation: 4000,
+    variance: 100,
+  },
+  {
+    month: "March",
+    planned_compensation: 5500,
+    actual_compensation: 5400,
+    variance: -100,
+  },
+  {
+    month: "April",
+    planned_compensation: 5800,
+    actual_compensation: 5900,
+    variance: 100,
+  },
+  {
+    month: "May",
+    planned_compensation: 6000,
+    actual_compensation: 6100,
+    variance: 100,
+  },
+  {
+    month: "June",
+    planned_compensation: 6200,
+    actual_compensation: 6100,
+    variance: -100,
+  },
+  {
+    month: "July",
+    planned_compensation: 6500,
+    actual_compensation: 6400,
+    variance: -100,
+  },
+  {
+    month: "August",
+    planned_compensation: 6700,
+    actual_compensation: 6800,
+    variance: 100,
+  },
+  {
+    month: "September",
+    planned_compensation: 7000,
+    actual_compensation: 6900,
+    variance: -100,
+  },
+  {
+    month: "October",
+    planned_compensation: 7200,
+    actual_compensation: 7300,
+    variance: 100,
+  },
+  {
+    month: "November",
+    planned_compensation: 7500,
+    actual_compensation: 7600,
+    variance: 100,
+  },
+  {
+    month: "December",
+    planned_compensation: 8000,
+    actual_compensation: 7900,
+    variance: -100,
+  },
+];
+
+export const softwareDevelopmentCompensationData = [
+  {
+    month: "January",
+    planned_compensation: 6200,
+    actual_compensation: 6000,
+    variance: -200,
+  },
+  {
+    month: "February",
+    planned_compensation: 6100,
+    actual_compensation: 5800,
+    variance: -300,
+  },
+  {
+    month: "March",
+    planned_compensation: 6300,
+    actual_compensation: 6200,
+    variance: -100,
+  },
+  {
+    month: "April",
+    planned_compensation: 6500,
+    actual_compensation: 6600,
+    variance: 100,
+  },
+  {
+    month: "May",
+    planned_compensation: 6700,
+    actual_compensation: 6800,
+    variance: 100,
+  },
+  {
+    month: "June",
+    planned_compensation: 6900,
+    actual_compensation: 6800,
+    variance: -100,
+  },
+  {
+    month: "July",
+    planned_compensation: 7100,
+    actual_compensation: 7000,
+    variance: -100,
+  },
+  {
+    month: "August",
+    planned_compensation: 7300,
+    actual_compensation: 7400,
+    variance: 100,
+  },
+  {
+    month: "September",
+    planned_compensation: 7500,
+    actual_compensation: 7400,
+    variance: -100,
+  },
+  {
+    month: "October",
+    planned_compensation: 7700,
+    actual_compensation: 7800,
+    variance: 100,
+  },
+  {
+    month: "November",
+    planned_compensation: 7900,
+    actual_compensation: 8000,
+    variance: 100,
+  },
+  {
+    month: "December",
+    planned_compensation: 8100,
+    actual_compensation: 8000,
+    variance: -100,
+  },
+];
+
+export const businessDevelopmentCompensationData = [
+  {
+    month: "January",
+    planned_compensation: 5400,
+    actual_compensation: 5200,
+    variance: -200,
+  },
+  {
+    month: "February",
+    planned_compensation: 5300,
+    actual_compensation: 5000,
+    variance: -300,
+  },
+  {
+    month: "March",
+    planned_compensation: 5500,
+    actual_compensation: 5400,
+    variance: -100,
+  },
+  {
+    month: "April",
+    planned_compensation: 5700,
+    actual_compensation: 5800,
+    variance: 100,
+  },
+  {
+    month: "May",
+    planned_compensation: 5900,
+    actual_compensation: 6000,
+    variance: 100,
+  },
+  {
+    month: "June",
+    planned_compensation: 6100,
+    actual_compensation: 6000,
+    variance: -100,
+  },
+  {
+    month: "July",
+    planned_compensation: 6300,
+    actual_compensation: 6200,
+    variance: -100,
+  },
+  {
+    month: "August",
+    planned_compensation: 6500,
+    actual_compensation: 6600,
+    variance: 100,
+  },
+  {
+    month: "September",
+    planned_compensation: 6700,
+    actual_compensation: 6600,
+    variance: -100,
+  },
+  {
+    month: "October",
+    planned_compensation: 6900,
+    actual_compensation: 7000,
+    variance: 100,
+  },
+  {
+    month: "November",
+    planned_compensation: 7100,
+    actual_compensation: 7200,
+    variance: 100,
+  },
+  {
+    month: "December",
+    planned_compensation: 7300,
+    actual_compensation: 7200,
+    variance: -100,
+  },
+];
+
+export const humanResourcesCompensationData = [
+  {
+    month: "January",
+    planned_compensation: 5000,
+    actual_compensation: 4800,
+    variance: -200,
+  },
+  {
+    month: "February",
+    planned_compensation: 4900,
+    actual_compensation: 4700,
+    variance: -200,
+  },
+  {
+    month: "March",
+    planned_compensation: 5100,
+    actual_compensation: 5000,
+    variance: -100,
+  },
+  {
+    month: "April",
+    planned_compensation: 5300,
+    actual_compensation: 5400,
+    variance: 100,
+  },
+  {
+    month: "May",
+    planned_compensation: 5500,
+    actual_compensation: 5600,
+    variance: 100,
+  },
+  {
+    month: "June",
+    planned_compensation: 5700,
+    actual_compensation: 5600,
+    variance: -100,
+  },
+  {
+    month: "July",
+    planned_compensation: 5900,
+    actual_compensation: 5800,
+    variance: -100,
+  },
+  {
+    month: "August",
+    planned_compensation: 6100,
+    actual_compensation: 6200,
+    variance: 100,
+  },
+  {
+    month: "September",
+    planned_compensation: 6300,
+    actual_compensation: 6200,
+    variance: -100,
+  },
+  {
+    month: "October",
+    planned_compensation: 6500,
+    actual_compensation: 6600,
+    variance: 100,
+  },
+  {
+    month: "November",
+    planned_compensation: 6700,
+    actual_compensation: 6800,
+    variance: 100,
+  },
+  {
+    month: "December",
+    planned_compensation: 6900,
+    actual_compensation: 6800,
+    variance: -100,
+  },
+];
+
+export const accountsDepartmentCompensationData = [
+  {
+    month: "January",
+    planned_compensation: 4800,
+    actual_compensation: 4600,
+    variance: -200,
+  },
+  {
+    month: "February",
+    planned_compensation: 4700,
+    actual_compensation: 4500,
+    variance: -200,
+  },
+  {
+    month: "March",
+    planned_compensation: 4900,
+    actual_compensation: 4800,
+    variance: -100,
+  },
+  {
+    month: "April",
+    planned_compensation: 5100,
+    actual_compensation: 5200,
+    variance: 100,
+  },
+  {
+    month: "May",
+    planned_compensation: 5300,
+    actual_compensation: 5400,
+    variance: 100,
+  },
+  {
+    month: "June",
+    planned_compensation: 5500,
+    actual_compensation: 5400,
+    variance: -100,
+  },
+  {
+    month: "July",
+    planned_compensation: 5700,
+    actual_compensation: 5600,
+    variance: -100,
+  },
+  {
+    month: "August",
+    planned_compensation: 5900,
+    actual_compensation: 6000,
+    variance: 100,
+  },
+  {
+    month: "September",
+    planned_compensation: 6100,
+    actual_compensation: 6000,
+    variance: -100,
+  },
+  {
+    month: "October",
+    planned_compensation: 6300,
+    actual_compensation: 6400,
+    variance: 100,
+  },
+  {
+    month: "November",
+    planned_compensation: 6500,
+    actual_compensation: 6600,
+    variance: 100,
+  },
+  {
+    month: "December",
+    planned_compensation: 6700,
+    actual_compensation: 6600,
+    variance: -100,
+  },
+];
+
+export const salaryData = [
+  {
+    year: "2020-21",
+    salaryRanges: [
+      { range: "0-5 LPA", employees: 120 },
+      { range: "5-10 LPA", employees: 80 },
+      { range: "10-15 LPA", employees: 50 },
+      { range: "15-20 LPA", employees: 30 },
+      { range: "20+ LPA", employees: 20 },
+    ],
+  },
+  {
+    year: "2021-22",
+    salaryRanges: [
+      { range: "0-5 LPA", employees: 110 },
+      { range: "5-10 LPA", employees: 95 },
+      { range: "10-15 LPA", employees: 60 },
+      { range: "15-20 LPA", employees: 35 },
+      { range: "20+ LPA", employees: 25 },
+    ],
+  },
+  {
+    year: "2022-23",
+    salaryRanges: [
+      { range: "0-5 LPA", employees: 100 },
+      { range: "5-10 LPA", employees: 105 },
+      { range: "10-15 LPA", employees: 70 },
+      { range: "15-20 LPA", employees: 40 },
+      { range: "20+ LPA", employees: 30 },
+    ],
+  },
+  {
+    year: "2023-24",
+    salaryRanges: [
+      { range: "0-5 LPA", employees: 90 },
+      { range: "5-10 LPA", employees: 120 },
+      { range: "10-15 LPA", employees: 80 },
+      { range: "15-20 LPA", employees: 50 },
+      { range: "20+ LPA", employees: 40 },
+    ],
+  },
+];
