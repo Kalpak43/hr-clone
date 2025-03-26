@@ -131,3 +131,11 @@ body {
 .hero {
   @apply p-4 space-y-4 text-sm overflow-y-auto;
 }
+
+:root {
+  --chart-1: hsl(221.2 83.2% 53.3%);
+  --chart-2: hsl(212 95% 68%);
+  --chart-3: hsl(216 92% 60%);
+  --chart-4: hsl(210 98% 78%);
+  --chart-5: hsl(212 97% 87%);
+}
