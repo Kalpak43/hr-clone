@@ -19,5 +19,22 @@ interface EmailType {
   content: string;
   comment: string;
   requestFor: string;
-  read: boolean
+  read: boolean;
+}
+
+type GroupType = "department" | "organization" | "team";
+
+interface PostType {
+  content: string;
+  image?: string;
+  type: "poll" | "post" | "praise";
+  options?: string[];
+  created_at: number;
+  postedTo: GroupType;
+  anonymus: boolean;
+  expiresOn?: number;
+  mentions?: { name: string; image: string }[];
+  attachments?: File[];
+  badge?: string;
+  project?: string;
 }
