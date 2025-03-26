@@ -6,7 +6,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "./ui/button";
-import { FilePenLine, Medal, Plus, Vote } from "lucide-react";
+import {
+  FilePenLine,
+  Medal,
+  Plus,
+  SendHorizonal,
+  ThumbsUp,
+  Vote,
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 import {
@@ -33,10 +40,11 @@ import {
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, formatDistance } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "./ui/progress";
 
 function EngageSheet() {
   const [filter, setFilter] = useState<number>(-1);
@@ -57,7 +65,7 @@ function EngageSheet() {
           Engage
         </Button>
       </SheetTrigger>
-      <SheetContent className="md:max-w-md">
+      <SheetContent className="md:max-w-md pb-4">
         <SheetHeader className="pt-12 w-full">
           <div className="flex items-center justify-between w-full">
             <p className="">Recents</p>
@@ -89,7 +97,7 @@ function EngageSheet() {
             </div>
           </div>
         </SheetHeader>
-        <SheetDescription className="px-4">
+        <SheetDescription className="px-4 overflow-y-auto space-y-4">
           {
             {
               0: (
@@ -124,6 +132,50 @@ function EngageSheet() {
               ),
             }[filter]
           }
+          <div className="space-y-4">
+            {recents.map((recent) => {
+              if (recent.type == "post") return <SavedPost post={recent} />;
+              if (recent.type == "poll") return <SavedPoll post={recent} />;
+              if (recent.type == "praise") return <SavedPraise post={recent} />;
+            })}
+            <SavedPost
+              post={{
+                content: "Hi",
+                created_at: new Date().getTime(),
+                type: "post",
+                anonymus: false,
+                postedTo: "organization",
+              }}
+            />
+            <SavedPoll
+              post={{
+                content: "Who will Win?",
+                options: ["KKR", "RCB", "MI"],
+                created_at: new Date().getTime(),
+                type: "poll",
+                anonymus: false,
+                postedTo: "organization",
+                expiresOn: new Date().getTime(),
+              }}
+            />
+            <SavedPraise
+              post={{
+                content: "Great Work",
+                mentions: [
+                  {
+                    name: "Alice Johnson",
+                    image: "https://i.pravatar.cc/150?img=1",
+                  },
+                ],
+                created_at: new Date().getTime(),
+                type: "praise",
+                anonymus: false,
+                postedTo: "organization",
+                badge: "/gold.svg",
+                project: "Project B",
+              }}
+            />
+          </div>
         </SheetDescription>
       </SheetContent>
     </Sheet>
@@ -491,6 +543,71 @@ export function PostCard({
   );
 }
 
+export function SavedPost({ post }: { post: PostType }) {
+  const [liked, setLiked] = useState(false);
+  return (
+    <div className="border border-gray-300 rounded-md divide-y p-4 space-y-4">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-2 pb-2 border-b-0">
+          <div className="w-6 aspect-square rounded-full border overflow-clip">
+            <img src="/default.png" className="w-full h-full object-cover" />
+          </div>
+          <p className="text-black">Admin</p>
+        </div>
+        <div className="flex items-center justify-end border-b-0">
+          <p className="text-xs">
+            {formatDistance(new Date(post.created_at), new Date(), {
+              addSuffix: true,
+            })}
+          </p>
+          <FilePenLine size={16} className="inline ml-2 text-black" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div
+          className="text-black pb-6"
+          dangerouslySetInnerHTML={{
+            __html: post.content,
+          }}
+        />
+        {!!post.image?.trim() && (
+          <div className="relative w-full h-52 rounded-xl border overflow-hidden">
+            <img
+              src={post.image}
+              alt="Uploaded"
+              className="max-w-full h-auto rounded-xl"
+            />
+          </div>
+        )}
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <Button
+            size={"icon"}
+            variant={"outline"}
+            className={liked ? "bg-blue-400 hover:bg-blue-500 text-white" : ""}
+            onClick={() => setLiked((x) => !x)}
+          >
+            <ThumbsUp />
+          </Button>
+          <p>1</p>
+        </div>
+
+        <div className="flex items-end gap-2 w-full">
+          <input
+            type="text"
+            className="w-full flex-1 py-2 ring-0 focus-visible:outline-0 border-b focus-visible:border-black text-black"
+            placeholder="Comment..."
+          />
+          <Button size={"icon"} variant={"outline"}>
+            <SendHorizonal />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function PollCard({
   handleClose,
   saveToPosts,
@@ -655,6 +772,88 @@ export function PollCard({
         >
           Post
         </Button>
+      </div>
+    </div>
+  );
+}
+
+export function SavedPoll({ post }: { post: PostType }) {
+  const [votes, setVotes] = useState(Array(post.options!.length).fill(0));
+  const totalVotes = votes.reduce((a, b) => a + b, 0);
+
+  return (
+    <div className="border border-gray-300 rounded-md divide-y p-4 space-y-2">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-2 pb-2 border-b-0">
+          <div className="w-6 aspect-square rounded-full border overflow-clip">
+            <img src="/default.png" className="w-full h-full object-cover" />
+          </div>
+          <p className="text-black">Admin</p>
+        </div>
+        <div className="flex items-center justify-end border-b-0">
+          <p className="text-xs">
+            {formatDistance(new Date(post.created_at), new Date(), {
+              addSuffix: true,
+            })}
+            <Vote size={16} className="inline ml-2 text-black" />
+          </p>
+        </div>
+      </div>
+      <div className="space-y-2 pb-2">
+        <p className="text-black">{post.content}</p>
+        <div className="">
+          {post.options!.map((option, index) => {
+            const percentage =
+              totalVotes > 0
+                ? Math.round((votes[index] / totalVotes) * 100)
+                : 0;
+            return (
+              <div key={index} className="flex items-center gap-4">
+                <div className="flex items-center w-14">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hover:bg-gray-100"
+                    onClick={() => {
+                      setVotes((prevVotes) => {
+                        const newVotes = [...prevVotes];
+                        if (newVotes[index] > 0) {
+                          newVotes[index] -= 1; // Remove vote
+                        } else {
+                          newVotes[index] += 1; // Add vote
+                        }
+                        return newVotes;
+                      });
+                    }}
+                  >
+                    <Checkbox
+                      checked={votes[index] > 0}
+                      className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white"
+                    />
+                  </Button>
+                  <p className="text-gray-800 font-medium w-1/4 text-xs">
+                    {option}
+                  </p>
+                </div>
+                <Progress
+                  value={percentage}
+                  className="flex-1 h-1 rounded-full bg-gray-200"
+                />
+                <p className="text-gray-500 text-sm w-12 text-right">
+                  {percentage}%
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div>
+        <p className="text-xs">
+          <span>Valid Till: </span>
+          <span className="text-black">
+            {new Date(post.expiresOn!).toLocaleDateString()}
+          </span>
+        </p>
       </div>
     </div>
   );
@@ -955,6 +1154,81 @@ export function PraiseCard({
         >
           Post
         </Button>
+      </div>
+    </div>
+  );
+}
+
+export function SavedPraise({ post }: { post: PostType }) {
+  const [liked, setLiked] = useState(false);
+  return (
+    <div className="border border-gray-300 rounded-md divide-y p-4 space-y-2">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-2 pb-2 border-b-0">
+          <div className="w-6 aspect-square rounded-full border overflow-clip">
+            <img src="/default.png" className="w-full h-full object-cover" />
+          </div>
+          <p className="text-black">Admin</p>
+        </div>
+        <div className="flex items-center justify-end border-b-0">
+          <p className="text-xs">
+            {formatDistance(new Date(post.created_at), new Date(), {
+              addSuffix: true,
+            })}
+            <Medal size={16} className="inline ml-2 text-black" />
+          </p>
+        </div>
+      </div>
+      <div className="space-y-4 pb-2">
+        <p className="flex items-center flex-wrap gap-2">
+          <div className="inline-flex items-center gap-2 p-1 border rounded-full bg-gray-100">
+            <div className="w-6 aspect-square rounded-full border overflow-clip">
+              <img
+                src={post.mentions![0].image}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <p className="text-black">{post.mentions![0].name}</p>
+          </div>{" "}
+          <p>was awarded with</p>{" "}
+          <div className="w-6 aspect-square rounded-full border overflow-clip">
+            <img src={post.badge} className="w-full h-full object-cover" />
+          </div>
+          <p>badge</p>
+        </p>
+        <p className="text-black">{post.content}</p>
+        {post.project && (
+          <div className="text-xs">
+            <p className="font-[600]">
+              Project: <span className="text-black ">{post.project}</span>
+            </p>
+          </div>
+        )}
+        <div></div>
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <Button
+            size={"icon"}
+            variant={"outline"}
+            className={liked ? "bg-blue-400 hover:bg-blue-500 text-white" : ""}
+            onClick={() => setLiked((x) => !x)}
+          >
+            <ThumbsUp />
+          </Button>
+          <p>1</p>
+        </div>
+
+        <div className="flex items-end gap-2 w-full">
+          <input
+            type="text"
+            className="w-full flex-1 py-2 ring-0 focus-visible:outline-0 border-b focus-visible:border-black text-black"
+            placeholder="Comment..."
+          />
+          <Button size={"icon"} variant={"outline"}>
+            <SendHorizonal />
+          </Button>
+        </div>
       </div>
     </div>
   );
