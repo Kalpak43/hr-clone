@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/chart";
 
 import { Bar, BarChart, XAxis } from "recharts";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -33,8 +33,8 @@ import {
   humanResourcesCompensationData,
   accountsDepartmentCompensationData,
   salaryData,
+  payDistribution,
 } from "@/data";
-
 // Configuration for the chart
 const chartConfig = {
   "Software Development": {
@@ -120,6 +120,7 @@ function PayrollPage() {
       </div>
       <PlannedCompensationCard />
       <EmloyeeSalaryChart />
+      <EmployeePieChart />
     </main>
   );
 }
@@ -674,4 +675,293 @@ function EmloyeeSalaryChart() {
       </div>
     </div>
   );
+}
+
+function EmployeePieChart() {
+  const [location, setLocation] = useState("All");
+  const [department, setDepartment] = useState("All");
+  const [jobTitle, setJobTitle] = useState("All");
+
+  const locations = [
+    "All",
+    "Hyderabad",
+    "Bengaluru",
+    "Mumbai",
+    "Delhi",
+    "Chennai",
+  ];
+  const departments = [
+    "All",
+    "Software Development",
+    "Business Development",
+    "Human Resources",
+    "Accounts Department",
+  ];
+  const jobTitles = [
+    "All",
+    "Software Engineer",
+    "Senior Software Engineer",
+    "Business Analyst",
+    "HR Manager",
+    "Accountant",
+    "Business Manager",
+    "Recruiter",
+    "Finance Manager",
+    "Sales Representative",
+  ];
+
+  // Filter and calculate average pay distribution based on selected filters
+  const filteredData = useMemo(() => {
+    let filtered = [...payDistribution];
+
+    if (location !== "All") {
+      filtered = filtered.filter((item) => item.location === location);
+    }
+
+    if (department !== "All") {
+      filtered = filtered.filter((item) => item.department === department);
+    }
+
+    if (jobTitle !== "All") {
+      filtered = filtered.filter((item) => item.jobTitle === jobTitle);
+    }
+
+    // If no data matches the filters, return empty array
+    if (filtered.length === 0) {
+      return [];
+    }
+
+    // Calculate averages
+    const totalItems = filtered.length;
+    const averageFixedPay =
+      filtered.reduce((sum, item) => sum + item.fixedPay, 0) / totalItems;
+    const averageBonus =
+      filtered.reduce((sum, item) => sum + item.bonus, 0) / totalItems;
+    const averageContribution =
+      filtered.reduce((sum, item) => sum + item.contribution, 0) / totalItems;
+    const averageOthers =
+      filtered.reduce((sum, item) => sum + item.others, 0) / totalItems;
+    // const averageTotalPay =
+    //   filtered.reduce((sum, item) => sum + item.totalPay, 0) / totalItems;
+
+    return [
+      { name: "Fixed Pay", value: averageFixedPay },
+      { name: "Bonus", value: averageBonus },
+      { name: "Contribution", value: averageContribution },
+      { name: "Others", value: averageOthers },
+    ];
+  }, [location, department, jobTitle]);
+
+  // Format currency for display
+  const formatCurrency = (value: any) => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
+  // Calculate total average pay
+  const totalAveragePay = filteredData.reduce(
+    (sum: number, item: any) => sum + item.value,
+    0
+  );
+
+  // Colors for pie chart segments
+  const COLORS = [
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)",
+  ];
+
+  const salConfig = {
+    fixedPay: {
+      label: "Fixed Pay",
+      color: "var(--chart-1)",
+    },
+    bonus: {
+      label: "Bonus",
+      color: "var(--chart-2)",
+    },
+    contribution: {
+      label: "Contribution",
+      color: "var(--chart-3)",
+    },
+    others: {
+      label: "Others",
+      color: "var(--chart-4)",
+    },
+  };
+
+  return (
+    <div className="border border-gray-300 rounded-md p-4 bg-white space-y-8">
+      <div className="flex items-center justify-between">
+        <p className="">View Average base pay</p>
+      </div>
+      <div className="grid grid-cols-3  divide-x">
+        <div className="p-4 space-y-4">
+          {/* Location Select */}
+          <div>
+            <p className="font-[600]">Department</p>
+            <Select
+              value={location}
+              onValueChange={(value) => setLocation(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Location" />
+              </SelectTrigger>
+              <SelectContent>
+                {locations.map((loc, index) => (
+                  <SelectItem key={index} value={loc}>
+                    {loc}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Department Select */}
+          <div>
+            <p className="font-[600]">Location</p>
+            <Select
+              value={department}
+              onValueChange={(value) => setDepartment(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Department" />
+              </SelectTrigger>
+              <SelectContent>
+                {departments.map((dept, index) => (
+                  <SelectItem key={index} value={dept}>
+                    {dept}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Job Title Select */}
+          <div>
+            <p className="font-[600]">Job Title</p>
+            <Select
+              value={jobTitle}
+              onValueChange={(value) => setJobTitle(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Job Title" />
+              </SelectTrigger>
+              <SelectContent>
+                {jobTitles.map((title, index) => (
+                  <SelectItem key={index} value={title}>
+                    {title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div className="col-span-2 p-4">
+          {filteredData.length > 0 ? (
+            <div>
+              <p className="">Average Pay Distrubution</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="mt-6 p-4 border rounded-md bg-gray-50">
+                  <h3 className="font-semibold text-lg mb-2">
+                    Total Average Pay
+                  </h3>
+                  <p className="text-2xl font-bold text-primary">
+                    {formatCurrency(totalAveragePay)}
+                  </p>
+                </div>
+                <div>
+                  <ChartContainer
+                    config={salConfig}
+                    className="aspect-square h-[300px] mx-auto"
+                  >
+                    <PieChart>
+                      <Pie
+                        data={filteredData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        innerRadius={50}
+                      >
+                        {filteredData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+
+                      <ChartTooltip
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value) => formatCurrency(value)}
+                          />
+                        }
+                      />
+                    </PieChart>
+                  </ChartContainer>
+                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    {Object.entries(salConfig).map(([key, config]) => (
+                      <div key={key} className="flex items-center gap-2">
+                        <div
+                          className="w-3 h-3 rounded-xs"
+                          style={{
+                            backgroundColor: config.color,
+                          }}
+                        />
+                        <span className="">{config.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-[300px]">
+              <p className="text-gray-500">
+                No data available for the selected filters
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+{
+  //   <div className="flex justify-center">
+  //   {chartData.length > 0 ? (
+  //     <PieChart width={300} height={300}>
+  //       <Pie
+  //         data={chartData}
+  //         cx="50%"
+  //         cy="50%"
+  //         labelLine={false}
+  //         outerRadius={150}
+  //         innerRadius={80}
+  //         fill="#8884d8"
+  //         dataKey="value"
+  //       >
+  //         {chartData.map((entry, index) => (
+  //           <Cell
+  //             key={`cell-${index}`}
+  //             fill={COLORS[index % COLORS.length]}
+  //           />
+  //         ))}
+  //       </Pie>
+  //       <Tooltip />
+  //       <Legend />
+  //     </PieChart>
+  //   ) : (
+  //     <p className="text-center text-gray-500">
+  //       Select all filters to view data.
+  //     </p>
+  //   )}
+  // </div>
 }
