@@ -11,10 +11,16 @@ import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { useEffect } from "react";
 import { supabase } from "./supbase";
 import { authChanged } from "./features/auth/authThunk";
+import LoginPage from "./pages/LoginPage";
+import {
+  AdminProtectedRoute,
+  UserProtectedRoute,
+} from "./components/auth/ProtectedRoute";
+import { toast } from "sonner";
 
 function App() {
   const dispatch = useAppDispatch();
-  // const { user, error } = useAppSelector((state) => state.auth);
+  const { user, error } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -39,22 +45,27 @@ function App() {
     };
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (user) toast.success("Logged in Successfully");
-  // }, [user]);
+  useEffect(() => {
+    if (user) toast.success("Logged in Successfully");
+  }, [user]);
 
-  // useEffect(() => {
-  //   if (error) toast.error(error);
-  // }, [error]);
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
   return (
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/employees" element={<EmployeesPage />} />
-        <Route path="/attendance" element={<AttendancePage />} />
-        <Route path="/payroll" element={<PayrollPage />} />
-        <Route path="/inbox/:mailID?" element={<InboxPage />} />
+      <Route element={<UserProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/inbox/:mailID?" element={<InboxPage />} />
+          <Route element={<AdminProtectedRoute />}>
+            <Route path="/employees" element={<EmployeesPage />} />
+            <Route path="/attendance" element={<AttendancePage />} />
+            <Route path="/payroll" element={<PayrollPage />} />
+          </Route>
+        </Route>
       </Route>
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }

@@ -7,6 +7,7 @@ import {
   CreditCard,
   Folder,
   House,
+  Loader2,
   LogOut,
   MessageSquareMore,
   PanelsTopLeft,
@@ -17,9 +18,17 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link, useLocation } from "react-router";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { logout } from "@/features/auth/authThunk";
+import { JSX } from "react";
+import { toast } from "sonner";
 
 function Sidebar() {
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const loading = useAppSelector((state) => state.auth.loading);
+  const isAdmin = useAppSelector((state) => state.auth.isAdmin);
 
   const nav = [
     {
@@ -47,7 +56,7 @@ function Sidebar() {
         },
       ],
     },
-    {
+    isAdmin && {
       title: "HR Management",
       links: [
         {
@@ -81,7 +90,19 @@ function Sidebar() {
         },
       ],
     },
-  ];
+  ].filter(
+    (
+      item
+    ): item is {
+      title: string;
+      links: { icon: JSX.Element; name: string }[];
+    } => Boolean(item)
+  );
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    toast("Logged out successfully");
+  };
 
   return (
     <div
@@ -114,11 +135,13 @@ function Sidebar() {
           <img
             src="/default.png"
             alt=""
-            className="w-10 border border-gray-300 rounded-xl"
+            className="w-8 border border-gray-300 rounded-full"
           />
           <div className="text-sm overflow-hidden">
-            <strong className="font-[500] text-black">Arnold Smith</strong>
-            <p className="text-xs">arnoldsmith@gmail.com</p>
+            <strong className="font-[500] text-black">
+              {isAdmin ? "Admin" : "Employee"}
+            </strong>
+            <p className="text-xs">{user?.email}</p>
           </div>
         </div>
         <Button
@@ -178,12 +201,38 @@ function Sidebar() {
           );
         })}
       </div>
-      <div className="">
-        <a href="/" className="flex gap-6 items-center">
-          <LogOut className="text-gray-700 " size={20} />
-          <span>Log Out</span>
-        </a>
-      </div>
+      {user ? (
+        <div className="">
+          <button
+            className="flex gap-6 items-center w-full hover:bg-gray-200 py-2 px-1 rounded-md"
+            onClick={handleLogout}
+          >
+            {loading ? (
+              <Loader2 className="animate-spin mx-auto w-fit" />
+            ) : (
+              <>
+                <LogOut className="text-gray-700 " size={20} />
+                <span>Log Out</span>
+              </>
+            )}
+          </button>
+        </div>
+      ) : (
+        <Link
+          to={"/login"}
+          onClick={() => {
+            const menu = document.getElementById("menu");
+            if (menu) {
+              setTimeout(() => {
+                menu.classList.toggle("show");
+              }, 100);
+            }
+          }}
+          className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md`}
+        >
+          Login
+        </Link>
+      )}
     </div>
   );
 }
