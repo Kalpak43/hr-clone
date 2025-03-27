@@ -97,84 +97,123 @@ function EngageSheet() {
             </div>
           </div>
         </SheetHeader>
-        <SheetDescription className="px-4 overflow-y-auto space-y-4">
-          {
+        <SheetDescription className="px-4 overflow-y-auto space-y-4 divide-y">
+          <div className="pb-4">
             {
-              0: (
-                <PostCard
-                  handleClose={() => setFilter(-1)}
-                  saveToPosts={(post) => {
-                    setRecents((x) =>
-                      [...x, post].sort((a, b) => b.created_at - a.created_at)
-                    );
-                  }}
-                />
-              ),
-              1: (
-                <PollCard
-                  handleClose={() => setFilter(-1)}
-                  saveToPosts={(post) => {
-                    setRecents((x) =>
-                      [...x, post].sort((a, b) => b.created_at - a.created_at)
-                    );
-                  }}
-                />
-              ),
-              2: (
-                <PraiseCard
-                  handleClose={() => setFilter(-1)}
-                  saveToPosts={(post) => {
-                    setRecents((x) =>
-                      [...x, post].sort((a, b) => b.created_at - a.created_at)
-                    );
-                  }}
-                />
-              ),
-            }[filter]
-          }
+              {
+                0: (
+                  <PostCard
+                    handleClose={() => setFilter(-1)}
+                    saveToPosts={(post) => {
+                      setRecents((x) =>
+                        [...x, post].sort((a, b) => b.created_at - a.created_at)
+                      );
+                    }}
+                  />
+                ),
+                1: (
+                  <PollCard
+                    handleClose={() => setFilter(-1)}
+                    saveToPosts={(post) => {
+                      setRecents((x) =>
+                        [...x, post].sort((a, b) => b.created_at - a.created_at)
+                      );
+                    }}
+                  />
+                ),
+                2: (
+                  <PraiseCard
+                    handleClose={() => setFilter(-1)}
+                    saveToPosts={(post) => {
+                      setRecents((x) =>
+                        [...x, post].sort((a, b) => b.created_at - a.created_at)
+                      );
+                    }}
+                  />
+                ),
+              }[filter]
+            }
+          </div>
           <div className="space-y-4">
             {recents.map((recent) => {
-              if (recent.type == "post") return <SavedPost post={recent} />;
-              if (recent.type == "poll") return <SavedPoll post={recent} />;
-              if (recent.type == "praise") return <SavedPraise post={recent} />;
+              if (recent.type == "post")
+                return (
+                  <div className="">
+                    <SavedPost post={recent} />
+                    <p className="text-right text-xs">
+                      Only visible to your {recent.postedTo}
+                    </p>
+                  </div>
+                );
+              if (recent.type == "poll")
+                return (
+                  <div>
+                    <SavedPoll post={recent} />
+                    <p className="text-right text-xs">
+                      Only visible to your {recent.postedTo}
+                    </p>
+                  </div>
+                );
+              if (recent.type == "praise")
+                return (
+                  <div>
+                    <SavedPraise post={recent} />{" "}
+                    <p className="text-right text-xs">
+                      Only visible to your {recent.postedTo}
+                    </p>
+                  </div>
+                );
             })}
-            <SavedPost
-              post={{
-                content: "Hi",
-                created_at: new Date().getTime(),
-                type: "post",
-                anonymus: false,
-                postedTo: "organization",
-              }}
-            />
-            <SavedPoll
-              post={{
-                content: "Who will Win?",
-                options: ["KKR", "RCB", "MI"],
-                created_at: new Date().getTime(),
-                type: "poll",
-                anonymus: false,
-                postedTo: "organization",
-                expiresOn: new Date().getTime(),
-              }}
-            />
-            <SavedPraise
-              post={{
-                content: "Great Work",
-                mentions: [
-                  {
-                    name: "Alice Johnson",
-                    image: "https://i.pravatar.cc/150?img=1",
-                  },
-                ],
-                created_at: new Date().getTime(),
-                type: "praise",
-                anonymus: false,
-                postedTo: "organization",
-                badge: "/gold.svg",
-                project: "Project B",
-              }}
-            />
+            <div>
+              <SavedPost
+                post={{
+                  content: "Hi",
+                  created_at: new Date().getTime(),
+                  type: "post",
+                  anonymus: false,
+                  postedTo: "organization",
+                }}
+              />{" "}
+              <p className="text-right text-xs">
+                Only visible to your organization
+              </p>
+            </div>
+            <div>
+              <SavedPoll
+                post={{
+                  content: "Who will Win?",
+                  options: ["KKR", "RCB", "MI"],
+                  created_at: new Date().getTime(),
+                  type: "poll",
+                  anonymus: false,
+                  postedTo: "organization",
+                  expiresOn: new Date().getTime(),
+                }}
+              />{" "}
+              <p className="text-right text-xs">
+                Only visible to your department
+              </p>
+            </div>
+            <div>
+              <SavedPraise
+                post={{
+                  content: "Great Work",
+                  mentions: [
+                    {
+                      name: "Alice Johnson",
+                      image: "https://i.pravatar.cc/150?img=1",
+                    },
+                  ],
+                  created_at: new Date().getTime(),
+                  type: "praise",
+                  anonymus: false,
+                  postedTo: "organization",
+                  badge: "/gold.svg",
+                  project: "Project B",
+                }}
+              />
+              <p className="text-right text-xs">Only visible to your team</p>
+            </div>
           </div>
         </SheetDescription>
       </SheetContent>
@@ -430,6 +469,28 @@ export function PostCard({
     }
   };
 
+  const [openPicker, setOpenPicker] = useState(false);
+  const pickerRef = useRef<HTMLDivElement>(null);
+
+  // Close the picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setOpenPicker(false);
+      }
+    };
+
+    if (openPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openPicker]);
+
   return (
     <div className="border border-gray-300 rounded-md divide-y">
       <div className="p-4 flex flex-col  justify-between gap-4">
@@ -494,23 +555,27 @@ export function PostCard({
               onChange={handleImageChange}
             />
           </Button>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="icon">
-                <SmilePlus />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full overflow-y-auto p-2">
-              <Picker
-                data={data}
-                onEmojiSelect={handleEmojiSelect}
-                theme={"light"}
-                searchPosition="none" // Hide search bar
-                previewPosition="none" // Hide preview section
-                className=""
-              />
-            </PopoverContent>
-          </Popover>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setOpenPicker(true)}
+          >
+            <SmilePlus />
+          </Button>
+          {openPicker && (
+            <div className="fixed inset-0 z-40 bg-[#00000080] flex items-center  justify-center">
+              <div ref={pickerRef}>
+                <Picker
+                  data={data}
+                  onEmojiSelect={handleEmojiSelect}
+                  theme={"light"}
+                  searchPosition="none"
+                  previewPosition="none"
+                  className=""
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="p-4 flex  justify-end gap-4">
