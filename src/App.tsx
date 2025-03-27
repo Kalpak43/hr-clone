@@ -17,6 +17,7 @@ import {
   UserProtectedRoute,
 } from "./components/auth/ProtectedRoute";
 import { toast } from "sonner";
+import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -66,6 +67,7 @@ function App() {
         </Route>
       </Route>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/update-password" element={<UpdatePasswordPage />} />
     </Routes>
   );
 }
