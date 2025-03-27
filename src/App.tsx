@@ -7,8 +7,45 @@ import EmployeesPage from "./pages/EmployeesPage";
 import AttendancePage from "./pages/AttendancePage";
 import InboxPage from "./pages/InboxPage";
 import PayrollPage from "./pages/PayrollPage";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { useEffect } from "react";
+import { supabase } from "./supbase";
+import { authChanged } from "./features/auth/authThunk";
 
 function App() {
+  const dispatch = useAppDispatch();
+  // const { user, error } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_, session) => {
+        const currentUser = session?.user ?? null;
+        let isAdmin = false;
+        if (currentUser) {
+          isAdmin = currentUser.app_metadata.role === "admin";
+        }
+
+        dispatch(
+          authChanged({
+            user: currentUser,
+            isAdmin: isAdmin,
+          })
+        );
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (user) toast.success("Logged in Successfully");
+  // }, [user]);
+
+  // useEffect(() => {
+  //   if (error) toast.error(error);
+  // }, [error]);
   return (
     <Routes>
       <Route element={<Layout />}>
