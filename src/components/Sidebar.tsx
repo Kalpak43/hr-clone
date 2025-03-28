@@ -12,6 +12,7 @@ import {
   MessageSquareMore,
   PanelsTopLeft,
   Settings,
+  ShieldMinus,
   UserRoundPlus,
   Users,
   X,
@@ -36,23 +37,28 @@ function Sidebar() {
       links: [
         {
           icon: <House className="" size={20} />,
-          name: "/",
+          name: "dashboard",
+          path: "/",
         },
         {
           icon: <ClipboardList size={20} />,
           name: "tasks",
+          path: "/tasks",
         },
         {
           icon: <MessageSquareMore size={20} />,
           name: "inbox",
+          path: "/inbox",
         },
         {
           icon: <Calendar size={20} />,
           name: "calendar",
+          path: "/calendar",
         },
         {
           icon: <Folder size={20} />,
           name: "projects",
+          path: "/projects",
         },
       ],
     },
@@ -62,18 +68,22 @@ function Sidebar() {
         {
           icon: <Users size={20} />,
           name: "employees",
+          path: "/employees",
         },
         {
           icon: <BookText size={20} />,
           name: "attendance",
+          path: "/attendance",
         },
         {
           icon: <CreditCard size={20} />,
           name: "payroll",
+          path: "/payroll",
         },
         {
           icon: <UserRoundPlus size={20} />,
           name: "hiring",
+          path: "/hiring",
         },
       ],
     },
@@ -83,10 +93,17 @@ function Sidebar() {
         {
           icon: <Settings size={20} />,
           name: "settings",
+          path: "/settings",
+        },
+        {
+          icon: <ShieldMinus size={20} />,
+          name: "manage access",
+          path: "/manage-access",
         },
         {
           icon: <CircleHelp size={20} />,
           name: "help & support",
+          path: "/help",
         },
       ],
     },
@@ -95,7 +112,7 @@ function Sidebar() {
       item
     ): item is {
       title: string;
-      links: { icon: JSX.Element; name: string }[];
+      links: { icon: JSX.Element; name: string; path: string }[];
     } => Boolean(item)
   );
 
@@ -162,7 +179,7 @@ function Sidebar() {
                   return (
                     <Link
                       key={j + 100}
-                      to={link.name}
+                      to={link.path}
                       onClick={() => {
                         const menu = document.getElementById("menu");
                         if (menu) {
@@ -172,27 +189,20 @@ function Sidebar() {
                         }
                       }}
                       className={`flex w-full gap-4 hover:bg-gray-200 py-2 px-1 rounded-md ${
-                        link.name ==
-                          (location.pathname != "/"
-                            ? location.pathname.slice(1)
-                            : location.pathname) && "text-black font-[600]"
+                        link.path == location.pathname &&
+                        "text-black font-[600]"
                       }`}
                     >
                       <span
                         className={
-                          link.name ==
-                          (location.pathname != "/"
-                            ? location.pathname.slice(1)
-                            : location.pathname)
+                          link.path == location.pathname
                             ? "text-black"
                             : "text-gray-500"
                         }
                       >
                         {link.icon}
                       </span>
-                      <span className="capitalize">
-                        {link.name == "/" ? "Dashboard" : link.name}
-                      </span>
+                      <span className="capitalize">{link.name}</span>
                     </Link>
                   );
                 })}
