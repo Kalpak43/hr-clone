@@ -39,7 +39,7 @@ interface PostType {
   project?: string;
 }
 
-interface Employee {
+interface FEmployee {
   profile: File | null;
   work_email: string;
   email: string;
@@ -66,7 +66,7 @@ interface Employee {
   password: string;
 }
 
-interface EmployeeWithId extends Employee {
+interface EmployeeWithId extends FEmployee {
   id: number;
   profile: string;
   uuid: string;

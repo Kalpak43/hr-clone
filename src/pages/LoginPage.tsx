@@ -10,8 +10,6 @@ import { useNavigate } from "react-router";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,

@@ -14,42 +14,40 @@ import {
 
 interface StepperProps {
   steps: string[];
-  initialStep?: number;
+  currentStep?: number;
+  handleNext: () => void;
+  handlePrev: () => void;
 }
 
-export function Stepper({ steps, initialStep = 0 }: StepperProps) {
-  const [currentStep, setCurrentStep] = useState(initialStep);
+export function Stepper({
+  steps,
+  currentStep = 0,
+  handleNext,
+  handlePrev,
+}: StepperProps) {
+  // const [currentStep, setCurrentStep] = useState(initialStep);
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const handleStepClick = (index: number) => {
-    setCurrentStep(index);
-  };
+  // const handleStepClick = (index: number) => {
+  //   setCurrentStep(index);
+  // };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8">
-        <div className="flex items-center  justify-center w-full" >
+        <div className="flex items-center  justify-center w-full">
           {steps.map((step, index) => (
-            <div key={index} className="flex items-center justify-center flex-1 relative">
+            <div
+              key={index}
+              className="flex items-center justify-center flex-1 relative"
+            >
               <div
                 className={cn(
                   "flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors cursor-pointer",
                   index <= currentStep
-                    ? "bg-primary border-primary text-primary-foreground"
+                    ? "bg-blue-400 border-blue-400 text-primary-foreground"
                     : "border-muted-foreground/30 text-muted-foreground bg-white"
                 )}
-                onClick={() => handleStepClick(index)}
+                // onClick={() => handleStepClick(index)}
               >
                 {index < currentStep ? (
                   <Check className="h-5 w-5" />
@@ -63,7 +61,7 @@ export function Stepper({ steps, initialStep = 0 }: StepperProps) {
                   className={cn(
                     "h-1 w-full transition-colors absolute z-[-1] translate-x-1/2",
                     index < currentStep
-                      ? "bg-primary"
+                      ? "bg-blue-400"
                       : "bg-muted-foreground/30"
                   )}
                 />
@@ -88,34 +86,6 @@ export function Stepper({ steps, initialStep = 0 }: StepperProps) {
           ))}
         </div>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>{steps[currentStep]}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* Content for each step would go here */}
-          <div className="min-h-[200px]">
-            <p>Content for {steps[currentStep]}</p>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentStep === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={handleNext}
-            disabled={currentStep === steps.length - 1}
-          >
-            Next
-            <ChevronRight className="ml-1 h-4 w-4" />
-          </Button>
-        </CardFooter>
-      </Card>
     </div>
   );
 }

@@ -69,7 +69,7 @@ const signupUser = async (email: string, password: string) => {
   return data.user.id;
 };
 
-export const saveEmployeeData = async (employee: Employee) => {
+export const saveEmployeeData = async (employee: FEmployee) => {
   const uuid = await signupUser(employee.work_email, employee.password);
 
   console.log(1, uuid);
