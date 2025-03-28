@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import {
   FilePenLine,
   Medal,
+  Newspaper,
   Plus,
   SendHorizonal,
   ThumbsUp,
@@ -60,9 +61,9 @@ function EngageSheet() {
         <Button
           className="absolute bottom-0 right-4 bg-blue-400 hover:bg-blue-500"
           variant="default"
+          size={"icon"}
         >
-          <Plus className="" />
-          Engage
+          <Newspaper className="" />
         </Button>
       </SheetTrigger>
       <SheetContent className="md:max-w-md pb-4">

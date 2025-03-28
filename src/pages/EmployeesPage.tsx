@@ -1,10 +1,21 @@
 import EmployeeCard from "@/components/EmployeeCard";
 import { Switch } from "@/components/ui/switch";
 import { orgTree } from "@/data";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 import Tree from "react-d3-tree";
 import EngageSheet from "@/components/EngageSheet";
+import { Button } from "@/components/ui/button";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import EmployeeModal from "@/components/EmployeeModal";
 
 // Custom "Not Found" Card
 const NotFoundCard = () => (
@@ -160,15 +171,29 @@ function EmployeesPage() {
         />
       </div>
 
-      <div className="absolute top-2 md:top-8 right-2 md:right-8 flex items-center">
-        <label className="mr-2 text-sm font-medium text-gray-700">
-          Group by Department
-        </label>
-        <Switch
-          checked={groupByDepartment}
-          onCheckedChange={setGroupByDepartment}
-          className="data-[state=checked]:bg-blue-400"
-        />
+      <div className="absolute top-2 md:top-8 right-2 md:right-8 flex items-center gap-4">
+        <div className=" flex items-center gap-2">
+          <Switch
+            checked={groupByDepartment}
+            onCheckedChange={setGroupByDepartment}
+            className="data-[state=checked]:bg-blue-400"
+          />
+          <label className="mr-2 text-sm font-medium text-gray-700">
+            Group by Department
+          </label>
+        </div>
+
+        <Dialog>
+          <DialogTrigger>
+            <Button className="bg-blue-400 hover:bg-blue-500" variant="default">
+              <Plus className="" />
+              Add Employee
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="min-w-4xl">
+            <EmployeeModal />
+          </DialogContent>
+        </Dialog>
       </div>
       <EngageSheet />
       {/* Org Tree */}

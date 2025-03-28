@@ -797,13 +797,13 @@ function EmployeePieChart() {
   return (
     <div className="border border-gray-300 rounded-md p-4 bg-white space-y-8">
       <div className="flex items-center justify-between">
-        <p className="">View Average base pay</p>
+        <p className="text-lg font-[600]">View Average base pay</p>
       </div>
       <div className="grid grid-cols-3  divide-x">
         <div className="p-4 space-y-4">
           {/* Location Select */}
           <div>
-            <p className="font-[600]">Department</p>
+            <p className="font-[600]">Location</p>
             <Select
               value={location}
               onValueChange={(value) => setLocation(value)}
@@ -822,7 +822,7 @@ function EmployeePieChart() {
           </div>
           {/* Department Select */}
           <div>
-            <p className="font-[600]">Location</p>
+            <p className="font-[600]">Department</p>
             <Select
               value={department}
               onValueChange={(value) => setDepartment(value)}
@@ -865,14 +865,6 @@ function EmployeePieChart() {
             <div>
               <p className="">Average Pay Distrubution</p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="mt-6 p-4 border rounded-md bg-gray-50">
-                  <h3 className="font-semibold text-lg mb-2">
-                    Total Average Pay
-                  </h3>
-                  <p className="text-2xl font-bold text-primary">
-                    {formatCurrency(totalAveragePay)}
-                  </p>
-                </div>
                 <div>
                   <ChartContainer
                     config={salConfig}
@@ -918,6 +910,12 @@ function EmployeePieChart() {
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className="h-full flex flex-col justify-center">
+                  <p className="uppercase">Total Average Pay</p>
+                  <p className="font-[600]">
+                    {formatCurrency(totalAveragePay)}
+                  </p>
                 </div>
               </div>
             </div>

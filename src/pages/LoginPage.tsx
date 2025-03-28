@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { login } from "@/features/auth/authThunk";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -23,6 +23,7 @@ function LoginPage() {
   const dipatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hide, setHide] = useState(true);
 
   const { user, isAdmin, loading } = useAppSelector((state) => state.auth);
 
@@ -64,12 +65,21 @@ function LoginPage() {
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Password</Label>
-              <Input
-                type="password"
-                placeholder="******"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="relative">
+                <Input
+                  type={hide ? "password" : "text"}
+                  placeholder="******"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  className="absolute right-2 inset-y-0 text-gray-500"
+                  onClick={() => setHide((x) => !x)}
+                  type="button"
+                >
+                  {hide ? <Eye size={16} /> : <EyeOff size={16} />}
+                </button>
+              </div>
             </div>
 
             <div className="text-right">

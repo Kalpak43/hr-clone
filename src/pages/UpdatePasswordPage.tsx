@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/supbase";
-import { Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -11,6 +11,7 @@ function UpdatePasswordPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hide, setHide] = useState(true);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -40,12 +41,21 @@ function UpdatePasswordPage() {
           <form action="" className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Password</Label>
-              <Input
-                type="password"
-                placeholder="******"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="relative">
+                <Input
+                  type={hide ? "password" : "text"}
+                  placeholder="******"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />{" "}
+                <button
+                  className="absolute right-2 inset-y-0 text-gray-500"
+                  onClick={() => setHide((x) => !x)}
+                  type="button"
+                >
+                  {hide ? <Eye size={16} /> : <EyeOff size={16} />}
+                </button>
+              </div>
             </div>
 
             <Button className="w-full bg-blue-400 hover:bg-blue-500">
