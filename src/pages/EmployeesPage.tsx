@@ -2,20 +2,16 @@ import EmployeeCard from "@/components/EmployeeCard";
 import { Switch } from "@/components/ui/switch";
 import { orgTree } from "@/data";
 import { Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import EngageSheet from "@/components/EngageSheet";
 import { Button } from "@/components/ui/button";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import EmployeeModal from "@/components/EmployeeModal";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { fetchEmployees } from "@/features/employee/employeeThunk";
+import { mergeEmployeesWithOrgTree } from "@/utils";
 
 // Custom "Not Found" Card
 const NotFoundCard = () => (
@@ -28,34 +24,12 @@ const NotFoundCard = () => (
 );
 
 function EmployeesPage() {
+  const dispatch = useAppDispatch();
+  const employees = useAppSelector((state) => state.employee.employees);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredTree, setFilteredTree] = useState(orgTree);
+  const [filteredTree, setFilteredTree] = useState<OrgNode>(orgTree);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [groupByDepartment, setGroupByDepartment] = useState(false);
-
-  const filterTree = (
-    node: any,
-    query: string,
-    parentExpanded = false
-  ): any => {
-    if (!node) return null;
-
-    const isMatch =
-      node.name.toLowerCase().includes(query.toLowerCase()) ||
-      node.position.toLowerCase().includes(query.toLowerCase()) ||
-      node.email.toLowerCase().includes(query.toLowerCase());
-
-    const filteredChildren = node.children
-      ?.map((child: any) => filterTree(child, query, isMatch || parentExpanded))
-      .filter(Boolean);
-
-    if (isMatch || filteredChildren?.length) {
-      if (isMatch) expandedNodes.add(node.name); // Mark matched node for expansion
-      return { ...node, children: filteredChildren || [] };
-    }
-
-    return null;
-  };
 
   const groupEmployeesByDepartment = (tree: any) => {
     const departmentMap = new Map();
@@ -83,6 +57,57 @@ function EmployeesPage() {
       name: "Departments",
       children: Array.from(departmentMap.values()),
     };
+  };
+
+  const [transformedTree, setTransformedTree] = useState(
+    groupByDepartment ? groupEmployeesByDepartment(filteredTree) : filteredTree
+  );
+
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (employees.length > 0) {
+      const newTree = mergeEmployeesWithOrgTree(orgTree, employees);
+      setFilteredTree(newTree);
+    }
+  }, [employees]);
+
+  useEffect(() => {
+    setTransformedTree(
+      groupByDepartment
+        ? groupEmployeesByDepartment(filteredTree)
+        : filteredTree
+    );
+  }, [filteredTree]);
+
+  useEffect(() => {
+    console.log(transformedTree);
+  }, [transformedTree]);
+
+  const filterTree = (
+    node: any,
+    query: string,
+    parentExpanded = false
+  ): any => {
+    if (!node) return null;
+
+    const isMatch =
+      node.name.toLowerCase().includes(query.toLowerCase()) ||
+      node.position.toLowerCase().includes(query.toLowerCase()) ||
+      node.email.toLowerCase().includes(query.toLowerCase());
+
+    const filteredChildren = node.children
+      ?.map((child: any) => filterTree(child, query, isMatch || parentExpanded))
+      .filter(Boolean);
+
+    if (isMatch || filteredChildren?.length) {
+      if (isMatch) expandedNodes.add(node.name); // Mark matched node for expansion
+      return { ...node, children: filteredChildren || [] };
+    }
+
+    return null;
   };
 
   // Handle search input
@@ -152,10 +177,6 @@ function EmployeesPage() {
       </g>
     );
   };
-
-  const transformedTree = groupByDepartment
-    ? groupEmployeesByDepartment(filteredTree)
-    : filteredTree;
 
   return (
     <div className="py-4 space-y-4 text-sm overflow-y-auto h-full relative">

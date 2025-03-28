@@ -18,6 +18,7 @@ import {
 } from "./components/auth/ProtectedRoute";
 import { toast } from "sonner";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
+import AccessPage from "./pages/AccessPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -63,6 +64,7 @@ function App() {
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/manage-access" element={<AccessPage />} />
           </Route>
         </Route>
       </Route>

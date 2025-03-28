@@ -499,3 +499,54 @@ export const createEmployeeSchema = [
     }),
   }),
 ];
+
+
+export function mergeEmployeesWithOrgTree(
+  orgTree: OrgNode,
+  employees: EmployeeWithId[]
+): OrgNode {
+  // Helper function to find a node in the orgTree by supervisor name
+  function findNodeByName(
+    node: OrgNode,
+    supervisorName: string
+  ): OrgNode | null {
+    if (node.name === supervisorName) {
+      return node;
+    }
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        const result = findNodeByName(child, supervisorName);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  // Traverse employees and add them to the orgTree
+  employees.forEach((employee) => {
+    const supervisorName = employee.supervisor;
+    const supervisorNode = findNodeByName(orgTree, supervisorName);
+
+    if (supervisorNode) {
+      const newEmployeeNode: OrgNode = {
+        id: Date.now(), // Generate a unique ID
+        name: `${employee.first_name} ${employee.last_name}`,
+        position: employee.job_title,
+        department: employee.department,
+        contact: employee.phone_number,
+        email: employee.work_email,
+        image: !!employee.profile.trim()
+          ? employee.profile
+          : "https://i.pravatar.cc/150?img=placeholder",
+        children: [],
+      };
+      supervisorNode.children.push(newEmployeeNode);
+    } else {
+      console.warn(`Supervisor "${supervisorName}" not found in the orgTree.`);
+    }
+  });
+
+  return orgTree;
+}

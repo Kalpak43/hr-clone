@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { toast } from "sonner";
+import { employeeList } from "@/data";
 
 const steps = ["Basic Details", "Job Details", "Work Details"];
 
@@ -345,6 +346,7 @@ export function JobDetailsField({
       "Logistics Coordinator",
       "Quality Assurance",
     ],
+    humanResources: ["HR Manager", "Recruiter", "Training Coordinator"],
   };
 
   const [jobTitles, setJobTitles] = useState<string[]>([]);
@@ -412,6 +414,32 @@ export function JobDetailsField({
       </div>
 
       <div className="flex flex-col">
+        <label htmlFor="supervisor" className="text-xs">
+          Supervisor
+        </label>
+        <Select
+          onValueChange={(value) => formik.setFieldValue("supervisor", value)}
+          value={formik.values.supervisor}
+        >
+          <SelectTrigger id="supervisor" className="w-full">
+            <SelectValue placeholder="Select Job Title" />
+          </SelectTrigger>
+          <SelectContent>
+            {employeeList.map((e) => (
+              <SelectItem key={e.name} value={e.name}>
+                {e.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {formik.touched.supervisor && formik.errors.supervisor && (
+          <p className="mt-1 text-sm text-red-500">
+            {formik.errors.supervisor}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col">
         <label htmlFor="type" className="text-xs">
           Type
         </label>
@@ -430,29 +458,6 @@ export function JobDetailsField({
         </Select>
         {formik.touched.type && formik.errors.type && (
           <p className="mt-1 text-sm text-red-500">{formik.errors.type}</p>
-        )}
-      </div>
-
-      <div className="flex flex-col">
-        <label htmlFor="supervisor" className="text-xs">
-          Supervisor
-        </label>
-        <Input
-          id="supervisor"
-          name="supervisor"
-          value={formik.values.supervisor}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className={`${
-            formik.touched.supervisor && formik.errors.supervisor
-              ? "border-red-500"
-              : ""
-          }`}
-        />
-        {formik.touched.supervisor && formik.errors.supervisor && (
-          <p className="mt-1 text-xs text-red-500">
-            {formik.errors.supervisor}
-          </p>
         )}
       </div>
 

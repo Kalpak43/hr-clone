@@ -76,3 +76,14 @@ interface EmployeeWithId extends FEmployee {
 interface EditableEmployee extends EmployeeWithId {
   profile: string | File;
 }
+
+interface OrgNode {
+  id: number;
+  name: string;
+  position: string;
+  department: string;
+  contact: string;
+  email: string;
+  image: string;
+  children: OrgNode[];
+}
