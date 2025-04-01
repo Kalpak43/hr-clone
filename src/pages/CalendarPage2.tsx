@@ -3,7 +3,7 @@ import { CalendarView } from "@/components/calendar/CalendarView";
 import { eventData } from "@/data";
 import { useState, useCallback, useEffect } from "react";
 
-function CalendarPage() {
+function CalendarPage2() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [holidays, setHolidays] = useState<any>({});
   const [events, setEvents] = useState(eventData || []);
@@ -18,28 +18,6 @@ function CalendarPage() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  //   useEffect(() => {
-  //     const fetchHolidays = async () => {
-  //       try {
-  //         const apiKey = import.meta.env.VITE_CALENDAR_KEY;
-  //         const response = await fetch(
-  //           `https://calendarific.com/api/v2/holidays?&api_key=${apiKey}&country=IN&year=${year}`
-  //         );
-  //         const data = await response.json();
-  //         if (data.response && data.response.holidays) {
-  //           const formattedHolidays: { [key: string]: string } = {};
-  //           data.response.holidays.forEach((holiday: any) => {
-  //             formattedHolidays[holiday.date.iso] = holiday.name;
-  //           });
-  //           setHolidays(formattedHolidays);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching holidays:", error);
-  //       }
-  //     };
-
-  //     fetchHolidays();
-  //   }, [year]);
 
   const goToPreviousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -119,4 +97,4 @@ function CalendarPage() {
   );
 }
 
-export default CalendarPage;
+export default CalendarPage2;

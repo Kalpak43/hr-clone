@@ -21,6 +21,7 @@ import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import AccessPage from "./pages/AccessPage";
 import HiringPage from "./pages/HiringPage";
 import CalendarPage from "./pages/CalendarPage";
+import CalendarPage2 from "./pages/CalendarPage2";
 
 function App() {
   const dispatch = useAppDispatch();
