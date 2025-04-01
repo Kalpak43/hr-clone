@@ -1,5 +1,5 @@
 import { Info, Search } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectTrigger,
@@ -16,62 +16,126 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { supabase } from "@/supbase";
+import { initialRoutes, roleToJobTitles } from "@/data";
 
-const roleToJobTitles = {
-  dev: ["Software Developer", "System Analyst", "Data Scientist"],
-  manager: ["Operations Manager", "Logistics Coordinator", "Quality Assurance"],
-  finance: ["Accountant", "Financial Analyst", "Auditor"],
-  engineering: ["Mechanical Engineer", "Civil Engineer", "Electrical Engineer"],
-  admin: ["CEO", "CTO", "CFO"],
-  hr: ["HR Manager", "Recruiter", "Training Coordinator"],
-};
+// const insertRoutesToSupabase = async () => {
+//   const routeEntries = initialRoutes.flatMap((route) =>
+//     route.roles.map((role) => ({
+//       route: route.path,
+//       role: role,
+//     }))
+//   );
 
-// Routes with roles
-const initialRoutes = [
-  {
-    path: "/",
-    element: "HomePage",
-    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
-  },
-  {
-    path: "/inbox/:mailID?",
-    element: "InboxPage",
-    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
-  },
-  {
-    path: "/employees",
-    element: "EmployeesPage",
-    roles: ["admin", "manager", "hr"],
-  },
-  {
-    path: "/attendance",
-    element: "AttendancePage",
-    roles: ["admin", "manager", "hr"],
-  },
-  { path: "/payroll", element: "PayrollPage", roles: ["admin", "finance"] },
-  { path: "/manage-access", element: "AccessPage", roles: ["admin"] },
-  { path: "/login", element: "LoginPage", roles: [] },
-  {
-    path: "/update-password",
-    element: "UpdatePasswordPage",
-    roles: ["admin", "dev", "manager", "finance", "hr"],
-  },
-];
+//   // Fetch existing entries from Supabase
+//   const { data: existingEntries, error: fetchError } = await supabase
+//     .from("route_access")
+//     .select("route, role");
+
+//   if (fetchError) {
+//     console.error("Error fetching existing entries:", fetchError);
+//     return;
+//   }
+
+//   // Convert existing entries into a Set for quick lookup
+//   const existingSet = new Set(
+//     existingEntries.map((entry) => `${entry.route}-${entry.role}`)
+//   );
+
+//   // Filter out entries that already exist
+//   const newEntries = routeEntries.filter(
+//     (entry) => !existingSet.has(`${entry.route}-${entry.role}`)
+//   );
+
+//   if (newEntries.length === 0) {
+//     console.log("No new routes to insert. Everything is up to date.");
+//     return;
+//   }
+
+//   // Insert only the new entries
+//   const { data, error } = await supabase
+//     .from("route_access")
+//     .insert(newEntries);
+
+//   if (error) {
+//     console.error("Error inserting routes:", error);
+//   } else {
+//     console.log("Routes inserted successfully:", data);
+//   }
+// };
 
 function AccessPage() {
   const [selectedRole, setSelectedRole] = useState("dev");
   const [routes, setRoutes] = useState(initialRoutes);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch allowed routes for the selected role
+  useEffect(() => {
+    const fetchAllowedRoutes = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("route_access")
+        .select("route")
+        .eq("role", selectedRole);
+
+      if (error) {
+        console.error("Error fetching allowed routes:", error);
+        setLoading(false);
+        return;
+      }
+
+      const allowedRoutes = data.map((entry) => entry.route);
+
+      // Update the routes state to reflect fetched permissions
+      setRoutes((prevRoutes) =>
+        prevRoutes.map((route) => ({
+          ...route,
+          roles: allowedRoutes.includes(route.path) ? [selectedRole] : [],
+        }))
+      );
+
+      setLoading(false);
+    };
+
+    fetchAllowedRoutes();
+  }, [selectedRole]);
 
   // Toggle role access for a specific route
-  const toggleRoleAccess = (routePath: string, role: string) => {
+  const toggleRoleAccess = async (routePath: string) => {
+    const isCurrentlyAllowed = routes
+      .find((route) => route.path === routePath)
+      ?.roles.includes(selectedRole);
+
+    if (isCurrentlyAllowed) {
+      // Remove access
+      const { error } = await supabase
+        .from("route_access")
+        .delete()
+        .match({ route: routePath, role: selectedRole });
+
+      if (error) {
+        console.error("Error removing access:", error);
+        return;
+      }
+    } else {
+      // Add access
+      const { error } = await supabase
+        .from("route_access")
+        .insert([{ route: routePath, role: selectedRole }]);
+
+      if (error) {
+        console.error("Error granting access:", error);
+        return;
+      }
+    }
+
+    // Refresh the allowed routes
     setRoutes((prevRoutes) =>
       prevRoutes.map((route) =>
         route.path === routePath
           ? {
               ...route,
-              roles: route.roles.includes(role)
-                ? route.roles.filter((r) => r !== role) // Remove role
-                : [...route.roles, role], // Add role
+              roles: isCurrentlyAllowed ? [] : [selectedRole],
             }
           : route
       )
@@ -107,34 +171,39 @@ function AccessPage() {
 
         {/* Permissions Table */}
         <div className="overflow-x-auto border rounded">
-          <Table className="w-full text-left text-sm">
-            <TableHeader>
-              <TableRow className="bg-gray-100">
-                <TableHead className="px-4 py-2">Routes</TableHead>
-                <TableHead className="px-4 py-2 text-center">
-                  Can View
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {routes.map((route) => (
-                <TableRow key={route.path} className="hover:bg-gray-50">
-                  <TableCell className="px-4 py-2 border-gray-200">
-                    {route.path}
-                  </TableCell>
-                  <TableCell className="px-4 py-2 text-center border-gray-200">
-                    <Checkbox
-                      checked={route.roles.includes(selectedRole)}
-                      onCheckedChange={() =>
-                        toggleRoleAccess(route.path, selectedRole)
-                      }
-                      className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white"
-                    />
-                  </TableCell>
+          {loading ? (
+            <p className="text-center py-4">Loading routes...</p>
+          ) : (
+            <Table className="w-full text-left text-sm">
+              <TableHeader>
+                <TableRow className="bg-gray-100 divide-x">
+                  <TableHead className="px-4 py-2">Routes</TableHead>
+                  <TableHead className="px-4 py-2 text-center">
+                    Can View
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {routes.map((route) => (
+                  <TableRow
+                    key={route.path}
+                    className="hover:bg-gray-50 divide-x"
+                  >
+                    <TableCell className="px-4 py-2 border-gray-200">
+                      {route.path}
+                    </TableCell>
+                    <TableCell className="px-4 py-2 text-center border-gray-200">
+                      <Checkbox
+                        checked={route.roles.includes(selectedRole)}
+                        onCheckedChange={() => toggleRoleAccess(route.path)}
+                        className="data-[state=checked]:bg-blue-400 data-[state=checked]:border-white"
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </div>
       </div>
     </div>

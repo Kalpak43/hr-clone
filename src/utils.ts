@@ -500,7 +500,6 @@ export const createEmployeeSchema = [
   }),
 ];
 
-
 export function mergeEmployeesWithOrgTree(
   orgTree: OrgNode,
   employees: EmployeeWithId[]
@@ -524,17 +523,42 @@ export function mergeEmployeesWithOrgTree(
     return null;
   }
 
+  // Helper function to check if an employee ID already exists in the orgTree
+  function doesEmployeeIdExist(node: OrgNode, employeeId: number): boolean {
+    if (node.id === employeeId) {
+      return true;
+    }
+    if (node.children && node.children.length > 0) {
+      for (const child of node.children) {
+        if (doesEmployeeIdExist(child, employeeId)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   // Traverse employees and add them to the orgTree
   employees.forEach((employee) => {
     const supervisorName = employee.supervisor;
     const supervisorNode = findNodeByName(orgTree, supervisorName);
 
     if (supervisorNode) {
+      // Check if the employee ID already exists
+      if (doesEmployeeIdExist(orgTree, employee.id)) {
+        console.warn(
+          `Employee with ID "${employee.id}" already exists in the orgTree.`
+        );
+        return;
+      }
+
       const newEmployeeNode: OrgNode = {
-        id: Date.now(), // Generate a unique ID
+        id: employee.id, // Use the provided employee ID
         name: `${employee.first_name} ${employee.last_name}`,
         position: employee.job_title,
-        department: employee.department,
+        department:
+          employee.department[0].toLocaleUpperCase() +
+          employee.department.slice(1),
         contact: employee.phone_number,
         email: employee.work_email,
         image: !!employee.profile.trim()

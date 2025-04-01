@@ -818,3 +818,55 @@ export const payDistribution = [
     totalPay: 660000,
   },
 ];
+
+export const roleToJobTitles = {
+  admin: ["CEO", "CTO", "CFO"],
+  dev: ["Software Developer", "System Analyst", "Data Scientist"],
+  manager: ["Operations Manager", "Logistics Coordinator", "Quality Assurance"],
+  finance: ["Accountant", "Financial Analyst", "Auditor"],
+  engineering: ["Mechanical Engineer", "Civil Engineer", "Electrical Engineer"],
+  hr: ["HR Manager", "Recruiter", "Training Coordinator"],
+};
+
+// Routes with roles
+export const initialRoutes = [
+  {
+    path: "/",
+    element: "HomePage",
+    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
+  },
+  {
+    path: "/tasks",
+    element: "TasksPage",
+    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
+  },
+  {
+    path: "/inbox",
+    element: "InboxPage",
+    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
+  },
+  {
+    path: "/projects",
+    element: "ProjectsPage",
+    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
+  },
+  {
+    path: "/employees",
+    element: "EmployeesPage",
+    roles: ["admin", "manager", "hr"],
+  },
+  {
+    path: "/attendance",
+    element: "AttendancePage",
+    roles: ["admin", "manager", "hr"],
+  },
+  {
+    path: "/payroll",
+    element: "PayrollPage",
+    roles: ["admin", "finance", "hr"],
+  },
+  { path: "/hiring", element: "HiringPage", roles: ["admin", "finance", "hr"] },
+  { path: "/manage-access", element: "AccessPage", roles: ["admin"] },
+  { path: "/settings", element: "AccessPage", roles: ["admin"] },
+  { path: "/help", element: "AccessPage", roles: ["admin"] },
+];

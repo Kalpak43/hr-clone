@@ -2,7 +2,7 @@ import EmployeeCard from "@/components/EmployeeCard";
 import { Switch } from "@/components/ui/switch";
 import { orgTree } from "@/data";
 import { Plus, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import EngageSheet from "@/components/EngageSheet";
 import { Button } from "@/components/ui/button";
@@ -26,65 +26,96 @@ const NotFoundCard = () => (
 function EmployeesPage() {
   const dispatch = useAppDispatch();
   const employees = useAppSelector((state) => state.employee.employees);
+  const loading = useAppSelector((state) => state.employee.loading);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTree, setFilteredTree] = useState<OrgNode>(orgTree);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [groupByDepartment, setGroupByDepartment] = useState(false);
 
-  const groupEmployeesByDepartment = (tree: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Function to handle closing the dialog
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const groupEmployeesByDepartment = useCallback((tree: any) => {
     const departmentMap = new Map();
 
     const traverse = (node: any) => {
       if (!node) return;
 
-      if (!departmentMap.has(node.department)) {
-        departmentMap.set(node.department, {
-          name: node.department,
+      // Handle root node case
+      if (!node.department) {
+        node.children?.forEach(traverse);
+        return;
+      }
+
+      const deptName = node.department;
+      if (!departmentMap.has(deptName)) {
+        departmentMap.set(deptName, {
+          name: deptName,
           children: [],
         });
       }
 
-      departmentMap
-        .get(node.department)
-        .children.push({ ...node, children: [] });
+      // Create a new node object with preserved children
+      const newNode = {
+        ...node,
+        children: node.children || [], // Preserve existing children
+      };
 
+      departmentMap.get(deptName).children.push(newNode);
+
+      // Continue traversing children
       node.children?.forEach(traverse);
     };
 
     traverse(tree);
 
-    return {
-      name: "Departments",
-      children: Array.from(departmentMap.values()),
-    };
-  };
+    // Only create department grouping if we have departments
+    if (departmentMap.size > 0) {
+      return {
+        name: "Departments",
+        children: Array.from(departmentMap.values()),
+      };
+    }
 
+    // Return original tree if no departments
+    return tree;
+  }, []);
+
+  // Initialize transformedTree after filteredTree is defined
   const [transformedTree, setTransformedTree] = useState(
     groupByDepartment ? groupEmployeesByDepartment(filteredTree) : filteredTree
   );
 
   useEffect(() => {
+    console.log(transformedTree);
+    console.log("transformed");
+  }, [transformedTree]);
+
+  // Fetch employees on component mount
+  useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
 
+  // Update filteredTree when employees change
   useEffect(() => {
     if (employees.length > 0) {
       const newTree = mergeEmployeesWithOrgTree(orgTree, employees);
-      setFilteredTree(newTree);
+      setFilteredTree({ ...newTree });
     }
   }, [employees]);
 
+  // Update transformedTree when filteredTree or groupByDepartment changes
   useEffect(() => {
-    setTransformedTree(
-      groupByDepartment
-        ? groupEmployeesByDepartment(filteredTree)
-        : filteredTree
-    );
-  }, [filteredTree]);
+    const newTransformedTree = groupByDepartment
+      ? groupEmployeesByDepartment(filteredTree)
+      : filteredTree;
 
-  useEffect(() => {
-    console.log(transformedTree);
-  }, [transformedTree]);
+    setTransformedTree(newTransformedTree);
+  }, [filteredTree, groupByDepartment]);
 
   const filterTree = (
     node: any,
@@ -94,9 +125,9 @@ function EmployeesPage() {
     if (!node) return null;
 
     const isMatch =
-      node.name.toLowerCase().includes(query.toLowerCase()) ||
-      node.position.toLowerCase().includes(query.toLowerCase()) ||
-      node.email.toLowerCase().includes(query.toLowerCase());
+      node.name?.toLowerCase().includes(query.toLowerCase()) ||
+      node.position?.toLowerCase().includes(query.toLowerCase()) ||
+      node.email?.toLowerCase().includes(query.toLowerCase());
 
     const filteredChildren = node.children
       ?.map((child: any) => filterTree(child, query, isMatch || parentExpanded))
@@ -113,21 +144,21 @@ function EmployeesPage() {
   // Handle search input
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
-    setSearchTerm(!query.trim() ? "" : query);
-    if (!query.trim()) return;
-    expandedNodes.clear(); // Reset expanded nodes on new search
+    setSearchTerm(query);
 
-    let newTree;
-    if (!query) {
-      newTree = groupByDepartment
-        ? groupEmployeesByDepartment(orgTree)
-        : orgTree;
-    } else {
-      newTree = filterTree(orgTree, query);
-      if (!newTree) newTree = { name: "No results found", children: [] };
+    if (!query.trim()) {
+      // Reset to original tree when search is cleared
+      setFilteredTree(orgTree);
+      return;
     }
 
-    setFilteredTree(newTree);
+    expandedNodes.clear(); // Reset expanded nodes on new search
+
+    const newTree = filterTree(orgTree, query);
+    if (newTree) {
+      setFilteredTree(newTree);
+    }
+
     setExpandedNodes(new Set(expandedNodes)); // Trigger re-render
   };
 
@@ -136,10 +167,11 @@ function EmployeesPage() {
     const isExpanded =
       !nodeDatum.__rd3t?.collapsed ||
       !nodeDatum.children ||
-      (nodeDatum.children && nodeDatum.children.length == 0);
+      (nodeDatum.children && nodeDatum.children.length === 0);
 
     const isDepartment =
       !nodeDatum.position && !nodeDatum.email && !nodeDatum.contact;
+
     return (
       <g onClick={toggleNode} style={{ cursor: "pointer" }}>
         {/* Circle for the node */}
@@ -154,7 +186,7 @@ function EmployeesPage() {
         />
 
         {/* Employee Details */}
-        <foreignObject x={30} y={-15} width={300} height={300}>
+        <foreignObject x={30} y={-15} width={350} height={300}>
           {isDepartment ? (
             <div className="p-3 bg-purple-100 border border-purple-400 rounded-lg shadow-md text-center">
               <h3 className="text-md font-bold text-purple-700">
@@ -204,32 +236,40 @@ function EmployeesPage() {
           </label>
         </div>
 
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger>
-            <Button className="bg-blue-400 hover:bg-blue-500" variant="default">
-              <Plus className="" />
+            <Button
+              className="bg-blue-400 hover:bg-blue-500"
+              variant="default"
+              onClick={() => setIsOpen(true)} // Open the dialog on button click
+            >
+              <Plus />
               Add Employee
             </Button>
           </DialogTrigger>
           <DialogContent className="min-w-4xl">
-            <EmployeeModal />
+            {/* Pass handleClose to EmployeeModal if it needs to close the dialog */}
+            <EmployeeModal onClose={handleClose} />
           </DialogContent>
         </Dialog>
       </div>
       <EngageSheet />
       {/* Org Tree */}
-      <div className="w-full h-full">
-        <Tree
-          data={transformedTree}
-          orientation="vertical"
-          renderCustomNodeElement={renderCustomNode}
-          separation={{ siblings: 4, nonSiblings: 5 }}
-          collapsible={true}
-          translate={{ x: 400, y: 200 }}
-          zoom={0.8}
-          initialDepth={expandedNodes.size > 0 ? undefined : 1} // Auto-expand if search is active
-        />
-      </div>
+      {!loading && (
+        <div className="w-full h-full">
+          <Tree
+            key={JSON.stringify(transformedTree)}
+            data={transformedTree}
+            orientation="vertical"
+            renderCustomNodeElement={renderCustomNode}
+            separation={{ siblings: 4, nonSiblings: 5 }}
+            collapsible={true}
+            translate={{ x: 400, y: 200 }}
+            zoom={0.8}
+            initialDepth={expandedNodes.size > 0 ? undefined : 1} // Auto-expand if search is active
+          />
+        </div>
+      )}
     </div>
   );
 }

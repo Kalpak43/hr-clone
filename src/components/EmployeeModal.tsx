@@ -15,10 +15,13 @@ import {
 } from "./ui/select";
 import { toast } from "sonner";
 import { employeeList } from "@/data";
+import { useAppDispatch } from "@/app/hooks";
+import { fetchEmployees } from "@/features/employee/employeeThunk";
 
 const steps = ["Basic Details", "Job Details", "Work Details"];
 
-function EmployeeModal() {
+function EmployeeModal({ onClose }: { onClose: () => void }) {
+  const dispatch = useAppDispatch();
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -112,6 +115,9 @@ function EmployeeModal() {
       toast.error("There was an error in adding employee");
     }
     setLoading(false);
+    dispatch(fetchEmployees());
+
+    onClose();
   };
 
   return (

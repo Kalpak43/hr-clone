@@ -58,9 +58,9 @@ function App() {
     <Routes>
       <Route element={<UserProtectedRoute />}>
         <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/inbox/:mailID?" element={<InboxPage />} />
           <Route element={<AdminProtectedRoute />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/inbox/:mailID?" element={<InboxPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/payroll" element={<PayrollPage />} />

@@ -21,8 +21,20 @@ import { Button } from "./ui/button";
 import { Link, useLocation } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { logout } from "@/features/auth/authThunk";
-import { JSX } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/supbase";
+import { roleToJobTitles } from "@/data";
+import { fetchAllowedRoutes } from "@/features/routes/routeThunk";
+
+const getRoleFromJobTitle = (jobTitle: string): string => {
+  for (const [role, titles] of Object.entries(roleToJobTitles)) {
+    if (titles.includes(jobTitle)) {
+      return role;
+    }
+  }
+  return "employee"; // default role
+};
 
 function Sidebar() {
   const location = useLocation();
@@ -30,6 +42,41 @@ function Sidebar() {
   const user = useAppSelector((state) => state.auth.user);
   const loading = useAppSelector((state) => state.auth.loading);
   const isAdmin = useAppSelector((state) => state.auth.isAdmin);
+  const [displayName, setDisplayName] = useState("");
+  const [role, setRole] = useState<string | null>(null);
+
+  const allowedRoutes = useAppSelector((state) => state.routes.allowedRoutes);
+
+  useEffect(() => {
+    const getTitle = async () => {
+      if (user) {
+        if (isAdmin) {
+          setDisplayName("Admin");
+          setRole("admin");
+        } else {
+          const { data } = await supabase
+            .from("employees")
+            .select("job_title, first_name, last_name")
+            .eq("uuid", user.id)
+            .single();
+
+          if (data) {
+            // You can store the job title in your state management if needed
+            // e.g., dispatch(setJobTitle(data.job_title));
+            setRole(getRoleFromJobTitle(data.job_title));
+
+            setDisplayName(data.first_name + " " + data.last_name);
+          }
+        }
+      }
+    };
+
+    getTitle();
+  }, [user]);
+
+  useEffect(() => {
+    if (role) dispatch(fetchAllowedRoutes({ role }));
+  }, [role]);
 
   const nav = [
     {
@@ -62,7 +109,7 @@ function Sidebar() {
         },
       ],
     },
-    isAdmin && {
+    {
       title: "HR Management",
       links: [
         {
@@ -107,19 +154,19 @@ function Sidebar() {
         },
       ],
     },
-  ].filter(
-    (
-      item
-    ): item is {
-      title: string;
-      links: { icon: JSX.Element; name: string; path: string }[];
-    } => Boolean(item)
-  );
+  ];
 
   const handleLogout = async () => {
     await dispatch(logout());
     toast("Logged out successfully");
   };
+
+  const filteredNav = nav
+    .map((section) => ({
+      ...section,
+      links: section.links.filter((link) => allowedRoutes.includes(link.path)),
+    }))
+    .filter((section) => section.links.length > 0);
 
   return (
     <div
@@ -156,7 +203,13 @@ function Sidebar() {
           />
           <div className="text-sm overflow-hidden">
             <strong className="font-[500] text-black">
-              {isAdmin ? "Admin" : "Employee"}
+              {isAdmin ? (
+                "Admin"
+              ) : (
+                <>
+                  {displayName} <span className="text-xs">({role})</span>
+                </>
+              )}
             </strong>
             <p className="text-xs">{user?.email}</p>
           </div>
@@ -170,7 +223,7 @@ function Sidebar() {
         </Button>
       </div>
       <div className="px-2 pb-4 space-y-6 flex-1 overflow-y-auto">
-        {nav.map((n, i) => {
+        {filteredNav.map((n, i) => {
           return (
             <div key={i} className="space-y-4">
               <h3>{n.title}</h3>
