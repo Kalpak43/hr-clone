@@ -19,6 +19,8 @@ import {
 import { toast } from "sonner";
 import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import AccessPage from "./pages/AccessPage";
+import HiringPage from "./pages/HiringPage";
+import CalendarPage from "./pages/CalendarPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -64,6 +66,8 @@ function App() {
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/payroll" element={<PayrollPage />} />
+            <Route path="/hiring" element={<HiringPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/manage-access" element={<AccessPage />} />
           </Route>
         </Route>

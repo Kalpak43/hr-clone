@@ -841,6 +841,11 @@ export const initialRoutes = [
     roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
   },
   {
+    path: "/calendar",
+    element: "CalendarPage",
+    roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
+  },
+  {
     path: "/inbox",
     element: "InboxPage",
     roles: ["admin", "dev", "manager", "finance", "hr", "engineering"],
@@ -869,4 +874,27 @@ export const initialRoutes = [
   { path: "/manage-access", element: "AccessPage", roles: ["admin"] },
   { path: "/settings", element: "AccessPage", roles: ["admin"] },
   { path: "/help", element: "AccessPage", roles: ["admin"] },
+];
+
+export const eventData = [
+  { id: 1, date: "2025-03-05", title: "Candidate Interview 10:00 AM" },
+  { id: 2, date: "2025-03-05", title: "Follow Up with Client" },
+  { id: 3, date: "2025-03-12", title: "Team Meeting 2:00 PM" },
+  { id: 4, date: "2025-03-15", title: "Performance Review 11:00 AM" },
+  { id: 5, date: "2025-03-18", title: "Product Launch Preparation" },
+  { id: 6, date: "2025-03-20", title: "Marketing Strategy Discussion" },
+  { id: 7, date: "2025-03-22", title: "Client Presentation 3:30 PM" },
+  { id: 8, date: "2025-03-25", title: "Budget Planning for Next Quarter" },
+  { id: 9, date: "2025-03-28", title: "Project Deadline" },
+  { id: 10, date: "2025-04-02", title: "New Employee Orientation" },
+  { id: 11, date: "2025-04-05", title: "Annual General Meeting" },
+  { id: 12, date: "2025-04-08", title: "Code Review Session" },
+  { id: 13, date: "2025-04-10", title: "HR Policy Update Meeting" },
+  { id: 14, date: "2025-04-15", title: "Stakeholder Review Call" },
+  { id: 15, date: "2025-04-18", title: "Industry Conference Attendance" },
+  { id: 16, date: "2025-04-22", title: "Product Demo for Investors" },
+  { id: 17, date: "2025-04-28", title: "Team Building Activity" },
+  { id: 18, date: "2025-05-01", title: "Quarterly Sales Report Submission" },
+  { id: 19, date: "2025-05-05", title: "Website Redesign Planning" },
+  { id: 20, date: "2025-05-10", title: "Cybersecurity Audit" },
 ];
