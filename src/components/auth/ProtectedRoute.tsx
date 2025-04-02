@@ -12,7 +12,7 @@ export function AdminProtectedRoute() {
   const loading = useAppSelector((state) => state.routes.loading);
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <div className="hero h-full flex items-center justify-center">Loading..</div>;
   }
 
   if (!allowedRoutes.includes(location.pathname)) {

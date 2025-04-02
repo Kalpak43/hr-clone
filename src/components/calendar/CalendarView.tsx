@@ -33,7 +33,7 @@ export function CalendarView({
 
   return (
     <div className="flex-1 flex flex-col h-full relative">
-      <div className="absolute inset-0 overflow-y-auto space-y-2 ">
+      <div className="absolute inset-0 overflow-y-auto space-y-2  border rounded-md">
         <div className="flex-1 h-full">
           {viewMode === "month" ? (
             <MonthView

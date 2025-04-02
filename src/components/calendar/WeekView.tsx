@@ -1,5 +1,5 @@
 import { dayNames } from "@/data";
-import { useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 interface WeekViewProps {
   currentDate: Date;
@@ -18,6 +18,15 @@ export function WeekView({
   openNewEventModal,
   getEventsForDay,
 }: WeekViewProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const nineAMPosition = 9 * 64; // 9 AM (9 * 64px per hour)
+      scrollContainerRef.current.scrollTop = nineAMPosition;
+    }
+  }, []);
+
   const getWeekDaysArray = useCallback(() => {
     const days = [];
     const startOfWeek = new Date(currentDate);
@@ -70,73 +79,148 @@ export function WeekView({
     return true;
   });
 
-  return (
-    <div className="overflow-y-auto grid grid-cols-7 gap-1 h-full">
-      {filteredDaysArray.map((dayInfo, index) => (
-        <WeekDayCell
-          key={index}
-          dayInfo={dayInfo}
-          highlightedDate={highlightedDate}
-          openNewEventModal={openNewEventModal}
-          getEventsForDay={getEventsForDay}
-        />
-      ))}
-    </div>
-  );
-}
+  // Generate time slots for the timeline (24 hours)
+  const timeSlots = useMemo(() => {
+    const slots = [];
+    for (let i = 0; i < 24; i++) {
+      const hour = i % 12 || 12;
+      const amPm = i < 12 ? "AM" : "PM";
+      slots.push(`${hour}:00 ${amPm}`);
+    }
+    return slots;
+  }, []);
 
-function WeekDayCell({
-  dayInfo,
-  highlightedDate,
-  openNewEventModal,
-  getEventsForDay,
-}: {
-  dayInfo: any;
-  highlightedDate: Date | null;
-  openNewEventModal: (date: Date) => void;
-  getEventsForDay: (date: Date) => any[];
-}) {
+  // Convert time string (e.g., "2:00 PM") to minutes since midnight
+  const timeToMinutes = (timeStr: string) => {
+    const [time, period] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (period === "PM" && hours !== 12) {
+      hours += 12;
+    } else if (period === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    return hours * 60 + minutes;
+  };
+
   return (
-    <div
-      className={`relative rounded-md border p-2 min-h-48 ${
-        dayInfo.isOutsideMonth ? "bg-gray-100 text-gray-600" : "text-gray-700"
-      } ${
-        dayInfo.date &&
-        new Date().toDateString() === dayInfo.date.toDateString()
-          ? "border-2 border-blue-400 bg-blue-100"
-          : ""
-      } ${
-        highlightedDate &&
-        dayInfo.date &&
-        highlightedDate.toDateString() === dayInfo.date.toDateString()
-          ? " bg-blue-50 "
-          : ""
-      } ${
-        dayInfo.date.getDay() === 0 || dayInfo.date.getDay() === 6
-          ? "bg-red-50 text-red-500"
-          : ""
-      } cursor-pointer hover:bg-gray-50 transition-colors duration-150`}
-      onClick={() => openNewEventModal(dayInfo.date)}
-    >
-      <div className="flex flex-col items-center mb-2 pb-1 border-b">
-        <div className="text-xs font-medium">
-          {dayNames[dayInfo.date.getDay()].substring(0, 3)}
+    <div className="flex">
+      {/* Timeline column */}
+      <div className="w-20 flex-shrink-0 border-r" ref={scrollContainerRef}>
+        <div className="h-16 border-b"></div> {/* Empty cell for header */}
+        <div className="relative">
+          {timeSlots.map((time, index) => (
+            <div
+              key={index}
+              className="h-16 border-b flex items-start justify-center text-xs text-gray-500 pt-1"
+            >
+              {time}
+            </div>
+          ))}
         </div>
-        <div className="text-lg font-bold">{dayInfo.day}</div>
       </div>
-      {dayInfo.isHoliday && (
-        <div className="text-xs text-red-500 bg-red-50 rounded-sm py-0.5 px-1 mb-1">
-          {dayInfo.isHoliday}
+
+      {/* Days columns */}
+      <div
+        className="flex-grow grid"
+        style={{
+          gridTemplateColumns: `repeat(${filteredDaysArray.length}, 1fr)`,
+        }}
+      >
+        {/* Day headers */}
+        <div
+          className="col-span-full grid sticky top-0 z-20 bg-white"
+          style={{
+            gridTemplateColumns: `repeat(${filteredDaysArray.length}, 1fr)`,
+          }}
+        >
+          {filteredDaysArray.map((dayInfo, index) => (
+            <div
+              key={index}
+              className={`h-16 border-b border-r p-2 flex flex-col items-center justify-center
+                  ${
+                    dayInfo.isOutsideMonth
+                      ? "bg-gray-100 text-gray-600"
+                      : "text-gray-700"
+                  }
+                  ${
+                    dayInfo.date &&
+                    new Date().toDateString() === dayInfo.date.toDateString()
+                      ? "bg-blue-100"
+                      : ""
+                  }
+                  ${
+                    dayInfo.date.getDay() === 0 || dayInfo.date.getDay() === 6
+                      ? "bg-red-50 text-red-500"
+                      : ""
+                  }
+                `}
+            >
+              <div className="text-xs font-medium">
+                {dayNames[dayInfo.date.getDay()].substring(0, 3)}
+              </div>
+              <div className="text-lg font-bold">{dayInfo.day}</div>
+              {dayInfo.isHoliday && (
+                <div className="text-xs text-red-500 bg-red-50 rounded-sm py-0.5 px-1 mt-1">
+                  {dayInfo.isHoliday}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      )}
-      <div className="mt-1 overflow-hidden">
-        {getEventsForDay(dayInfo.date).map((event) => (
+
+        {/* Time grid for each day */}
+        {filteredDaysArray.map((dayInfo, dayIndex) => (
           <div
-            key={event.id}
-            className="bg-blue-100 text-blue-700 text-xs rounded-sm py-1 px-2 mb-1 truncate"
-            title={event.title}
+            key={dayIndex}
+            className="relative border-r"
+            style={{
+              gridColumn: dayIndex + 1,
+              gridRow: 2,
+              height: `${timeSlots.length * 64}px`,
+            }}
           >
-            {event.title}
+            {/* Hour grid lines */}
+            {timeSlots.map((_, index) => (
+              <div key={index} className="h-16 border-b"></div>
+            ))}
+
+            {/* Events for this day */}
+            {getEventsForDay(dayInfo.date).map((event) => {
+              const startMinutes = timeToMinutes(event.startTime);
+              const endMinutes = timeToMinutes(event.endTime);
+              const duration = endMinutes - startMinutes;
+
+              // Calculate position and height
+              const topPosition = (startMinutes / 60) * 64; // 64px per hour
+              const height = (duration / 60) * 64;
+
+              return (
+                <div
+                  key={event.id}
+                  className="absolute left-1 right-1 bg-blue-100 text-blue-700 text-xs rounded-sm p-1 overflow-hidden"
+                  style={{
+                    top: `${topPosition}px`,
+                    height: `${Math.max(height, 20)}px`, // Minimum height of 20px
+                    zIndex: 10,
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // You could add an event click handler here
+                  }}
+                >
+                  <div className="font-semibold">{event.title}</div>
+                  <div className="text-xs">{`${event.startTime} - ${event.endTime}`}</div>
+                </div>
+              );
+            })}
+
+            {/* Click handler for adding new events */}
+            <div
+              className="absolute inset-0 cursor-pointer"
+              onClick={() => openNewEventModal(dayInfo.date)}
+            ></div>
           </div>
         ))}
       </div>
