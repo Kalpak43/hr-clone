@@ -9,6 +9,12 @@ interface WeekViewProps {
   highlightedDate: Date | null;
   openNewEventModal: (date: Date) => void;
   getEventsForDay: (date: Date) => any[];
+  addNewEvent: (eventData: {
+    date: string;
+    title: string;
+    startTime: string;
+    endTime: string;
+  }) => void;
 }
 
 export function WeekView({
@@ -17,6 +23,7 @@ export function WeekView({
   filter,
   openNewEventModal,
   getEventsForDay,
+  addNewEvent,
 }: WeekViewProps) {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -244,6 +251,7 @@ export function WeekView({
         onClose={closeDayViewModal}
         day={selectedDay}
         events={selectedDay ? getEventsForDay(selectedDay) : []}
+        addNewEvent={addNewEvent}
       />
     </div>
   );

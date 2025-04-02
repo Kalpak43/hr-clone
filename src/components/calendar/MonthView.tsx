@@ -9,6 +9,12 @@ interface MonthViewProps {
   highlightedDate: Date | null;
   openNewEventModal: (date: Date) => void;
   getEventsForDay: (date: Date) => any[];
+  addNewEvent: (eventData: {
+    date: string;
+    title: string;
+    startTime: string;
+    endTime: string;
+  }) => void;
 }
 
 export function MonthView({
@@ -18,6 +24,7 @@ export function MonthView({
   highlightedDate,
   openNewEventModal,
   getEventsForDay,
+  addNewEvent,
 }: MonthViewProps) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -139,6 +146,7 @@ export function MonthView({
         onClose={closeDayViewModal}
         day={selectedDay}
         events={selectedDay ? getEventsForDay(selectedDay) : []}
+        addNewEvent={addNewEvent}
       />
     </>
   );

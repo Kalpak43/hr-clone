@@ -85,6 +85,23 @@ function CalendarPage() {
     }
   };
 
+  const addNewEvent = (eventData: {
+    date: string;
+    title: string;
+    startTime: string;
+    endTime: string;
+  }) => {
+    console.log(eventData);
+
+    setEvents((x) => [
+      ...x,
+      {
+        ...eventData,
+        id: x.length,
+      },
+    ]);
+  };
+
   return (
     <div className="hero h-full">
       <div className="border border-gray-300 rounded-md p-4 space-y-8 h-full flex flex-col">
@@ -110,6 +127,7 @@ function CalendarPage() {
           filter={filter}
           highlightedDate={highlightedDate}
           openNewEventModal={openNewEventModal}
+          addNewEvent={addNewEvent}
         />
       </div>
     </div>

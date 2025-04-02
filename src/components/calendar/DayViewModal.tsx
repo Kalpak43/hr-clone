@@ -14,6 +14,12 @@ interface DayViewModalProps {
   onClose: () => void;
   day: Date | null;
   events: { id: string; title: string; startTime: string; endTime: string }[];
+  addNewEvent: (eventData: {
+    date: string;
+    title: string;
+    startTime: string;
+    endTime: string;
+  }) => void;
 }
 
 const DayViewModal: React.FC<DayViewModalProps> = ({
@@ -21,6 +27,7 @@ const DayViewModal: React.FC<DayViewModalProps> = ({
   onClose,
   day,
   events,
+  addNewEvent,
 }) => {
   const [openAddEventModal, setOpenAddEventModal] = useState(false);
 
@@ -107,8 +114,10 @@ const DayViewModal: React.FC<DayViewModalProps> = ({
 
       {/* Add Event Modal */}
       <NewEventModal
+        day={day}
         openAddEventModal={openAddEventModal}
         setOpenAddEventModal={setOpenAddEventModal}
+        addNewEvent={addNewEvent}
       />
     </>
   );
