@@ -147,7 +147,6 @@ export function MonthView({
 function DayCell({
   dayInfo,
   highlightedDate,
-  openNewEventModal,
   getEventsForDay,
   openDayViewModal,
 }: {

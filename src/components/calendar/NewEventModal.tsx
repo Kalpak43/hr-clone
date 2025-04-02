@@ -1,24 +1,53 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "../ui/input";
 
 function NewEventModal({
-  openNewEventModal,
+  openAddEventModal,
+  setOpenAddEventModal,
 }: {
-  openNewEventModal: () => void;
+  openAddEventModal: boolean;
+  setOpenAddEventModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          className="bg-blue-400 hover:bg-blue-500"
-          variant="default"
-          onClick={() => openNewEventModal()}
-        >
-          <Plus />
-          Add Event
-        </Button>
-      </DialogTrigger>
+    <Dialog open={openAddEventModal} onOpenChange={setOpenAddEventModal}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add New Event</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          {/* Add your event form here */}
+          <div className="space-y-4">
+            <div>
+              <label>Event Title</label>
+              <Input placeholder="Enter event title" />
+            </div>
+            <div>
+              <label>Start Time</label>
+              <Input type="time" />
+            </div>
+            <div>
+              <label>End Time</label>
+              <Input type="time" />
+            </div>
+            <Button
+              type="button"
+              onClick={() => {
+                // Handle event creation logic here
+                setOpenAddEventModal(false);
+              }}
+            >
+              Save Event
+            </Button>
+          </div>
+        </DialogDescription>
+      </DialogContent>
     </Dialog>
   );
 }

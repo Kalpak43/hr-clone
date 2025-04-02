@@ -15,7 +15,6 @@ export function WeekView({
   currentDate,
   holidays,
   filter,
-  highlightedDate,
   openNewEventModal,
   getEventsForDay,
 }: WeekViewProps) {
