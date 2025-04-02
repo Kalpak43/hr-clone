@@ -6,13 +6,24 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function BoardView({
   tasks,
   setTasks,
+  changeTaskStatus,
 }: {
   tasks: TaskType[];
   setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  changeTaskStatus: (
+    id: number,
+    status: "pending" | "in progress" | "completed"
+  ) => void;
 }) {
   const pendingTasks = tasks.filter((task) => task.status === "pending");
   const inProgressTasks = tasks.filter((task) => task.status === "in progress");
@@ -31,8 +42,20 @@ function BoardView({
           </div>
         </div>
         <div className="space-y-2">
-          {pendingTasks.length > 0 &&
-            pendingTasks.map((task) => <TaskCard task={task} />)}
+          {pendingTasks.length > 0 ? (
+            pendingTasks.map((task) => (
+              <TaskCard
+                task={task}
+                changeTaskStatus={() => {
+                  changeTaskStatus(task.id, "in progress");
+                }}
+              />
+            ))
+          ) : (
+            <div className="border rounded-md h-[300px] flex items-center justify-center">
+              <p className="text-gray-500">No Tasks Pending</p>
+            </div>
+          )}
         </div>
       </div>
       <div className=" space-y-4">
@@ -47,8 +70,20 @@ function BoardView({
         </div>
 
         <div className="space-y-2">
-          {inProgressTasks.length > 0 &&
-            inProgressTasks.map((task) => <TaskCard task={task} />)}
+          {inProgressTasks.length > 0 ? (
+            inProgressTasks.map((task) => (
+              <TaskCard
+                task={task}
+                changeTaskStatus={() => {
+                  changeTaskStatus(task.id, "completed");
+                }}
+              />
+            ))
+          ) : (
+            <div className="border rounded-md h-[300px] flex items-center justify-center">
+              <p className="text-gray-500">No Tasks in progress</p>
+            </div>
+          )}
         </div>
       </div>
       <div className=" space-y-4">
@@ -64,7 +99,14 @@ function BoardView({
 
         <div className="space-y-2">
           {completedTasks.length > 0 &&
-            completedTasks.map((task) => <TaskCard task={task} />)}
+            completedTasks.map((task) => (
+              <TaskCard
+                task={task}
+                changeTaskStatus={() => {
+                  changeTaskStatus(task.id, "completed");
+                }}
+              />
+            ))}
         </div>
       </div>
     </div>
@@ -73,16 +115,40 @@ function BoardView({
 
 export default BoardView;
 
-export function TaskCard({ task }: { task: TaskType }) {
+export function TaskCard({
+  task,
+  changeTaskStatus,
+}: {
+  task: TaskType;
+  changeTaskStatus: () => void;
+}) {
   return (
     <div className="border border-gray-300 rounded-md p-2 space-y-2 relative">
-      <Button
-        variant={"ghost"}
-        size={"icon"}
-        className="absolute top-0 right-0"
-      >
-        <EllipsisVertical />
-      </Button>
+      {task.status !== "completed" && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="absolute top-0 right-0"
+            >
+              <EllipsisVertical />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {task.status === "pending" && (
+              <DropdownMenuItem onClick={() => changeTaskStatus()}>
+                Mark as In Progress
+              </DropdownMenuItem>
+            )}
+            {task.status === "in progress" && (
+              <DropdownMenuItem onClick={() => changeTaskStatus()}>
+                Mark as Completed
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <div className="flex flex-wrap gap-1">
         {task.tags.map((tag, i) => (
           <span

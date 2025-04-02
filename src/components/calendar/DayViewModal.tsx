@@ -74,7 +74,7 @@ const DayViewModal: React.FC<DayViewModalProps> = ({
                 onClick={() => setOpenAddEventModal(true)} // Open the dialog on button click
               >
                 <Plus />
-                Add Employee
+                Add Event
               </Button>
             </div>
           </DialogHeader>
@@ -91,6 +91,12 @@ const DayViewModal: React.FC<DayViewModalProps> = ({
                 ))}
               </div>
               <div className="relative flex-grow">
+                {timeSlots.map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-16 flex items-start justify-center text-xs text-gray-500 pt-1 border-b"
+                  />
+                ))}
                 {events.map((event) => {
                   const startMinutes = timeToMinutes(event.startTime);
                   const endMinutes = timeToMinutes(event.endTime);

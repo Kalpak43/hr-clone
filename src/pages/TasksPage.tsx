@@ -37,6 +37,15 @@ function TasksPage() {
   const [tasks, setTasks] = useState<TaskType[]>(dummyTasks as TaskType[]);
   const [viewMode, setViewMode] = useState<"list" | "board">("board");
 
+  const changeTaskStatus = (
+    taskId: number,
+    status: "pending" | "in progress" | "completed"
+  ) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === taskId ? { ...task, status } : task))
+    );
+  };
+
   return (
     <div className="hero">
       <div className="border border-gray-300 rounded-md p-4 space-y-8">
@@ -87,8 +96,20 @@ function TasksPage() {
         <div>
           {
             {
-              board: <BoardView tasks={tasks} setTasks={setTasks} />,
-              list: <ListView tasks={tasks} setTasks={setTasks} />,
+              board: (
+                <BoardView
+                  tasks={tasks}
+                  setTasks={setTasks}
+                  changeTaskStatus={changeTaskStatus}
+                />
+              ),
+              list: (
+                <ListView
+                  tasks={tasks}
+                  setTasks={setTasks}
+                  changeTaskStatus={changeTaskStatus}
+                />
+              ),
             }[viewMode]
           }
         </div>

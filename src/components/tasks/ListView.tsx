@@ -21,13 +21,20 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { renderPriorityBadge } from "@/pages/TasksPage";
+import { Input } from "../ui/input";
+import { Checkbox } from "../ui/checkbox";
 
 export function ListView({
   tasks,
   setTasks,
+  changeTaskStatus,
 }: {
   tasks: TaskType[];
   setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  changeTaskStatus: (
+    id: number,
+    status: "pending" | "in progress" | "completed"
+  ) => void;
 }) {
   // Filter tasks by status
   const pendingTasks = tasks.filter((task) => task.status === "pending");
@@ -67,7 +74,12 @@ export function ListView({
         <CollapsibleContent>
           <div className="px-4 pb-4">
             {pendingTasks.length > 0 ? (
-              <TaskTable tasks={pendingTasks} />
+              <TaskTable
+                tasks={pendingTasks}
+                changeStatusOf={(id: number) => {
+                  changeTaskStatus(id, "in progress");
+                }}
+              />
             ) : (
               <p className="text-gray-500 text-center py-4">No pending tasks</p>
             )}
@@ -102,7 +114,12 @@ export function ListView({
         <CollapsibleContent>
           <div className="px-4 pb-4">
             {inProgressTasks.length > 0 ? (
-              <TaskTable tasks={inProgressTasks} />
+              <TaskTable
+                tasks={inProgressTasks}
+                changeStatusOf={(id: number) => {
+                  changeTaskStatus(id, "completed");
+                }}
+              />
             ) : (
               <p className="text-gray-500 text-center py-4">
                 No tasks in progress
@@ -139,7 +156,12 @@ export function ListView({
         <CollapsibleContent>
           <div className="px-4 pb-4">
             {completedTasks.length > 0 ? (
-              <TaskTable tasks={completedTasks} />
+              <TaskTable
+                tasks={completedTasks}
+                changeStatusOf={(id: number) => {
+                  changeTaskStatus(id, "completed");
+                }}
+              />
             ) : (
               <p className="text-gray-500 text-center py-4">
                 No completed tasks
@@ -152,12 +174,19 @@ export function ListView({
   );
 }
 
-export function TaskTable({ tasks }: { tasks: TaskType[] }) {
+export function TaskTable({
+  tasks,
+  changeStatusOf,
+}: {
+  tasks: TaskType[];
+  changeStatusOf: (id: number) => void;
+}) {
   return (
     <div className="border rounded-md overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="divide-x bg-gray-100 [&_th]:text-center">
+            <TableHead></TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Due Date</TableHead>
@@ -168,7 +197,16 @@ export function TaskTable({ tasks }: { tasks: TaskType[] }) {
         </TableHeader>
         <TableBody>
           {tasks.map((task, index) => (
-            <TableRow key={index} className="divide-x">
+            <TableRow key={task.id} className="divide-x">
+              <TableCell>
+                <div className="flex items-center justify-center px-2">
+                  <Checkbox
+                    onCheckedChange={() => changeStatusOf(task.id)}
+                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    disabled={task.status === "completed"}
+                  />
+                </div>
+              </TableCell>
               <TableCell className="font-medium">
                 <p className="w-[250px]">{task.title}</p>
               </TableCell>
