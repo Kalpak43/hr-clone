@@ -1,13 +1,13 @@
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarView } from "@/components/calendar/CalendarView";
 import { eventData } from "@/data";
-import { useState, useCallback, useEffect } from "react";
+import { useState } from "react";
 
 function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [holidays, setHolidays] = useState<any>({});
   const [events, setEvents] = useState(eventData || []);
-  const [newEventModalOpen, setNewEventModalOpen] = useState(false);
+  const [_, setNewEventModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
   const [filter, setFilter] = useState("all");
@@ -90,6 +90,7 @@ function CalendarPage() {
     title: string;
     startTime: string;
     endTime: string;
+    description: string;
   }) => {
     console.log(eventData);
 

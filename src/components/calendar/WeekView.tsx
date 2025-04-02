@@ -14,6 +14,7 @@ interface WeekViewProps {
     title: string;
     startTime: string;
     endTime: string;
+    description: string;
   }) => void;
 }
 

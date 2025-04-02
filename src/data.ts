@@ -883,6 +883,8 @@ export const eventData = [
     title: "Candidate Interview",
     startTime: "10:00 AM",
     endTime: "11:00 AM",
+    description:
+      "Interview with a prospective candidate for the open position.",
   },
   {
     id: 2,
@@ -890,6 +892,8 @@ export const eventData = [
     title: "Follow Up with Client",
     startTime: "2:00 PM",
     endTime: "2:30 PM",
+    description:
+      "Check in with the client regarding project updates and concerns.",
   },
   {
     id: 3,
@@ -897,6 +901,8 @@ export const eventData = [
     title: "Team Meeting",
     startTime: "2:00 PM",
     endTime: "3:00 PM",
+    description:
+      "Weekly team meeting to discuss progress, roadblocks, and next steps.",
   },
   {
     id: 4,
@@ -904,6 +910,7 @@ export const eventData = [
     title: "Performance Review",
     startTime: "11:00 AM",
     endTime: "12:00 PM",
+    description: "Annual employee performance review and feedback session.",
   },
   {
     id: 5,
@@ -911,6 +918,8 @@ export const eventData = [
     title: "Product Launch Preparation",
     startTime: "3:00 PM",
     endTime: "4:00 PM",
+    description:
+      "Finalizing tasks and strategies for the upcoming product launch.",
   },
   {
     id: 6,
@@ -918,6 +927,8 @@ export const eventData = [
     title: "Marketing Strategy Discussion",
     startTime: "1:00 PM",
     endTime: "2:30 PM",
+    description:
+      "Planning marketing initiatives and campaigns for the next quarter.",
   },
   {
     id: 7,
@@ -925,6 +936,7 @@ export const eventData = [
     title: "Client Presentation",
     startTime: "3:30 PM",
     endTime: "4:30 PM",
+    description: "Presenting project updates and deliverables to the client.",
   },
   {
     id: 8,
@@ -932,6 +944,8 @@ export const eventData = [
     title: "Budget Planning for Next Quarter",
     startTime: "10:00 AM",
     endTime: "11:30 AM",
+    description:
+      "Reviewing financial performance and planning the budget for the next quarter.",
   },
   {
     id: 9,
@@ -939,6 +953,8 @@ export const eventData = [
     title: "Project Deadline",
     startTime: "5:00 PM",
     endTime: "6:00 PM",
+    description:
+      "Final submission and review of deliverables for an ongoing project.",
   },
   {
     id: 10,
@@ -946,6 +962,8 @@ export const eventData = [
     title: "New Employee Orientation",
     startTime: "9:00 AM",
     endTime: "12:00 PM",
+    description:
+      "Welcoming and onboarding new employees with an introduction to company policies and teams.",
   },
   {
     id: 11,
@@ -953,6 +971,8 @@ export const eventData = [
     title: "Annual General Meeting",
     startTime: "10:00 AM",
     endTime: "1:00 PM",
+    description:
+      "Company-wide meeting to discuss annual performance, goals, and future strategies.",
   },
   {
     id: 12,
@@ -960,6 +980,8 @@ export const eventData = [
     title: "Code Review Session",
     startTime: "3:00 PM",
     endTime: "4:00 PM",
+    description:
+      "Team code review session to improve quality and maintainability of the codebase.",
   },
   {
     id: 13,
@@ -967,6 +989,7 @@ export const eventData = [
     title: "HR Policy Update Meeting",
     startTime: "2:00 PM",
     endTime: "3:00 PM",
+    description: "Discussion about updates and changes in company HR policies.",
   },
   {
     id: 14,
@@ -974,6 +997,8 @@ export const eventData = [
     title: "Stakeholder Review Call",
     startTime: "4:00 PM",
     endTime: "5:00 PM",
+    description:
+      "Review session with stakeholders to discuss project progress and expectations.",
   },
   {
     id: 15,
@@ -981,6 +1006,8 @@ export const eventData = [
     title: "Industry Conference Attendance",
     startTime: "9:00 AM",
     endTime: "5:00 PM",
+    description:
+      "Attending an industry conference to network and gain insights into market trends.",
   },
   {
     id: 16,
@@ -988,6 +1015,8 @@ export const eventData = [
     title: "Product Demo for Investors",
     startTime: "2:00 PM",
     endTime: "3:30 PM",
+    description:
+      "Demonstration of the product's features and benefits to potential investors.",
   },
   {
     id: 17,
@@ -995,6 +1024,8 @@ export const eventData = [
     title: "Team Building Activity",
     startTime: "11:00 AM",
     endTime: "2:00 PM",
+    description:
+      "Engaging team-building activities to improve collaboration and morale.",
   },
   {
     id: 18,
@@ -1002,6 +1033,8 @@ export const eventData = [
     title: "Quarterly Sales Report Submission",
     startTime: "10:00 AM",
     endTime: "11:30 AM",
+    description:
+      "Submission and discussion of the company's quarterly sales performance report.",
   },
   {
     id: 19,
@@ -1009,6 +1042,8 @@ export const eventData = [
     title: "Website Redesign Planning",
     startTime: "3:00 PM",
     endTime: "4:30 PM",
+    description:
+      "Brainstorming session for redesigning the company’s website with new features.",
   },
   {
     id: 20,
@@ -1016,6 +1051,8 @@ export const eventData = [
     title: "Cybersecurity Audit",
     startTime: "1:00 PM",
     endTime: "3:00 PM",
+    description:
+      "Assessing the company's cybersecurity measures and compliance with security protocols.",
   },
 ];
 

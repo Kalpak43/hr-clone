@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { Textarea } from "../ui/textarea";
 
 function NewEventModal({
   openAddEventModal,
@@ -22,6 +23,7 @@ function NewEventModal({
     title: string;
     startTime: string;
     endTime: string;
+    description: string;
   }) => void;
   day: Date | null;
 }) {
@@ -35,9 +37,12 @@ function NewEventModal({
     title: "",
     startTime: "",
     endTime: "",
+    description: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setEventData((prev) => ({ ...prev, [name]: value }));
   };
@@ -68,6 +73,15 @@ function NewEventModal({
               />
             </div>
             <div>
+              <label>Description</label>
+              <Textarea
+                name="description"
+                placeholder="Enter event description"
+                value={eventData.description}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
               <label>Start Time</label>
               <Input
                 type="time"
@@ -85,7 +99,11 @@ function NewEventModal({
                 onChange={handleChange}
               />
             </div>
-            <Button type="button" onClick={handleSave}>
+            <Button
+              type="button"
+              className="bg-blue-400 hover:bg-blue-500"
+              onClick={handleSave}
+            >
               Save Event
             </Button>
           </div>

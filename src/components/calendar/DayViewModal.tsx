@@ -13,12 +13,19 @@ interface DayViewModalProps {
   isOpen: boolean;
   onClose: () => void;
   day: Date | null;
-  events: { id: string; title: string; startTime: string; endTime: string }[];
+  events: {
+    id: string;
+    title: string;
+    startTime: string;
+    endTime: string;
+    description: string;
+  }[];
   addNewEvent: (eventData: {
     date: string;
     title: string;
     startTime: string;
     endTime: string;
+    description: string;
   }) => void;
 }
 
@@ -102,7 +109,8 @@ const DayViewModal: React.FC<DayViewModalProps> = ({
                       }}
                     >
                       <div className="font-semibold">{event.title}</div>
-                      <div className="text-xs">{`${event.startTime} - ${event.endTime}`}</div>
+                      <div className="">{event.description}</div>
+                      <div className="text-xs mt-2 italic">{`${event.startTime} - ${event.endTime}`}</div>
                     </div>
                   );
                 })}
