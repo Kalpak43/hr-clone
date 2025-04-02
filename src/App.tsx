@@ -22,6 +22,7 @@ import AccessPage from "./pages/AccessPage";
 import HiringPage from "./pages/HiringPage";
 import CalendarPage from "./pages/CalendarPage";
 import CalendarPage2 from "./pages/CalendarPage2";
+import TasksPage from "./pages/TasksPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -69,6 +70,7 @@ function App() {
             <Route path="/payroll" element={<PayrollPage />} />
             <Route path="/hiring" element={<HiringPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
             <Route path="/manage-access" element={<AccessPage />} />
           </Route>
         </Route>

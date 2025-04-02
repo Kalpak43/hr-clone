@@ -1080,3 +1080,84 @@ export const dayNames = [
   "Friday",
   "Saturday",
 ];
+
+export const dummyTasks = [
+  {
+    id: 1,
+    title: "Design Homepage UI",
+    description: "Create a modern and responsive homepage design using Figma.",
+    dueDate: "2025-04-10",
+    priority: "high",
+    status: "in progress",
+    assignees: [
+      {
+        name: "Alice Johnson",
+        image: "https://randomuser.me/api/portraits/women/1.jpg",
+      },
+    ],
+    tags: ["UI/UX", "design", "figma"],
+  },
+  {
+    id: 2,
+    title: "Fix Login Bug",
+    description:
+      "Resolve the issue where users are unable to log in with social accounts.",
+    dueDate: "2025-04-05",
+    priority: "critical",
+    status: "pending",
+    assignees: [
+      {
+        name: "Bob Smith",
+        image: "https://randomuser.me/api/portraits/men/2.jpg",
+      },
+    ],
+    tags: ["bug", "authentication", "backend"],
+  },
+  {
+    id: 3,
+    title: "Update API Documentation",
+    description:
+      "Revise the API documentation to reflect recent changes in endpoints.",
+    dueDate: null,
+    priority: "medium",
+    status: "completed",
+    assignees: [
+      {
+        name: "Charlie Davis",
+        image: "https://randomuser.me/api/portraits/men/3.jpg",
+      },
+    ],
+    tags: ["documentation", "API", "updates"],
+  },
+  {
+    id: 4,
+    title: "Optimize Database Queries",
+    description:
+      "Improve query performance by adding indexes and refactoring joins.",
+    dueDate: "2025-04-15",
+    priority: "high",
+    status: "in progress",
+    assignees: [
+      {
+        name: "Diana White",
+        image: "https://randomuser.me/api/portraits/women/4.jpg",
+      },
+    ],
+    tags: ["database", "performance", "optimization"],
+  },
+  {
+    id: 5,
+    title: "Deploy New Feature",
+    description: "Deploy the new analytics dashboard to production.",
+    dueDate: "2025-04-08",
+    priority: "high",
+    status: "pending",
+    assignees: [
+      {
+        name: "Ethan Brown",
+        image: "https://randomuser.me/api/portraits/men/5.jpg",
+      },
+    ],
+    tags: ["deployment", "analytics", "dashboard"],
+  },
+];

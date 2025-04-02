@@ -87,3 +87,17 @@ interface OrgNode {
   image: string;
   children: OrgNode[];
 }
+
+interface TaskType {
+  id: number;
+  title: string;
+  description: string;
+  dueDate: string;
+  priority: string;
+  status: string;
+  assignees: {
+    name: string;
+    image: string;
+  }[];
+  tags: string[];
+}

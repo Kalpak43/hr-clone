@@ -1,7 +1,7 @@
 import { CalendarHeader } from "@/components/calendar/CalendarHeader";
 import { CalendarView } from "@/components/calendar/CalendarView";
 import { eventData } from "@/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
