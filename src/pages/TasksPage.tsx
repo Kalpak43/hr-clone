@@ -1,35 +1,9 @@
 import DateDropdown from "@/components/DateDropdown";
 import { Button } from "@/components/ui/button";
 import { dummyTasks } from "@/data";
-import {
-  ChevronDown,
-  ChevronUp,
-  CircleCheck,
-  CircleDot,
-  CircleDotDashed,
-  EllipsisVertical,
-  Info,
-  List,
-  ListFilter,
-  SquareArrowOutUpRight,
-  StretchVertical,
-  Table as TableLogo,
-} from "lucide-react";
-import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Info, List, StretchVertical } from "lucide-react";
+import { useState } from "react";
 
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@/components/ui/collapsible";
 import { ListView } from "@/components/tasks/ListView";
 import BoardView from "@/components/tasks/BoardView";
 

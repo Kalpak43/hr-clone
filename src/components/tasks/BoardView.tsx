@@ -15,7 +15,6 @@ import {
 
 function BoardView({
   tasks,
-  setTasks,
   changeTaskStatus,
 }: {
   tasks: TaskType[];
@@ -29,9 +28,33 @@ function BoardView({
   const inProgressTasks = tasks.filter((task) => task.status === "in progress");
   const completedTasks = tasks.filter((task) => task.status === "completed");
 
+  // Handle drag start
+  const handleDragStart = (e: React.DragEvent, taskId: number) => {
+    e.dataTransfer.setData("taskId", taskId.toString());
+  };
+
+  // Handle drop
+  const handleDrop = (
+    e: React.DragEvent,
+    newStatus: "pending" | "in progress" | "completed"
+  ) => {
+    e.preventDefault();
+    const taskId = parseInt(e.dataTransfer.getData("taskId"));
+    changeTaskStatus(taskId, newStatus);
+  };
+
+  // Allow drop
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div className=" space-y-4">
+      <div
+        className=" space-y-4"
+        onDrop={(e) => handleDrop(e, "pending")}
+        onDragOver={handleDragOver}
+      >
         <div className="flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2">
             <CircleDotDashed className="text-gray-500" size={18} />
@@ -49,6 +72,7 @@ function BoardView({
                 changeTaskStatus={() => {
                   changeTaskStatus(task.id, "in progress");
                 }}
+                onDragStart={(e) => handleDragStart(e, task.id)}
               />
             ))
           ) : (
@@ -58,7 +82,11 @@ function BoardView({
           )}
         </div>
       </div>
-      <div className=" space-y-4">
+      <div
+        className=" space-y-4"
+        onDrop={(e) => handleDrop(e, "in progress")}
+        onDragOver={handleDragOver}
+      >
         <div className="flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2">
             <CircleDot className="text-yellow-500" size={18} />
@@ -77,6 +105,7 @@ function BoardView({
                 changeTaskStatus={() => {
                   changeTaskStatus(task.id, "completed");
                 }}
+                onDragStart={(e) => handleDragStart(e, task.id)}
               />
             ))
           ) : (
@@ -86,7 +115,11 @@ function BoardView({
           )}
         </div>
       </div>
-      <div className=" space-y-4">
+      <div
+        className=" space-y-4"
+        onDrop={(e) => handleDrop(e, "completed")}
+        onDragOver={handleDragOver}
+      >
         <div className="flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2">
             <CircleCheck className="text-green-500" size={18} />
@@ -105,6 +138,7 @@ function BoardView({
                 changeTaskStatus={() => {
                   changeTaskStatus(task.id, "completed");
                 }}
+                onDragStart={(e) => handleDragStart(e, task.id)}
               />
             ))
           ) : (
@@ -123,12 +157,18 @@ export default BoardView;
 export function TaskCard({
   task,
   changeTaskStatus,
+  onDragStart,
 }: {
   task: TaskType;
   changeTaskStatus: () => void;
+  onDragStart: (e: React.DragEvent, taskId: number) => void;
 }) {
   return (
-    <div className="border border-gray-300 rounded-md p-2 space-y-2 relative">
+    <div
+      draggable
+      onDragStart={(e) => onDragStart(e, task.id)}
+      className="border border-gray-300 rounded-md p-2 space-y-2 relative"
+    >
       {task.status !== "completed" && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

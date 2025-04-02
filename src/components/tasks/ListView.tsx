@@ -21,12 +21,10 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { renderPriorityBadge } from "@/pages/TasksPage";
-import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 
 export function ListView({
   tasks,
-  setTasks,
   changeTaskStatus,
 }: {
   tasks: TaskType[];
@@ -196,7 +194,7 @@ export function TaskTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks.map((task, index) => (
+          {tasks.map((task) => (
             <TableRow key={task.id} className="divide-x">
               <TableCell>
                 <div className="flex items-center justify-center px-2">
