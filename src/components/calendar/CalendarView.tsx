@@ -8,7 +8,7 @@ interface CalendarViewProps {
   events: any[];
   filter: string;
   highlightedDate: Date | null;
-  openNewEventModal: (date: Date) => void;
+  openNewEventModal: () => void;
 }
 
 export function CalendarView({

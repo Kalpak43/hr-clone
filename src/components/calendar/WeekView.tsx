@@ -1,5 +1,6 @@
 import { dayNames } from "@/data";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import DayViewModal from "./DayViewModal";
 
 interface WeekViewProps {
   currentDate: Date;
@@ -18,6 +19,19 @@ export function WeekView({
   openNewEventModal,
   getEventsForDay,
 }: WeekViewProps) {
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openDayViewModal = (day: Date) => {
+    setSelectedDay(day);
+    setIsModalOpen(true);
+  };
+
+  const closeDayViewModal = () => {
+    setSelectedDay(null);
+    setIsModalOpen(false);
+  };
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -156,6 +170,7 @@ export function WeekView({
                       : ""
                   }
                 `}
+              onClick={() => openDayViewModal(dayInfo.date)}
             >
               <div className="text-xs font-medium">
                 {dayNames[dayInfo.date.getDay()].substring(0, 3)}
@@ -224,6 +239,13 @@ export function WeekView({
           </div>
         ))}
       </div>
+      {/* DayViewModal */}
+      <DayViewModal
+        isOpen={isModalOpen}
+        onClose={closeDayViewModal}
+        day={selectedDay}
+        events={selectedDay ? getEventsForDay(selectedDay) : []}
+      />
     </div>
   );
 }

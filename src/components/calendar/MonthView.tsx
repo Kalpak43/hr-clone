@@ -1,5 +1,6 @@
 import { dayNames } from "@/data";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import DayViewModal from "./DayViewModal";
 
 interface MonthViewProps {
   currentDate: Date;
@@ -20,6 +21,19 @@ export function MonthView({
 }: MonthViewProps) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openDayViewModal = (day: Date) => {
+    setSelectedDay(day);
+    setIsModalOpen(true);
+  };
+
+  const closeDayViewModal = () => {
+    setSelectedDay(null);
+    setIsModalOpen(false);
+  };
 
   const getDaysArray = useCallback(() => {
     const days = [];
@@ -115,9 +129,17 @@ export function MonthView({
             highlightedDate={highlightedDate}
             openNewEventModal={openNewEventModal}
             getEventsForDay={getEventsForDay}
+            openDayViewModal={openDayViewModal}
           />
         ))}
       </div>
+
+      <DayViewModal
+        isOpen={isModalOpen}
+        onClose={closeDayViewModal}
+        day={selectedDay}
+        events={selectedDay ? getEventsForDay(selectedDay) : []}
+      />
     </>
   );
 }
@@ -127,11 +149,13 @@ function DayCell({
   highlightedDate,
   openNewEventModal,
   getEventsForDay,
+  openDayViewModal,
 }: {
   dayInfo: any;
   highlightedDate: Date | null;
   openNewEventModal: (date: Date) => void;
   getEventsForDay: (date: Date) => any[];
+  openDayViewModal: (date: Date) => void;
 }) {
   return (
     <div
@@ -161,7 +185,8 @@ function DayCell({
           ? "bg-red-50 text-red-300"
           : ""
       } cursor-pointer hover:bg-gray-50 transition-colors duration-150`}
-      onClick={() => !dayInfo.isOutsideMonth && openNewEventModal(dayInfo.date)}
+      // onClick={() => !dayInfo.isOutsideMonth && openNewEventModal(dayInfo.date)}
+      onClick={() => openDayViewModal(dayInfo.date)}
     >
       <div className="flex justify-end text-sm">{dayInfo.day}</div>
       {dayInfo.isHoliday && (

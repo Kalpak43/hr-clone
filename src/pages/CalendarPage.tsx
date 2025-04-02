@@ -8,8 +8,6 @@ function CalendarPage() {
   const [holidays, setHolidays] = useState<any>({});
   const [events, setEvents] = useState(eventData || []);
   const [newEventModalOpen, setNewEventModalOpen] = useState(false);
-  const [newEventDate, setNewEventDate] = useState<Date | null>(null);
-  const [newEventTitle, setNewEventTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
   const [filter, setFilter] = useState("all");
@@ -18,28 +16,28 @@ function CalendarPage() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-    // useEffect(() => {
-    //   const fetchHolidays = async () => {
-    //     try {
-    //       const apiKey = import.meta.env.VITE_CALENDAR_KEY;
-    //       const response = await fetch(
-    //         `https://calendarific.com/api/v2/holidays?&api_key=${apiKey}&country=IN&year=${year}`
-    //       );
-    //       const data = await response.json();
-    //       if (data.response && data.response.holidays) {
-    //         const formattedHolidays: { [key: string]: string } = {};
-    //         data.response.holidays.forEach((holiday: any) => {
-    //           formattedHolidays[holiday.date.iso] = holiday.name;
-    //         });
-    //         setHolidays(formattedHolidays);
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching holidays:", error);
-    //     }
-    //   };
+  // useEffect(() => {
+  //   const fetchHolidays = async () => {
+  //     try {
+  //       const apiKey = import.meta.env.VITE_CALENDAR_KEY;
+  //       const response = await fetch(
+  //         `https://calendarific.com/api/v2/holidays?&api_key=${apiKey}&country=IN&year=${year}`
+  //       );
+  //       const data = await response.json();
+  //       if (data.response && data.response.holidays) {
+  //         const formattedHolidays: { [key: string]: string } = {};
+  //         data.response.holidays.forEach((holiday: any) => {
+  //           formattedHolidays[holiday.date.iso] = holiday.name;
+  //         });
+  //         setHolidays(formattedHolidays);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching holidays:", error);
+  //     }
+  //   };
 
-    //   fetchHolidays();
-    // }, [year]);
+  //   fetchHolidays();
+  // }, [year]);
 
   const goToPreviousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -65,9 +63,8 @@ function CalendarPage() {
     setCurrentDate(new Date());
   };
 
-  const openNewEventModal = (date: Date) => {
+  const openNewEventModal = () => {
     setNewEventModalOpen(true);
-    setNewEventDate(date);
   };
 
   const handleSearchChange = (e: any) => {

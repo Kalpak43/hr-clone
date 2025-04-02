@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight, Plus, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { Calendar, List } from "lucide-react";
+import NewEventModal from "./NewEventModal";
 
 interface CalendarHeaderProps {
   currentDate: Date;
@@ -14,7 +15,7 @@ interface CalendarHeaderProps {
   goToToday: () => void;
   searchTerm: string;
   handleSearchChange: (e: any) => void;
-  openNewEventModal: (date: Date) => void;
+  openNewEventModal: () => void;
 }
 
 const monthNames = [
@@ -151,14 +152,7 @@ export function CalendarHeader({
             />
           </div>
 
-          <Button
-            className="bg-blue-400 hover:bg-blue-500"
-            variant="default"
-            onClick={() => openNewEventModal(new Date())}
-          >
-            <Plus />
-            Add Event
-          </Button>
+          <NewEventModal openNewEventModal={openNewEventModal} />
         </div>
       </div>
     </div>
