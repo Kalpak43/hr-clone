@@ -98,7 +98,7 @@ function BoardView({
         </div>
 
         <div className="space-y-2">
-          {completedTasks.length > 0 &&
+          {completedTasks.length > 0 ? (
             completedTasks.map((task) => (
               <TaskCard
                 task={task}
@@ -106,7 +106,12 @@ function BoardView({
                   changeTaskStatus(task.id, "completed");
                 }}
               />
-            ))}
+            ))
+          ) : (
+            <div className="border rounded-md h-[300px] flex items-center justify-center">
+              <p className="text-gray-500">No Completed Tasks</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

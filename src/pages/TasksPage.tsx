@@ -15,7 +15,7 @@ import {
   StretchVertical,
   Table as TableLogo,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -36,6 +36,7 @@ import BoardView from "@/components/tasks/BoardView";
 function TasksPage() {
   const [tasks, setTasks] = useState<TaskType[]>(dummyTasks as TaskType[]);
   const [viewMode, setViewMode] = useState<"list" | "board">("board");
+  const [filterDate, setFilterDate] = useState<Date>(new Date());
 
   const changeTaskStatus = (
     taskId: number,
@@ -46,26 +47,26 @@ function TasksPage() {
     );
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    if (!task.dueDate) return false; // Exclude tasks with no due date
+
+    const taskDate = new Date(task.dueDate);
+
+    // Compare dates without time component
+    return taskDate.toDateString() === filterDate.toDateString();
+  }) as TaskType[];
+
   return (
-    <div className="hero">
-      <div className="border border-gray-300 rounded-md p-4 space-y-8">
+    <div className="hero h-full">
+      <div className="border border-gray-300 rounded-md p-4 space-y-8 h-full">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="">
-              Task{" "}
+              Tasks{" "}
               <span className="ml-4">
                 <Info className="inline text-gray-700" size={16} />
               </span>
             </p>
-            <div className="flex items-center gap-2">
-              <DateDropdown />
-              <Button size={"icon"} variant={"outline"}>
-                <SquareArrowOutUpRight size={12} className="text-gray-700" />
-              </Button>
-              <Button size={"icon"} variant={"outline"}>
-                <EllipsisVertical size={12} className="text-gray-700" />
-              </Button>
-            </div>
           </div>
           <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
             <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
@@ -86,10 +87,17 @@ function TasksPage() {
                 <span>List View</span>
               </Button>
             </div>
-            <Button variant={"outline"} className="ml-auto">
+            <div className="flex items-center gap-2">
+              <DateDropdown
+                onChange={(x) => {
+                  setFilterDate(x);
+                }}
+              />
+            </div>
+            {/* <Button variant={"outline"} className="ml-auto">
               <ListFilter size={12} />
               <span>Filter</span>
-            </Button>
+            </Button> */}
           </div>
         </div>
 
@@ -98,14 +106,14 @@ function TasksPage() {
             {
               board: (
                 <BoardView
-                  tasks={tasks}
+                  tasks={filteredTasks}
                   setTasks={setTasks}
                   changeTaskStatus={changeTaskStatus}
                 />
               ),
               list: (
                 <ListView
-                  tasks={tasks}
+                  tasks={filteredTasks}
                   setTasks={setTasks}
                   changeTaskStatus={changeTaskStatus}
                 />

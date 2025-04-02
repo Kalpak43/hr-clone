@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 import {
@@ -9,8 +9,16 @@ import {
 import { Calendar as DatePicker } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 
-export default function DateDropdown() {
+export default function DateDropdown({
+  onChange,
+}: {
+  onChange?: (date: Date) => void;
+}) {
   const [date, setDate] = useState(new Date());
+
+  useEffect(() => {
+    if (date && onChange) onChange(date);
+  }, [date]);
 
   return (
     <Popover>

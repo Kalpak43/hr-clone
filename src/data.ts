@@ -1086,7 +1086,7 @@ export const dummyTasks = [
     id: 1,
     title: "Design Homepage UI",
     description: "Create a modern and responsive homepage design using Figma.",
-    dueDate: "2025-04-10",
+    dueDate: "2025-04-02", // Today
     priority: "high",
     status: "in progress",
     assignees: [
@@ -1102,7 +1102,7 @@ export const dummyTasks = [
     title: "Fix Login Bug",
     description:
       "Resolve the issue where users are unable to log in with social accounts.",
-    dueDate: "2025-04-05",
+    dueDate: "2025-04-01", // Yesterday
     priority: "critical",
     status: "pending",
     assignees: [
@@ -1134,7 +1134,7 @@ export const dummyTasks = [
     title: "Optimize Database Queries",
     description:
       "Improve query performance by adding indexes and refactoring joins.",
-    dueDate: "2025-04-15",
+    dueDate: "2025-04-03", // Tomorrow
     priority: "high",
     status: "in progress",
     assignees: [
@@ -1149,7 +1149,7 @@ export const dummyTasks = [
     id: 5,
     title: "Deploy New Feature",
     description: "Deploy the new analytics dashboard to production.",
-    dueDate: "2025-04-08",
+    dueDate: "2025-04-02", // Today
     priority: "high",
     status: "pending",
     assignees: [
