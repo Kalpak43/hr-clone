@@ -24,6 +24,7 @@ import {
 import { renderPriorityBadge } from "@/pages/TasksPage";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function ListView({
   tasks,
@@ -216,12 +217,16 @@ export function TaskTable({
               <TableCell>{task.dueDate || "-"}</TableCell>
               <TableCell>{renderPriorityBadge(task.priority)}</TableCell>
               <TableCell>
-                <div className="flex items-center justify-center gap-2">
-                  <img
-                    src={task.assignees[0].image}
-                    alt={task.assignees[0].name}
-                    className="w-6 h-6 rounded-full"
-                  />
+                <div className="flex -space-x-4">
+                  {task.assignees.map((assignee, i) => (
+                    <Avatar
+                      key={i}
+                      className="w-8 h-8 border-2 border-background"
+                    >
+                      <AvatarImage src={assignee.image} alt={assignee.name} />
+                      <AvatarFallback>{assignee.name[0]}</AvatarFallback>
+                    </Avatar>
+                  ))}
                 </div>
               </TableCell>
               <TableCell>

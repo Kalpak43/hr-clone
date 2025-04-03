@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 function BoardView({
   tasks,
@@ -218,12 +219,13 @@ export function TaskCard({
           <span className="italic">{task.dueDate}</span>
         </p>
       )}
-      <div className="flex items-center gap-2">
-        <img
-          src={task.assignees[0].image}
-          alt={task.assignees[0].name}
-          className="w-6 h-6 rounded-full"
-        />
+      <div className="flex -space-x-4">
+        {task.assignees.map((assignee, i) => (
+          <Avatar key={i} className="w-8 h-8 border-2 border-background">
+            <AvatarImage src={assignee.image} alt={assignee.name} />
+            <AvatarFallback>{assignee.name[0]}</AvatarFallback>
+          </Avatar>
+        ))}
       </div>
     </div>
   );
