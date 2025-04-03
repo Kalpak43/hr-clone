@@ -993,7 +993,7 @@ export const eventData = [
   },
   {
     id: 14,
-    date: "2025-04-15",
+    date: "2025-04-03",
     title: "Stakeholder Review Call",
     startTime: "4:00 PM",
     endTime: "5:00 PM",
@@ -1332,7 +1332,8 @@ export const jobs: Job[] = [
       "We are looking for a skilled Frontend Developer with experience in React and Next.js to build and maintain user interfaces.",
     status: "Active",
     deadline: "2025-04-15",
-    applicants: [1, 5],
+    postedOn: "2025-03-20",
+    applicants: [1, 2, 3, 4, 5, 6],
   },
   {
     id: 2,
@@ -1341,6 +1342,7 @@ export const jobs: Job[] = [
       "Seeking a Data Scientist to analyze large datasets, develop predictive models, and improve business decision-making.",
     status: "Active",
     deadline: "2025-04-20",
+    postedOn: "2025-03-22",
     applicants: [2],
   },
   {
@@ -1350,7 +1352,8 @@ export const jobs: Job[] = [
       "Looking for a Backend Developer to build and optimize server-side logic using Node.js and databases like PostgreSQL.",
     status: "Expired",
     deadline: "2025-03-25",
-    applicants: [3, 9],
+    postedOn: "2025-02-25",
+    applicants: [3, 7],
   },
   {
     id: 4,
@@ -1359,6 +1362,7 @@ export const jobs: Job[] = [
       "Hiring a UX/UI Designer to create intuitive and visually appealing designs for web and mobile applications.",
     status: "Active",
     deadline: "2025-04-10",
+    postedOn: "2025-03-15",
     applicants: [4],
   },
   {
@@ -1368,6 +1372,7 @@ export const jobs: Job[] = [
       "Looking for an AI/ML Engineer to work on machine learning models, data pipelines, and AI-driven applications.",
     status: "Active",
     deadline: "2025-04-30",
+    postedOn: "2025-03-18",
     applicants: [5],
   },
   {
@@ -1377,6 +1382,7 @@ export const jobs: Job[] = [
       "Seeking a Product Manager to drive product strategy, manage teams, and oversee product development.",
     status: "Expired",
     deadline: "2025-03-28",
+    postedOn: "2025-02-28",
     applicants: [6],
   },
   {
@@ -1386,6 +1392,7 @@ export const jobs: Job[] = [
       "Hiring a DevOps Engineer to automate infrastructure, improve CI/CD pipelines, and optimize cloud environments.",
     status: "Active",
     deadline: "2025-04-12",
+    postedOn: "2025-03-19",
     applicants: [7],
   },
   {
@@ -1395,7 +1402,8 @@ export const jobs: Job[] = [
       "Seeking a Marketing Specialist to develop and execute marketing campaigns, manage social media, and increase brand awareness.",
     status: "Active",
     deadline: "2025-04-18",
-    applicants: [8],
+    postedOn: "2025-03-21",
+    applicants: [7],
   },
   {
     id: 9,
@@ -1404,7 +1412,8 @@ export const jobs: Job[] = [
       "Hiring a Cybersecurity Analyst to monitor security threats, conduct risk assessments, and implement security measures.",
     status: "Expired",
     deadline: "2025-03-22",
-    applicants: [9],
+    postedOn: "2025-02-22",
+    applicants: [8],
   },
   {
     id: 10,
@@ -1413,6 +1422,46 @@ export const jobs: Job[] = [
       "Looking for a Software Engineer to develop and maintain scalable applications with modern programming frameworks.",
     status: "Active",
     deadline: "2025-04-25",
-    applicants: [10],
+    postedOn: "2025-03-23",
+    applicants: [9],
+  },
+];
+
+export const interviews = [
+  {
+    title: "Frontend Developer Interview",
+    description: "Technical interview covering React, Next.js, and Redux.",
+    date: "2025-04-03",
+    start_time: "10:00 AM",
+    end_time: "11:00 AM",
+  },
+  {
+    title: "Backend Developer Interview",
+    description: "Discussion on Node.js, Express, and database optimization.",
+    date: "2025-04-03",
+    start_time: "11:30 AM",
+    end_time: "12:30 PM",
+  },
+  {
+    title: "HR Round",
+    description:
+      "General discussion on company culture, expectations, and benefits.",
+    date: "2025-03-15",
+    start_time: "02:00 PM",
+    end_time: "02:45 PM",
+  },
+  {
+    title: "System Design Interview",
+    description: "Evaluating system design skills for scalable applications.",
+    date: "2025-03-15",
+    start_time: "03:00 PM",
+    end_time: "04:00 PM",
+  },
+  {
+    title: "Final Interview with CTO",
+    description: "Final discussion and offer negotiation with the CTO.",
+    date: "2025-03-15",
+    start_time: "04:30 PM",
+    end_time: "05:15 PM",
   },
 ];

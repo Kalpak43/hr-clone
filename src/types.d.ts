@@ -129,5 +129,6 @@ interface Job {
   description: string;
   status: "Active" | "Expired";
   deadline: string; // Format: YYYY-MM-DD
+  postedOn: string;
   applicants: number[]; // Array of applicant IDs
 }
