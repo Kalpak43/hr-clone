@@ -16,28 +16,28 @@ function CalendarPage() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // useEffect(() => {
-  //   const fetchHolidays = async () => {
-  //     try {
-  //       const apiKey = import.meta.env.VITE_CALENDAR_KEY;
-  //       const response = await fetch(
-  //         `https://calendarific.com/api/v2/holidays?&api_key=${apiKey}&country=IN&year=${year}`
-  //       );
-  //       const data = await response.json();
-  //       if (data.response && data.response.holidays) {
-  //         const formattedHolidays: { [key: string]: string } = {};
-  //         data.response.holidays.forEach((holiday: any) => {
-  //           formattedHolidays[holiday.date.iso] = holiday.name;
-  //         });
-  //         setHolidays(formattedHolidays);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching holidays:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      try {
+        const apiKey = import.meta.env.VITE_CALENDAR_KEY;
+        const response = await fetch(
+          `https://calendarific.com/api/v2/holidays?&api_key=${apiKey}&country=IN&year=${year}`
+        );
+        const data = await response.json();
+        if (data.response && data.response.holidays) {
+          const formattedHolidays: { [key: string]: string } = {};
+          data.response.holidays.forEach((holiday: any) => {
+            formattedHolidays[holiday.date.iso] = holiday.name;
+          });
+          setHolidays(formattedHolidays);
+        }
+      } catch (error) {
+        console.error("Error fetching holidays:", error);
+      }
+    };
 
-  //   fetchHolidays();
-  // }, [year]);
+    fetchHolidays();
+  }, [year]);
 
   const goToPreviousMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));

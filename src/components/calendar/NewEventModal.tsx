@@ -81,23 +81,25 @@ function NewEventModal({
                 onChange={handleChange}
               />
             </div>
-            <div>
-              <label>Start Time</label>
-              <Input
-                type="time"
-                name="startTime"
-                value={eventData.startTime}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label>End Time</label>
-              <Input
-                type="time"
-                name="endTime"
-                value={eventData.endTime}
-                onChange={handleChange}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label>Start Time</label>
+                <Input
+                  type="time"
+                  name="startTime"
+                  value={eventData.startTime}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>End Time</label>
+                <Input
+                  type="time"
+                  name="endTime"
+                  value={eventData.endTime}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
             <Button
               type="button"

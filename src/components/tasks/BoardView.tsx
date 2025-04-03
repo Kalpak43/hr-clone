@@ -3,6 +3,7 @@ import {
   CircleDot,
   CircleDotDashed,
   EllipsisVertical,
+  Plus,
 } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
@@ -15,6 +16,7 @@ import {
 
 function BoardView({
   tasks,
+  setTasks,
   changeTaskStatus,
 }: {
   tasks: TaskType[];
@@ -47,6 +49,10 @@ function BoardView({
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
+
+  // function addTask(task: TaskType, type: "pending") {
+  //   setTasks((x) => [...x, task]);
+  // }
 
   return (
     <div className="grid grid-cols-3 gap-4">

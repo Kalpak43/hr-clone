@@ -1,13 +1,15 @@
 import DateDropdown from "@/components/DateDropdown";
 import { Button } from "@/components/ui/button";
 import { dummyTasks } from "@/data";
-import { Info, List, StretchVertical } from "lucide-react";
-import { useState } from "react";
+import { Info, List, Plus, StretchVertical } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { ListView } from "@/components/tasks/ListView";
 import BoardView from "@/components/tasks/BoardView";
+import AddTaskModal from "@/components/tasks/AddTaskModal";
 
 function TasksPage() {
+  const [open, setOpen] = useState(false);
   const [tasks, setTasks] = useState<TaskType[]>(dummyTasks as TaskType[]);
   const [viewMode, setViewMode] = useState<"list" | "board">("board");
   const [filterDate, setFilterDate] = useState<Date>(new Date());
@@ -30,17 +32,32 @@ function TasksPage() {
     return taskDate.toDateString() === filterDate.toDateString();
   }) as TaskType[];
 
+  function addTask(newTask: TaskType) {
+    setTasks((x) => [...x, newTask]);
+  }
+
+  useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
+
   return (
     <div className="hero h-full">
-      <div className="border border-gray-300 rounded-md p-4 space-y-8 h-full">
+      <div className="border border-gray-300 rounded-md p-4 space-y-8 h-full overflow-y-auto">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="">
+            <p className="text-lg">
               Tasks{" "}
               <span className="ml-4">
                 <Info className="inline text-gray-700" size={16} />
               </span>
             </p>
+            <div className="flex items-center gap-2">
+              <DateDropdown
+                onChange={(x) => {
+                  setFilterDate(x);
+                }}
+              />
+            </div>
           </div>
           <div className="flex max-md:flex-col max-md:items-start gap-2 items-center justify-between">
             <div className="flex items-center max-md:justify-between gap-2 text-gray-700 w-full">
@@ -61,17 +78,14 @@ function TasksPage() {
                 <span>List View</span>
               </Button>
             </div>
-            <div className="flex items-center gap-2">
-              <DateDropdown
-                onChange={(x) => {
-                  setFilterDate(x);
-                }}
-              />
-            </div>
-            {/* <Button variant={"outline"} className="ml-auto">
-              <ListFilter size={12} />
-              <span>Filter</span>
-            </Button> */}
+
+            <Button
+              className="ml-auto bg-blue-400 hover:bg-blue-500"
+              onClick={() => setOpen(true)}
+            >
+              <Plus size={12} />
+              <span>Add Task</span>
+            </Button>
           </div>
         </div>
 
@@ -96,6 +110,13 @@ function TasksPage() {
           }
         </div>
       </div>
+
+      <AddTaskModal
+        open={open}
+        setOpen={setOpen}
+        addTask={addTask}
+        tasks={tasks}
+      />
     </div>
   );
 }

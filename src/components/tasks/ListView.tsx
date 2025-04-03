@@ -4,6 +4,7 @@ import {
   CircleCheck,
   CircleDot,
   CircleDotDashed,
+  Plus,
 } from "lucide-react";
 import React, { useState } from "react";
 import {
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/collapsible";
 import { renderPriorityBadge } from "@/pages/TasksPage";
 import { Checkbox } from "../ui/checkbox";
+import { Button } from "../ui/button";
 
 export function ListView({
   tasks,
@@ -57,7 +59,7 @@ export function ListView({
               <div className="flex items-center gap-2">
                 <CircleDotDashed className="text-gray-500" size={18} />
                 <h3 className="font-medium">Pending</h3>
-                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-sm">
+                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-xs">
                   {pendingTasks.length} tasks
                 </span>
               </div>
@@ -97,7 +99,7 @@ export function ListView({
               <div className="flex items-center gap-2">
                 <CircleDot className="text-yellow-500" size={18} />
                 <h3 className="font-medium">In Progress</h3>
-                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-sm">
+                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-xs">
                   {inProgressTasks.length} tasks
                 </span>
               </div>
@@ -139,7 +141,7 @@ export function ListView({
               <div className="flex items-center gap-2">
                 <CircleCheck className="text-green-500" size={18} />
                 <h3 className="font-medium">Completed</h3>
-                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-sm">
+                <span className="ml-2 bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-xs">
                   {completedTasks.length} tasks
                 </span>
               </div>
@@ -227,7 +229,7 @@ export function TaskTable({
                   {task.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs"
+                      className="bg-blue-100 text-blue-900 px-2 py-1 rounded text-xs"
                     >
                       {tag}
                     </span>
