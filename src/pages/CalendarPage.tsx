@@ -10,7 +10,7 @@ function CalendarPage() {
   const [_, setNewEventModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightedDate, setHighlightedDate] = useState<Date | null>(null);
-  const [filter, setFilter] = useState("all");
+  const [filter, __] = useState("all");
   const [viewMode, setViewMode] = useState("month");
 
   const year = currentDate.getFullYear();

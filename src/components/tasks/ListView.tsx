@@ -4,7 +4,6 @@ import {
   CircleCheck,
   CircleDot,
   CircleDotDashed,
-  Plus,
 } from "lucide-react";
 import React, { useState } from "react";
 import {
@@ -23,7 +22,6 @@ import {
 } from "@/components/ui/collapsible";
 import { renderPriorityBadge } from "@/pages/TasksPage";
 import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function ListView({

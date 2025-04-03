@@ -21,8 +21,8 @@ import UpdatePasswordPage from "./pages/UpdatePasswordPage";
 import AccessPage from "./pages/AccessPage";
 import HiringPage from "./pages/HiringPage";
 import CalendarPage from "./pages/CalendarPage";
-import CalendarPage2 from "./pages/CalendarPage2";
 import TasksPage from "./pages/TasksPage";
+import ProjectsPage from "./pages/ProjectsPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -67,6 +67,7 @@ function App() {
             <Route path="/inbox/:mailID?" element={<InboxPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
             <Route path="/attendance" element={<AttendancePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/payroll" element={<PayrollPage />} />
             <Route path="/hiring" element={<HiringPage />} />
             <Route path="/calendar" element={<CalendarPage />} />

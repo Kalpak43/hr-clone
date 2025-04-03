@@ -3,7 +3,6 @@ import {
   CircleDot,
   CircleDotDashed,
   EllipsisVertical,
-  Plus,
 } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
@@ -17,7 +16,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 function BoardView({
   tasks,
-  setTasks,
   changeTaskStatus,
 }: {
   tasks: TaskType[];

@@ -101,3 +101,33 @@ interface TaskType {
   }[];
   tags: string[];
 }
+
+interface SocialLinks {
+  linkedIn: string;
+  github?: string;
+  kaggle?: string;
+  dribbble?: string;
+}
+
+interface Applicant {
+  id: number;
+  profilePhoto: string;
+  name: string;
+  jobAppliedFor: string;
+  appliedDate: string; // ISO date string
+  socials: SocialLinks;
+  email: string;
+  contact: string;
+  location: string;
+  education: string;
+  interviewStep: number; // e.g., 1, 2, 3, etc.
+}
+
+interface Job {
+  id: number;
+  title: string;
+  description: string;
+  status: "Active" | "Expired";
+  deadline: string; // Format: YYYY-MM-DD
+  applicants: number[]; // Array of applicant IDs
+}
