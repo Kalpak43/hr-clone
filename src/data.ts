@@ -1330,6 +1330,11 @@ export const jobs: Job[] = [
     title: "Frontend Developer",
     description:
       "We are looking for a skilled Frontend Developer with experience in React and Next.js to build and maintain user interfaces.",
+    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "REST APIs"],
+    qualifications: [
+      "Bachelor’s degree in Computer Science or related field",
+      "2+ years of frontend development experience",
+    ],
     status: "Active",
     deadline: "2025-04-15",
     postedOn: "2025-03-20",
@@ -1340,6 +1345,18 @@ export const jobs: Job[] = [
     title: "Data Scientist",
     description:
       "Seeking a Data Scientist to analyze large datasets, develop predictive models, and improve business decision-making.",
+    skills: [
+      "Python",
+      "Machine Learning",
+      "TensorFlow",
+      "Pandas",
+      "SQL",
+      "Data Visualization",
+    ],
+    qualifications: [
+      "Master’s or Bachelor’s in Data Science, Computer Science, or related field",
+      "Experience with large datasets and predictive modeling",
+    ],
     status: "Active",
     deadline: "2025-04-20",
     postedOn: "2025-03-22",
@@ -1350,6 +1367,11 @@ export const jobs: Job[] = [
     title: "Backend Developer",
     description:
       "Looking for a Backend Developer to build and optimize server-side logic using Node.js and databases like PostgreSQL.",
+    skills: ["Node.js", "Express.js", "PostgreSQL", "GraphQL", "Docker"],
+    qualifications: [
+      "Bachelor’s degree in Computer Science or equivalent",
+      "Experience with backend development and API design",
+    ],
     status: "Expired",
     deadline: "2025-03-25",
     postedOn: "2025-02-25",
@@ -1360,6 +1382,17 @@ export const jobs: Job[] = [
     title: "UX/UI Designer",
     description:
       "Hiring a UX/UI Designer to create intuitive and visually appealing designs for web and mobile applications.",
+    skills: [
+      "Figma",
+      "Adobe XD",
+      "User Research",
+      "Wireframing",
+      "Prototyping",
+    ],
+    qualifications: [
+      "Degree in Design, UX, or related field",
+      "Experience in designing user-friendly interfaces",
+    ],
     status: "Active",
     deadline: "2025-04-10",
     postedOn: "2025-03-15",
@@ -1370,6 +1403,18 @@ export const jobs: Job[] = [
     title: "AI/ML Engineer",
     description:
       "Looking for an AI/ML Engineer to work on machine learning models, data pipelines, and AI-driven applications.",
+    skills: [
+      "Python",
+      "Deep Learning",
+      "PyTorch",
+      "TensorFlow",
+      "NLP",
+      "Data Engineering",
+    ],
+    qualifications: [
+      "Master’s or Bachelor's in AI, Data Science, or related field",
+      "Experience in deploying ML models",
+    ],
     status: "Active",
     deadline: "2025-04-30",
     postedOn: "2025-03-18",
@@ -1380,6 +1425,16 @@ export const jobs: Job[] = [
     title: "Product Manager",
     description:
       "Seeking a Product Manager to drive product strategy, manage teams, and oversee product development.",
+    skills: [
+      "Agile Methodology",
+      "Product Roadmap",
+      "Stakeholder Management",
+      "JIRA",
+    ],
+    qualifications: [
+      "MBA or equivalent experience",
+      "Proven experience in product management",
+    ],
     status: "Expired",
     deadline: "2025-03-28",
     postedOn: "2025-02-28",
@@ -1390,6 +1445,11 @@ export const jobs: Job[] = [
     title: "DevOps Engineer",
     description:
       "Hiring a DevOps Engineer to automate infrastructure, improve CI/CD pipelines, and optimize cloud environments.",
+    skills: ["Docker", "Kubernetes", "CI/CD", "AWS", "Terraform"],
+    qualifications: [
+      "Degree in Computer Science or equivalent",
+      "Experience in DevOps and cloud automation",
+    ],
     status: "Active",
     deadline: "2025-04-12",
     postedOn: "2025-03-19",
@@ -1400,6 +1460,11 @@ export const jobs: Job[] = [
     title: "Marketing Specialist",
     description:
       "Seeking a Marketing Specialist to develop and execute marketing campaigns, manage social media, and increase brand awareness.",
+    skills: ["SEO", "Google Ads", "Content Marketing", "Social Media Strategy"],
+    qualifications: [
+      "Degree in Marketing, Business, or related field",
+      "Experience with digital marketing campaigns",
+    ],
     status: "Active",
     deadline: "2025-04-18",
     postedOn: "2025-03-21",
@@ -1410,6 +1475,16 @@ export const jobs: Job[] = [
     title: "Cybersecurity Analyst",
     description:
       "Hiring a Cybersecurity Analyst to monitor security threats, conduct risk assessments, and implement security measures.",
+    skills: [
+      "Network Security",
+      "Penetration Testing",
+      "SIEM",
+      "Ethical Hacking",
+    ],
+    qualifications: [
+      "Degree in Cybersecurity or related field",
+      "Certifications like CEH, CISSP preferred",
+    ],
     status: "Expired",
     deadline: "2025-03-22",
     postedOn: "2025-02-22",
@@ -1420,6 +1495,11 @@ export const jobs: Job[] = [
     title: "Software Engineer",
     description:
       "Looking for a Software Engineer to develop and maintain scalable applications with modern programming frameworks.",
+    skills: ["JavaScript", "React", "Node.js", "TypeScript", "REST APIs"],
+    qualifications: [
+      "Bachelor’s degree in Computer Science",
+      "Experience in full-stack development",
+    ],
     status: "Active",
     deadline: "2025-04-25",
     postedOn: "2025-03-23",

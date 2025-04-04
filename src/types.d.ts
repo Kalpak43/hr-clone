@@ -131,4 +131,6 @@ interface Job {
   deadline: string; // Format: YYYY-MM-DD
   postedOn: string;
   applicants: number[]; // Array of applicant IDs
+  skills: string[]; // Array of skills required for the job
+  qualifications: string[]; // Array of qualifications required for the job
 }

@@ -36,10 +36,6 @@ function TasksPage() {
     setTasks((x) => [...x, newTask]);
   }
 
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
-
   return (
     <div className="hero h-full">
       <div className="border border-gray-300 rounded-md p-4 space-y-8 h-full overflow-y-auto">

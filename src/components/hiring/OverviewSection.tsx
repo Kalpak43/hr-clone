@@ -133,7 +133,7 @@ function OverviewSection({
               <div className="absolute left-[22px] top-0 bottom-0 w-[2px] bg-gray-200" />
 
               {/* Timeline events */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {sortedInterviews.map((interview, index) => (
                   <div key={index} className="flex gap-4">
                     {/* Timeline dot */}

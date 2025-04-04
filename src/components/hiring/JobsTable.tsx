@@ -18,7 +18,15 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { applicants } from "@/data";
 
-function JobsTable({ jobs }: { jobs: Job[] }) {
+function JobsTable({
+  jobs,
+  setSelectedEdit,
+  deleteJob,
+}: {
+  jobs: Job[];
+  setSelectedEdit: React.Dispatch<React.SetStateAction<Job | null>>;
+  deleteJob: (id: number) => void;
+}) {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   return (
@@ -97,7 +105,12 @@ function JobsTable({ jobs }: { jobs: Job[] }) {
                       <Eye className="h-4 w-4" />
                       <span className="sr-only">View</span>
                     </Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => setSelectedEdit(job)}
+                    >
                       <Pencil className="h-4 w-4" />
                       <span className="sr-only">Edit</span>
                     </Button>
@@ -105,6 +118,7 @@ function JobsTable({ jobs }: { jobs: Job[] }) {
                       variant="outline"
                       size="icon"
                       className="h-8 w-8 text-red-600 hover:text-red-600"
+                      onClick={() => deleteJob(job.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                       <span className="sr-only">Delete</span>
@@ -117,70 +131,109 @@ function JobsTable({ jobs }: { jobs: Job[] }) {
         </Table>
       </div>
 
-      {/* Job Details Modal */}
-      <Dialog open={!!selectedJob} onOpenChange={() => setSelectedJob(null)}>
-        <DialogContent className="sm:max-w-[625px]">
-          {selectedJob && (
-            <>
-              <DialogHeader>
-                <DialogTitle>{selectedJob.title}</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="space-y-2">
-                  <h4 className="font-medium">Description</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {selectedJob.description}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <h4 className="font-medium">Status</h4>
-                    <span
-                      className={`border text-xs rounded-md p-1 inline-flex items-center gap-2 font-[600] ${
-                        selectedJob.status === "Active"
-                          ? "border-green-300 bg-green-100 text-green-700 "
-                          : "border-red-300 bg-red-100 text-red-700 "
-                      }`}
-                    >
-                      {selectedJob.status}
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-medium">Deadline</h4>
-                    <p className="text-sm">
-                      {new Date(selectedJob.deadline).toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-medium">Applicants</h4>
-                    <p className="text-sm">
-                      {selectedJob.applicants.length} applicant
-                      {selectedJob.applicants.length !== 1 ? "s" : ""}
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-medium">Job ID</h4>
-                    <p className="text-sm">{selectedJob.id}</p>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <JobDetailsDialog
+        selectedJob={selectedJob}
+        setSelectedJob={setSelectedJob}
+      />
     </>
   );
 }
 
 export default JobsTable;
+
+export function JobDetailsDialog({
+  selectedJob,
+  setSelectedJob,
+}: {
+  selectedJob: Job | null;
+  setSelectedJob: React.Dispatch<React.SetStateAction<Job | null>>;
+}) {
+  return (
+    <Dialog open={!!selectedJob} onOpenChange={() => setSelectedJob(null)}>
+      <DialogContent className="sm:max-w-[625px]">
+        {selectedJob && (
+          <>
+            <DialogHeader>
+              <DialogTitle>{selectedJob.title}</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <h4 className="font-medium">Description</h4>
+                <p className="text-sm text-muted-foreground">
+                  {selectedJob.description}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h4 className="font-medium">Status</h4>
+                  <span
+                    className={`border text-xs rounded-md p-1 inline-flex items-center gap-2 font-[600] ${
+                      selectedJob.status === "Active"
+                        ? "border-green-300 bg-green-100 text-green-700 "
+                        : "border-red-300 bg-red-100 text-red-700 "
+                    }`}
+                  >
+                    {selectedJob.status}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="font-medium">Deadline</h4>
+                  <p className="text-sm">
+                    {new Date(selectedJob.deadline).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </p>
+                </div>
+
+                {/* Skills - Displayed as Badges */}
+                <div className="space-y-2 col-span-2">
+                  <h4 className="font-medium">Skills Required</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJob.skills?.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="text-xs font-semibold border border-gray-300 bg-gray-100 text-gray-700 px-2 py-1 rounded-md"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Qualifications */}
+                <div className="space-y-2 col-span-2">
+                  <h4 className="font-medium">Qualifications</h4>
+                  <ul className="list-disc list-inside text-sm text-muted-foreground">
+                    {selectedJob.qualifications?.map((qualification, index) => (
+                      <li key={index}>{qualification}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="font-medium">Applicants</h4>
+                  <p className="text-sm">
+                    {selectedJob.applicants.length} applicant
+                    {selectedJob.applicants.length !== 1 ? "s" : ""}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <h4 className="font-medium">Job ID</h4>
+                  <p className="text-sm">{selectedJob.id}</p>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
