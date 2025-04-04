@@ -1178,6 +1178,7 @@ export const applicants = [
     location: "San Francisco, CA, USA",
     education: "BSc in Computer Science, Stanford University",
     interviewStep: 2,
+    resumeUrl: "https://example.com/resumes/john_doe_resume.pdf",
   },
   {
     id: 2,
@@ -1194,6 +1195,7 @@ export const applicants = [
     location: "London, UK",
     education: "MSc in Data Science, University of Oxford",
     interviewStep: 1,
+    resumeUrl: "https://example.com/resumes/jane_smith_resume.pdf",
   },
   {
     id: 3,
@@ -1210,6 +1212,7 @@ export const applicants = [
     location: "Sydney, Australia",
     education: "BEng in Software Engineering, University of Melbourne",
     interviewStep: 4,
+    resumeUrl: "https://example.com/resumes/alex_johnson_resume.pdf",
   },
   {
     id: 4,
@@ -1226,6 +1229,7 @@ export const applicants = [
     location: "Berlin, Germany",
     education: "BA in Graphic Design, University of Arts Berlin",
     interviewStep: 3,
+    resumeUrl: "https://example.com/resumes/emily_white_resume.pdf",
   },
   {
     id: 5,
@@ -1242,6 +1246,7 @@ export const applicants = [
     location: "Seoul, South Korea",
     education: "PhD in Machine Learning, KAIST",
     interviewStep: 1,
+    resumeUrl: "https://example.com/resumes/daniel_kim_resume.pdf",
   },
   {
     id: 6,
@@ -1257,6 +1262,7 @@ export const applicants = [
     location: "Paris, France",
     education: "MBA in Business Strategy, HEC Paris",
     interviewStep: 3,
+    resumeUrl: "https://example.com/resumes/sophia_brown_resume.pdf",
   },
   {
     id: 7,
@@ -1273,6 +1279,7 @@ export const applicants = [
     location: "New York, USA",
     education: "MSc in Cloud Computing, MIT",
     interviewStep: 4,
+    resumeUrl: "https://example.com/resumes/michael_lee_resume.pdf",
   },
   {
     id: 8,
@@ -1289,6 +1296,7 @@ export const applicants = [
     location: "Madrid, Spain",
     education: "BA in Digital Marketing, IE University",
     interviewStep: 1,
+    resumeUrl: "https://example.com/resumes/olivia_martinez_resume.pdf",
   },
   {
     id: 9,
@@ -1305,6 +1313,7 @@ export const applicants = [
     location: "Manchester, UK",
     education: "MSc in Cybersecurity, University of Manchester",
     interviewStep: 2,
+    resumeUrl: "https://example.com/resumes/ryan_williams_resume.pdf",
   },
   {
     id: 10,
@@ -1321,6 +1330,7 @@ export const applicants = [
     location: "Rio de Janeiro, Brazil",
     education: "BSc in Software Engineering, PUC-Rio",
     interviewStep: 4,
+    resumeUrl: "https://example.com/resumes/isabella_garcia_resume.pdf",
   },
 ];
 
@@ -1514,6 +1524,13 @@ export const interviews = [
     date: "2025-04-03",
     start_time: "10:00 AM",
     end_time: "11:00 AM",
+    participant: {
+      id: 1,
+      name: "John Doe",
+      profilePhoto: "https://randomuser.me/api/portraits/men/45.jpg",
+      email: "johndoe@email.com",
+      jobAppliedFor: "Frontend Developer",
+    },
   },
   {
     title: "Backend Developer Interview",
@@ -1521,6 +1538,13 @@ export const interviews = [
     date: "2025-04-03",
     start_time: "11:30 AM",
     end_time: "12:30 PM",
+    participant: {
+      id: 3,
+      name: "Alex Johnson",
+      profilePhoto: "https://randomuser.me/api/portraits/men/52.jpg",
+      email: "alexjohnson@email.com",
+      jobAppliedFor: "Backend Developer",
+    },
   },
   {
     title: "HR Round",
@@ -1529,6 +1553,13 @@ export const interviews = [
     date: "2025-03-15",
     start_time: "02:00 PM",
     end_time: "02:45 PM",
+    participant: {
+      id: 2,
+      name: "Jane Smith",
+      profilePhoto: "https://randomuser.me/api/portraits/women/32.jpg",
+      email: "janesmith@email.com",
+      jobAppliedFor: "Data Scientist",
+    },
   },
   {
     title: "System Design Interview",
@@ -1536,6 +1567,13 @@ export const interviews = [
     date: "2025-03-15",
     start_time: "03:00 PM",
     end_time: "04:00 PM",
+    participant: {
+      id: 10,
+      name: "Isabella Garcia",
+      profilePhoto: "https://randomuser.me/api/portraits/women/48.jpg",
+      email: "isabellagarcia@email.com",
+      jobAppliedFor: "Software Engineer",
+    },
   },
   {
     title: "Final Interview with CTO",
@@ -1543,5 +1581,12 @@ export const interviews = [
     date: "2025-03-15",
     start_time: "04:30 PM",
     end_time: "05:15 PM",
+    participant: {
+      id: 6,
+      name: "Sophia Brown",
+      profilePhoto: "https://randomuser.me/api/portraits/women/45.jpg",
+      email: "sophiabrown@email.com",
+      jobAppliedFor: "Product Manager",
+    },
   },
 ];

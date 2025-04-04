@@ -9,15 +9,20 @@ import { parse, isEqual } from "date-fns";
 
 function OverviewSection({
   setViewMode,
+  shownInterview,
 }: {
   setViewMode: React.Dispatch<
     React.SetStateAction<"overview" | "applicants" | "jobs">
   >;
+  shownInterview: Interview[];
+  setShownInterviews: React.Dispatch<React.SetStateAction<Interview[]>>;
 }) {
+  const [shownJobs, setShownJobs] = useState(jobs);
+  const [selectedEdit, setSelectedEdit] = useState<Job | null>(null);
   const [filterDate, setFilterDate] = useState<Date>(new Date());
 
   // Filter interviews by the selected date
-  const filteredInterviews = interviews.filter((interview) => {
+  const filteredInterviews = shownInterview.filter((interview) => {
     const interviewDate = parse(interview.date, "yyyy-MM-dd", new Date());
     return isEqual(
       new Date(interviewDate.setHours(0, 0, 0, 0)),
@@ -178,7 +183,11 @@ function OverviewSection({
 
         <div className="grid grid-cols-4 gap-4">
           {applicants.slice(0, 4).map((applicant) => (
-            <ApplicantCard key={applicant.id} applicant={applicant} />
+            <ApplicantCard
+              key={applicant.id}
+              applicant={applicant}
+              openModal={() => {}}
+            />
           ))}
         </div>
       </div>
@@ -197,13 +206,17 @@ function OverviewSection({
         </div>
 
         <JobsTable
-          jobs={[...jobs]
+          jobs={[...shownJobs]
             .sort((a, b) => {
               const dateA = new Date(a.postedOn);
               const dateB = new Date(b.postedOn);
               return dateB.getTime() - dateA.getTime();
             })
             .slice(0, 4)}
+          setSelectedEdit={setSelectedEdit}
+          deleteJob={(id: number) => {
+            setShownJobs((prev) => prev.filter((job) => job.id !== id));
+          }}
         />
       </div>
     </div>

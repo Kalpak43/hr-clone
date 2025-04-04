@@ -121,6 +121,7 @@ interface Applicant {
   location: string;
   education: string;
   interviewStep: number; // e.g., 1, 2, 3, etc.
+  resumeUrl: string;
 }
 
 interface Job {
@@ -133,4 +134,19 @@ interface Job {
   applicants: number[]; // Array of applicant IDs
   skills: string[]; // Array of skills required for the job
   qualifications: string[]; // Array of qualifications required for the job
+}
+
+interface Interview {
+  title: string;
+  description: string;
+  date: string;
+  start_time: string;
+  end_time: string;
+  participant: {
+    id: number;
+    name: string;
+    profilePhoto: string;
+    email: string;
+    jobAppliedFor: string;
+  };
 }

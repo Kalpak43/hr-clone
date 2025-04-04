@@ -17,6 +17,7 @@ interface StepperProps {
   currentStep?: number;
   handleNext: () => void;
   handlePrev: () => void;
+  handleClick: (index: number) => void;
 }
 
 export function Stepper({
@@ -24,12 +25,14 @@ export function Stepper({
   currentStep = 0,
   handleNext,
   handlePrev,
+  handleClick,
 }: StepperProps) {
   // const [currentStep, setCurrentStep] = useState(initialStep);
 
-  // const handleStepClick = (index: number) => {
-  //   setCurrentStep(index);
-  // };
+  const handleStepClick = (index: number) => {
+    handleClick(index);
+    // setCurrentStep(index);
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -47,7 +50,7 @@ export function Stepper({
                     ? "bg-blue-400 border-blue-400 text-primary-foreground"
                     : "border-muted-foreground/30 text-muted-foreground bg-white"
                 )}
-                // onClick={() => handleStepClick(index)}
+                onClick={() => handleStepClick(index + 1)}
               >
                 {index < currentStep ? (
                   <Check className="h-5 w-5" />
@@ -75,7 +78,7 @@ export function Stepper({
             <div
               key={index}
               className={cn(
-                "flex-1 text-center text-sm font-medium",
+                "flex-1 text-center text-sm font-medium capitalize",
                 index <= currentStep
                   ? "text-foreground"
                   : "text-muted-foreground"

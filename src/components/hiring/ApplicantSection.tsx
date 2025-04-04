@@ -4,9 +4,18 @@ import ApplicantCard from "./ApplicantCard";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { useState } from "react";
 import ApplicantTable from "./ApplicantTable";
+import AddInterviewModal from "./AddInterviewModal";
 
-function ApplicantSection() {
+function ApplicantSection({
+  shownInterview,
+  setShownInterviews,
+}: {
+  shownInterview: Interview[];
+  setShownInterviews: React.Dispatch<React.SetStateAction<Interview[]>>;
+}) {
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+  const [open, setOpen] = useState(false);
+  const [participant, setParticipant] = useState<Applicant | null>(null);
 
   return (
     <div className="border rounded-md p-4">
@@ -38,7 +47,14 @@ function ApplicantSection() {
             grid: (
               <div className="grid grid-cols-4 gap-4">
                 {applicants.map((applicant) => (
-                  <ApplicantCard key={applicant.id} applicant={applicant} />
+                  <ApplicantCard
+                    key={applicant.id}
+                    applicant={applicant}
+                    openModal={(x: Applicant) => {
+                      setParticipant(x);
+                      setOpen(true);
+                    }}
+                  />
                 ))}
               </div>
             ),
@@ -46,6 +62,16 @@ function ApplicantSection() {
           }[viewMode]
         }
       </div>
+      {participant && (
+        <AddInterviewModal
+          open={open}
+          setOpen={setOpen}
+          participant={participant}
+          addInterview={(newInterview: Interview) => {
+            setShownInterviews((prev) => [...prev, newInterview]);
+          }}
+        />
+      )}
     </div>
   );
 }
