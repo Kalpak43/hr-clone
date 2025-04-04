@@ -157,9 +157,9 @@ interface Project {
   description: string;
   start_date: string; // ISO date string
   end_date: string; // ISO date string
-  status: string;
+  status: "Not Started" | "Planning" | "In Progress" | "Completed" | "Delayed";
   progress: number; // Percentage (0-100)
-  priority: string;
+  priority: "Critical" | "High" | "Medium" | "Low";
   team_id: number;
   budget: number; // In currency units
 }

@@ -32,7 +32,7 @@ function CompletionProgress() {
   return (
     <div className="border border-gray-300 rounded-md p-4 bg-white space-y-8">
       <div className="flex items-center justify-between">
-        <p className="text-base font-semibold">Project Progress</p>
+        <p className="">Project Progress</p>
       </div>
       {/* <LocationChart /> */}
 
