@@ -150,3 +150,26 @@ interface Interview {
     jobAppliedFor: string;
   };
 }
+
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  start_date: string; // ISO date string
+  end_date: string; // ISO date string
+  status: string;
+  progress: number; // Percentage (0-100)
+  priority: string;
+  team_id: number;
+  budget: number; // In currency units
+}
+
+interface TeamMember {
+  name: string;
+  role: string;
+}
+
+interface Team {
+  team_id: number;
+  members: TeamMember[];
+}

@@ -1590,3 +1590,114 @@ export const interviews = [
     },
   },
 ];
+
+export const projects: Project[] = [
+  {
+    id: 1,
+    name: "AI Chatbot Integration",
+    description:
+      "Develop an AI-powered chatbot using OpenAI's GPT API for customer support automation.",
+    start_date: "2024-01-10",
+    end_date: "2024-06-30",
+    status: "In Progress",
+    progress: 65,
+    priority: "High",
+    team_id: 101,
+    budget: 50000,
+  },
+  {
+    id: 2,
+    name: "E-Commerce Platform Revamp",
+    description:
+      "Redesign the company's e-commerce platform with a modern UI and improved performance.",
+    start_date: "2023-11-15",
+    end_date: "2024-05-20",
+    status: "Completed",
+    progress: 100,
+    priority: "Medium",
+    team_id: 102,
+    budget: 75000,
+  },
+  {
+    id: 3,
+    name: "Cloud Migration Project",
+    description:
+      "Migrate the company's internal applications from on-premise servers to AWS Cloud.",
+    start_date: "2024-03-01",
+    end_date: "2024-12-31",
+    status: "Planning",
+    progress: 10,
+    priority: "High",
+    team_id: 103,
+    budget: 120000,
+  },
+  {
+    id: 4,
+    name: "Mobile App Development",
+    description:
+      "Build a cross-platform mobile app for managing employee attendance and payroll.",
+    start_date: "2024-02-10",
+    end_date: "2024-09-15",
+    status: "In Progress",
+    progress: 40,
+    priority: "High",
+    team_id: 104,
+    budget: 60000,
+  },
+  {
+    id: 5,
+    name: "Cybersecurity Enhancement",
+    description:
+      "Improve the company's cybersecurity by implementing zero-trust architecture.",
+    start_date: "2024-04-01",
+    end_date: "2024-12-31",
+    status: "Not Started",
+    progress: 0,
+    priority: "Critical",
+    team_id: 105,
+    budget: 90000,
+  },
+];
+
+export const teams: Team[] = [
+  {
+    team_id: 101,
+    members: [
+      { name: "John Doe", role: "Project Manager" },
+      { name: "Alice Smith", role: "Backend Developer" },
+      { name: "Bob Johnson", role: "Frontend Developer" },
+    ],
+  },
+  {
+    team_id: 102,
+    members: [
+      { name: "Emma Wilson", role: "UI/UX Designer" },
+      { name: "Michael Brown", role: "Full Stack Developer" },
+      { name: "Sophia Davis", role: "QA Engineer" },
+    ],
+  },
+  {
+    team_id: 103,
+    members: [
+      { name: "Olivia Martinez", role: "Cloud Architect" },
+      { name: "Liam Anderson", role: "DevOps Engineer" },
+      { name: "Noah Garcia", role: "Security Specialist" },
+    ],
+  },
+  {
+    team_id: 104,
+    members: [
+      { name: "William Thompson", role: "Mobile Developer" },
+      { name: "Isabella White", role: "Backend Developer" },
+      { name: "James Harris", role: "Product Manager" },
+    ],
+  },
+  {
+    team_id: 105,
+    members: [
+      { name: "Ethan Clark", role: "Cybersecurity Analyst" },
+      { name: "Ava Lewis", role: "Network Engineer" },
+      { name: "Mason Walker", role: "Compliance Officer" },
+    ],
+  },
+];
