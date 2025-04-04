@@ -1,7 +1,7 @@
 import ApplicantCard from "@/components/hiring/ApplicantCard";
 import JobsTable from "@/components/hiring/JobsTable";
 import { Button } from "@/components/ui/button";
-import { applicants, interviews, jobs } from "@/data";
+import { applicants, jobs } from "@/data";
 import { ChevronRight, CircleArrowUp, Info } from "lucide-react";
 import DateDropdown from "../DateDropdown";
 import { useState } from "react";
@@ -187,6 +187,7 @@ function OverviewSection({
               key={applicant.id}
               applicant={applicant}
               openModal={() => {}}
+              setApplicants={() => {}}
             />
           ))}
         </div>

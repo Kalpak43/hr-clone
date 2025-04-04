@@ -2,7 +2,7 @@ import ApplicantSection from "@/components/hiring/ApplicantSection";
 import JobSection from "@/components/hiring/JobSection";
 import OverviewSection from "@/components/hiring/OverviewSection";
 import { Button } from "@/components/ui/button";
-import { interviews } from "@/data";
+import { applicants, interviews } from "@/data";
 import { ChartNoAxesGantt, List, Users2 } from "lucide-react";
 import { useState } from "react";
 
@@ -12,6 +12,8 @@ function HiringPage() {
   );
 
   const [shownInterview, setShownInterviews] = useState(interviews);
+  const [shownApplicants, setShownApplicants] =
+    useState<Applicant[]>(applicants);
 
   return (
     <main className="hero h-full">
@@ -57,6 +59,8 @@ function HiringPage() {
             <ApplicantSection
               shownInterview={shownInterview}
               setShownInterviews={setShownInterviews}
+              applicants={shownApplicants}
+              setApplicants={setShownApplicants}
             />
           ),
           jobs: <JobSection />,

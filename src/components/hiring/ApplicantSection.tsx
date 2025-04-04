@@ -1,5 +1,5 @@
 import { Grid2X2, Info, Table } from "lucide-react";
-import { applicants } from "@/data";
+// import { applicants } from "@/data";
 import ApplicantCard from "./ApplicantCard";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { useState } from "react";
@@ -7,11 +7,14 @@ import ApplicantTable from "./ApplicantTable";
 import AddInterviewModal from "./AddInterviewModal";
 
 function ApplicantSection({
-  shownInterview,
   setShownInterviews,
+  applicants,
+  setApplicants,
 }: {
   shownInterview: Interview[];
   setShownInterviews: React.Dispatch<React.SetStateAction<Interview[]>>;
+  applicants: Applicant[];
+  setApplicants: React.Dispatch<React.SetStateAction<Applicant[]>>;
 }) {
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
   const [open, setOpen] = useState(false);
@@ -54,6 +57,7 @@ function ApplicantSection({
                       setParticipant(x);
                       setOpen(true);
                     }}
+                    setApplicants={setApplicants}
                   />
                 ))}
               </div>

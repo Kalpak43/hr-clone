@@ -9,9 +9,11 @@ import { Stepper } from "../ui/Stepper";
 function ApplicantCard({
   applicant,
   openModal,
+  setApplicants,
 }: {
   applicant: Applicant;
   openModal: (x: Applicant) => void;
+  setApplicants: React.Dispatch<React.SetStateAction<Applicant[]>>;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
@@ -35,6 +37,7 @@ function ApplicantCard({
         onOpenChange={setIsModalOpen}
         applicant={applicant}
         openModal={openModal}
+        setApplicants={setApplicants}
       />
     </>
   );
@@ -47,14 +50,14 @@ export function ApplicantModal({
   onOpenChange,
   applicant,
   openModal,
+  setApplicants,
 }: {
   open: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   applicant: Applicant;
   openModal: (x: Applicant) => void;
+  setApplicants: React.Dispatch<React.SetStateAction<Applicant[]>>;
 }) {
-  const [activeApplicant, setActiveApplicant] = useState(applicant);
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[800px]">
@@ -67,70 +70,68 @@ export function ApplicantModal({
             <div className="flex items-center gap-4 pb-2">
               <Avatar className="w-16 h-16 border-2 border-background">
                 <AvatarImage
-                  src={activeApplicant.profilePhoto}
-                  alt={activeApplicant.name}
+                  src={applicant.profilePhoto}
+                  alt={applicant.name}
                 />
-                <AvatarFallback>{activeApplicant.name[0]}</AvatarFallback>
+                <AvatarFallback>{applicant.name[0]}</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="font-semibold">{activeApplicant.name}</h3>
+                <h3 className="font-semibold">{applicant.name}</h3>
                 <p className="text-xs text-gray-500">
-                  {activeApplicant.jobAppliedFor}
+                  {applicant.jobAppliedFor}
                 </p>
               </div>
             </div>
             <div className="space-y-1 text-xs pb-2">
               <p>
-                <Mail size={14} className="inline mr-2" />{" "}
-                {activeApplicant.email}
+                <Mail size={14} className="inline mr-2" /> {applicant.email}
               </p>
               <p>
-                <Phone size={14} className="inline mr-2" />{" "}
-                {activeApplicant.contact}
+                <Phone size={14} className="inline mr-2" /> {applicant.contact}
               </p>
               <p>
                 <MapPin size={14} className="inline mr-2" />{" "}
-                {activeApplicant.location}
+                {applicant.location}
               </p>
             </div>
 
             <div>
               <h4 className="font-medium mb-2">Education</h4>
-              <p className="text-gray-500">{activeApplicant.education}</p>
+              <p className="text-gray-500">{applicant.education}</p>
             </div>
 
-            {activeApplicant.socials && (
+            {applicant.socials && (
               <div className="flex gap-3">
-                {activeApplicant.socials.linkedIn && (
+                {applicant.socials.linkedIn && (
                   <a
-                    href={activeApplicant.socials.linkedIn}
+                    href={applicant.socials.linkedIn}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Linkedin size={16} />
                   </a>
                 )}
-                {activeApplicant.socials.github && (
+                {applicant.socials.github && (
                   <a
-                    href={activeApplicant.socials.github}
+                    href={applicant.socials.github}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Github size={16} />
                   </a>
                 )}
-                {activeApplicant.socials.kaggle && (
+                {applicant.socials.kaggle && (
                   <a
-                    href={activeApplicant.socials.kaggle}
+                    href={applicant.socials.kaggle}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <FaKaggle size={16} />
                   </a>
                 )}
-                {activeApplicant.socials.dribbble && (
+                {applicant.socials.dribbble && (
                   <a
-                    href={activeApplicant.socials.dribbble}
+                    href={applicant.socials.dribbble}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -146,43 +147,44 @@ export function ApplicantModal({
               steps={[
                 "screening",
                 "test task",
-                activeApplicant.interviewStep == 2
+                applicant.interviewStep == 2
                   ? "interview scheduled"
                   : "interview",
                 "hired",
               ]}
-              currentStep={activeApplicant.interviewStep}
+              currentStep={applicant.interviewStep}
               handleNext={() => {}}
               handlePrev={() => {}}
               handleClick={(x) => {
                 if (x == 2) {
-                  openModal(activeApplicant);
+                  openModal(applicant);
                 }
-                setActiveApplicant((prev) => ({
-                  ...prev,
-                  interviewStep: x,
-                }));
+                setApplicants((prev) =>
+                  prev.map((a) =>
+                    a.id === applicant.id ? { ...a, interviewStep: x } : a
+                  )
+                );
               }}
             />
             <div className="pl-4 space-y-4 py-4">
               <div>
                 <h4 className="font-medium mb-2">Applied Position</h4>
-                <p className="text-gray-500">{activeApplicant.jobAppliedFor}</p>
+                <p className="text-gray-500">{applicant.jobAppliedFor}</p>
               </div>
 
               <div>
                 <h4 className="font-medium mb-2">Applied Date</h4>
                 <p className="text-gray-500">
-                  {new Date(activeApplicant.appliedDate).toLocaleDateString()}
+                  {new Date(applicant.appliedDate).toLocaleDateString()}
                 </p>
               </div>
             </div>
 
             {/* View Resume Button */}
-            {activeApplicant.resumeUrl && (
+            {applicant.resumeUrl && (
               <div className="text-right pt-4">
                 <a
-                  href={activeApplicant.resumeUrl}
+                  href={applicant.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-400 text-primary-foreground hover:bg-blue-500 h-10 px-4 py-2"
