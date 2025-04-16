@@ -1,4 +1,3 @@
-import { CameraIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 

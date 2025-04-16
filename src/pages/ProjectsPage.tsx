@@ -5,7 +5,6 @@ import { CircleArrowUp, Info, Plus, Search } from "lucide-react";
 import ProjectsTable from "@/components/projects/ProjectsTable";
 import { projects } from "@/data";
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
@@ -93,19 +92,29 @@ function ProjectsPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-start gap-2">
-          <Input
-            type="date"
-            value={filters.startDate}
-            onChange={(e) => handleFilterChange("startDate", e.target.value)}
-            className="max-w-[150px]"
-          />
-          <Input
-            type="date"
-            value={filters.endDate}
-            onChange={(e) => handleFilterChange("endDate", e.target.value)}
-            className="max-w-[150px]"
-          />
+        <div className="flex items-end justify-start gap-2">
+          <div>
+            <label htmlFor="" className="text-xs text-gray-600">
+              Start Date
+            </label>
+            <Input
+              type="date"
+              value={filters.startDate}
+              onChange={(e) => handleFilterChange("startDate", e.target.value)}
+              className="max-w-[150px]"
+            />
+          </div>
+          <div>
+            <label htmlFor="" className="text-xs text-gray-600">
+              End Date
+            </label>
+            <Input
+              type="date"
+              value={filters.endDate}
+              onChange={(e) => handleFilterChange("endDate", e.target.value)}
+              className="max-w-[150px]"
+            />
+          </div>
 
           <Select
             onValueChange={(value) => handleFilterChange("priority", value)}

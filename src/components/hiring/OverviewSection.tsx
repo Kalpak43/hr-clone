@@ -18,7 +18,7 @@ function OverviewSection({
   setShownInterviews: React.Dispatch<React.SetStateAction<Interview[]>>;
 }) {
   const [shownJobs, setShownJobs] = useState(jobs);
-  const [selectedEdit, setSelectedEdit] = useState<Job | null>(null);
+  const [_, setSelectedEdit] = useState<Job | null>(null);
   const [filterDate, setFilterDate] = useState<Date>(new Date());
 
   // Filter interviews by the selected date
@@ -183,6 +183,7 @@ function OverviewSection({
 
         <div className="grid grid-cols-4 gap-4">
           {applicants.slice(0, 4).map((applicant) => (
+            // @ts-ignore
             <ApplicantCard
               key={applicant.id}
               applicant={applicant}

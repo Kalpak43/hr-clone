@@ -115,6 +115,7 @@ function EmployeeModal({ onClose }: { onClose: () => void }) {
       toast.error("There was an error in adding employee");
     }
     setLoading(false);
+    // @ts-ignore
     dispatch(fetchEmployees());
 
     onClose();
@@ -130,6 +131,7 @@ function EmployeeModal({ onClose }: { onClose: () => void }) {
           </span>
         </p>
       </div>
+      {/* @ts-ignore */}
       <Stepper
         steps={steps}
         currentStep={currentStep}

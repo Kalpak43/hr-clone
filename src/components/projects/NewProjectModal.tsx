@@ -179,7 +179,10 @@ function NewProjectModal({
             </div>
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            className="w-full bg-blue-400 hover:bg-blue-500"
+          >
             Create Project
           </Button>
         </form>

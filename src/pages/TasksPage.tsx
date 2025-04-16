@@ -2,7 +2,7 @@ import DateDropdown from "@/components/DateDropdown";
 import { Button } from "@/components/ui/button";
 import { dummyTasks } from "@/data";
 import { Info, List, Plus, StretchVertical } from "lucide-react";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 import { ListView } from "@/components/tasks/ListView";
 import BoardView from "@/components/tasks/BoardView";

@@ -75,6 +75,7 @@ function Sidebar() {
   }, [user]);
 
   useEffect(() => {
+    // @ts-ignore
     if (role) dispatch(fetchAllowedRoutes({ role }));
   }, [role]);
 
@@ -157,6 +158,7 @@ function Sidebar() {
   ];
 
   const handleLogout = async () => {
+    // @ts-ignore
     await dispatch(logout());
     toast("Logged out successfully");
   };

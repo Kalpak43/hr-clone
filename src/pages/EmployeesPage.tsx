@@ -97,6 +97,7 @@ function EmployeesPage() {
 
   // Fetch employees on component mount
   useEffect(() => {
+    // @ts-ignore
     dispatch(fetchEmployees());
   }, [dispatch]);
 

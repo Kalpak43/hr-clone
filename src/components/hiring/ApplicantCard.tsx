@@ -5,20 +5,78 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { FileText, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import { FaDribbble, FaKaggle } from "react-icons/fa6";
 import { Stepper } from "../ui/Stepper";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { MoreVertical } from "lucide-react";
 
 function ApplicantCard({
   applicant,
   openModal,
   setApplicants,
+  onDragStart,
 }: {
   applicant: Applicant;
   openModal: (x: Applicant) => void;
   setApplicants: React.Dispatch<React.SetStateAction<Applicant[]>>;
+  onDragStart: (e: React.DragEvent, taskId: number) => void;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleNextStep = (id: number) => {
+    setApplicants((prev) =>
+      prev.map((applicant) =>
+        applicant.id === id
+          ? { ...applicant, interviewStep: applicant.interviewStep + 1 }
+          : applicant
+      )
+    );
+  };
+
   return (
     <>
-      <div className="border rounded-md p-4 flex flex-col items-center space-y-2 shadow">
+      <div
+        draggable
+        onDragStart={(e) => onDragStart(e, applicant.id)}
+        className="border rounded-md p-4 flex flex-col items-center space-y-2 shadow relative"
+      >
+        {applicant.interviewStep != 4 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="p-0 absolute right-0 top-0"
+              >
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {applicant.interviewStep == 3 && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    openModal(applicant);
+                  }}
+                >
+                  Schedule an Interview
+                </DropdownMenuItem>
+              )}
+              {applicant.interviewStep != 4 && (
+                <DropdownMenuItem
+                  onClick={() => {
+                    handleNextStep(applicant.id);
+                  }}
+                >
+                  Promote to Next Step
+                </DropdownMenuItem>
+              )}
+              {/* Add more options here if needed */}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
         <Avatar className="w-12 h-12 border-2 border-background mx-auto">
           <AvatarImage src={applicant.profilePhoto} alt={applicant.name} />
           <AvatarFallback>{applicant.name[0]}</AvatarFallback>

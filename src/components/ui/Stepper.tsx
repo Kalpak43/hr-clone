@@ -1,16 +1,5 @@
-"use client";
-
-import { useState } from "react";
-import { Check, ChevronRight } from "lucide-react";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 interface StepperProps {
   steps: string[];
@@ -23,8 +12,6 @@ interface StepperProps {
 export function Stepper({
   steps,
   currentStep = 0,
-  handleNext,
-  handlePrev,
   handleClick,
 }: StepperProps) {
   // const [currentStep, setCurrentStep] = useState(initialStep);
@@ -38,7 +25,7 @@ export function Stepper({
     <div className="w-full max-w-4xl mx-auto">
       <div className="mb-8">
         <div className="flex items-center  justify-center w-full">
-          {steps.map((step, index) => (
+          {steps.map((_, index) => (
             <div
               key={index}
               className="flex items-center justify-center flex-1 relative"

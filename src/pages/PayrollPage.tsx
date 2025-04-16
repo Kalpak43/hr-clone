@@ -880,7 +880,7 @@ function EmployeePieChart() {
                         outerRadius={100}
                         innerRadius={50}
                       >
-                        {filteredData.map((entry, index) => (
+                        {filteredData.map((_, index) => (
                           <Cell
                             key={`cell-${index}`}
                             fill={COLORS[index % COLORS.length]}

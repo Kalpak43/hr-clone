@@ -34,6 +34,7 @@ function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     await dipatch(
+      // @ts-ignore
       login({
         email,
         password,

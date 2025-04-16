@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Plus, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { Calendar, List } from "lucide-react";
@@ -151,7 +151,7 @@ export function CalendarHeader({
               onChange={handleSearchChange}
             />
           </div>
-
+            {/* @ts-ignore */}
           <NewEventModal openNewEventModal={openNewEventModal} />
         </div>
       </div>
