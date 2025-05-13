@@ -60,9 +60,9 @@ function App() {
   }, [error]);
   return (
     <Routes>
-      <Route element={<UserProtectedRoute />}>
+      <Route >
         <Route element={<Layout />}>
-          <Route element={<AdminProtectedRoute />}>
+          <Route >
             <Route path="/" element={<HomePage />} />
             <Route path="/inbox/:mailID?" element={<InboxPage />} />
             <Route path="/employees" element={<EmployeesPage />} />
